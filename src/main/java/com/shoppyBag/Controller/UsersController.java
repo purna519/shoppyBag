@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.shoppyBag.Service.UsersService;
 import com.shoppyBag.Entity.Users;
-import com.shoppyBag.DTO.LoginRequestDTO;
-import com.shoppyBag.DTO.ApiResponse;
+import com.shoppyBag.DTO.*;
+import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/api/users")
@@ -24,13 +24,21 @@ public class UsersController {
         return usersService.login(dto);
     }
 
-    @PostMapping("/all")
-    public ApiResponse<?> getAll(@RequestBody LoginRequestDTO dto) {
-        return usersService.getAllUsers(dto);
+    @GetMapping("/all")
+    public ApiResponse<?> getAllUsers(HttpServletRequest request) {
+        String token = request.getHeader("Authorization");
+        return usersService.getAllUsers(token);
     }
 
-    @PostMapping("/delete")
-    public ApiResponse<?> delete(@RequestBody LoginRequestDTO dto) {
-        return usersService.deleteUser(dto);
+    @DeleteMapping("/delete")
+    public ApiResponse<?> deleteUser(HttpServletRequest request) {
+        String token = request.getHeader("Authorization");
+        return usersService.deleteUser(token);
+    }
+
+    @PutMapping("/update")
+    public ApiResponse<?> updateUser(@RequestBody UpdateRequestDTO request, HttpServletRequest httpRequest) {
+        String token = httpRequest.getHeader("Authorization");
+        return usersService.updateUser(request, token);
     }
 }
