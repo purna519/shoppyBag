@@ -11,7 +11,15 @@ public class ApiResponse<T> {
         this.data = data;
     }
 
-    public String getStatus() { return status; }
-    public String getMessage() { return message; }
-    public T getData() { return data; }
+    public String getStatus() {
+        return status;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public T getData() {
+        return data;
+    }
 }

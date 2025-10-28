@@ -7,6 +7,8 @@ import com.shoppyBag.Entity.Users;
 import com.shoppyBag.Repository.UserRepository;
 import com.shoppyBag.DTO.ApiResponse;
 import com.shoppyBag.DTO.LoginRequestDTO;
+import com.shoppyBag.DTO.UpdateRequestDTO;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Service
@@ -58,11 +60,32 @@ public class UsersService {
     // Delete user
     public ApiResponse<String> deleteUser(LoginRequestDTO dto) {
         Users u = userRepository.findByEmail(dto.getEmail());
-        if (u == null) return new ApiResponse<>("error", "User not found", null);
+        if (u == null)
+            return new ApiResponse<>("error", "User not found", null);
         if (!passwordEncoder.matches(dto.getPassword(), u.getPasswordHash())) {
             return new ApiResponse<>("error", "Invalid credentials", null);
         }
         userRepository.deleteById(u.getId());
         return new ApiResponse<>("success", "User deleted", "ok");
     }
+    
+    // Update user
+    public ApiResponse<Users> updateUser(UpdateRequestDTO dto) {
+        Users u = userRepository.findByEmail(dto.getEmail());
+        if (u == null) {
+            return new ApiResponse<>("error", "User not found", null);
+        } else {
+            if (dto.getFullname() != null) {
+                u.setFullname(dto.getFullname());
+            }
+            if (dto.getPasswordHash() != null) {
+                u.setPasswordHash(passwordEncoder.encode(dto.getPasswordHash()));
+            }
+            if (dto.getRole() != null) {
+                u.setRole(dto.getRole());
+            }
+            return new ApiResponse<Users>("Success", "User account updated Succesfully", u);
+        }
+    }
+
 }
