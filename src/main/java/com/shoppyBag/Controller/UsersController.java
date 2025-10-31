@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.*;
 import com.shoppyBag.Service.UsersService;
 import com.shoppyBag.Entity.Users;
 import com.shoppyBag.DTO.*;
-import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/api/users")
@@ -25,20 +24,17 @@ public class UsersController {
     }
 
     @GetMapping("/all")
-    public ApiResponse<?> getAllUsers(HttpServletRequest request) {
-        String token = request.getHeader("Authorization");
+    public ApiResponse<?> getAllUsers(@RequestHeader("Authorization") String token) {
         return usersService.getAllUsers(token);
     }
 
     @DeleteMapping("/delete")
-    public ApiResponse<?> deleteUser(HttpServletRequest request) {
-        String token = request.getHeader("Authorization");
+    public ApiResponse<?> deleteUser(@RequestHeader("Authorization") String token) {
         return usersService.deleteUser(token);
     }
 
     @PutMapping("/update")
-    public ApiResponse<?> updateUser(@RequestBody UpdateRequestDTO request, HttpServletRequest httpRequest) {
-        String token = httpRequest.getHeader("Authorization");
+    public ApiResponse<?> updateUser(@RequestBody UpdateRequestDTO request, @RequestHeader("Authorization") String token) {
         return usersService.updateUser(request, token);
     }
 }
