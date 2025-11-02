@@ -15,24 +15,35 @@ public class ProductVariantController {
     @Autowired
     private ProductVariantService variantService;
 
+    // ✅ Add Variant (Admin Only)
     @PostMapping("/add/{productId}")
-    public ApiResponse<ProductVariant> addVariant(@PathVariable Long productId, @RequestBody ProductVariant variant, @RequestHeader("Authorization") String token) {
+    public ApiResponse<ProductVariant> addVariant(
+            @PathVariable Long productId,
+            @RequestBody ProductVariant variant,
+            @RequestHeader("Authorization") String token) {
         return variantService.addProductVariant(productId, variant, token);
     }
 
+    // ✅ Get all variants for a product (Public)
     @GetMapping("/getByProduct/{productId}")
-    public List<ProductVariant> getVariantsByProduct(@PathVariable Long productId) {
-        return variantService.getVariantsByProduct(productId);
+    public ApiResponse<List<ProductVariant>> getVariantsByProduct(@PathVariable Long productId, @RequestHeader("Authorization") String token) {
+        return variantService.getVariantsByProduct(productId, token);
     }
 
+    // ✅ Update Variant (Admin Only)
     @PutMapping("/update/{variantId}")
-    public ProductVariant updateVariant(@PathVariable Long variantId, @RequestBody ProductVariant variant) {
-        return variantService.updateVariant(variantId, variant);
+    public ApiResponse<ProductVariant> updateVariant(
+            @PathVariable Long variantId,
+            @RequestBody ProductVariant variant,
+            @RequestHeader("Authorization") String token) {
+        return variantService.updateVariant(variantId, variant, token);
     }
 
+    // ✅ Delete Variant (Admin Only)
     @DeleteMapping("/delete/{variantId}")
-    public String deleteVariant(@PathVariable Long variantId) {
-        variantService.deleteVariant(variantId);
-        return "Variant deleted successfully";
+    public ApiResponse<String> deleteVariant(
+            @PathVariable Long variantId,
+            @RequestHeader("Authorization") String token) {
+        return variantService.deleteVariant(variantId, token);
     }
 }

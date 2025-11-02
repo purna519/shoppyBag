@@ -56,27 +56,49 @@ public class ProductVariantService {
     
     
     // Get all variants for a product
-    public List<ProductVariant> getVariantsByProduct(Long productId) {
-        return productVariantRepository.findByProductId(productId);
+    public ApiResponse<List<ProductVariant>> getVariantsByProduct(Long productId, String token) {
+        if (token == null || !token.startsWith("Bearer ")) {
+            return new ApiResponse<>("Error", "Invalid Token", null);
+        }
+        String actualToken = token.substring(7);
+        if (!jwtUtil.validateToken(actualToken)) {
+            return new ApiResponse<>("Error", "Invalid Token", null);
+        }
+
+        List<ProductVariant> variants = productVariantRepository.findByProductId(productId);
+        return new ApiResponse<>("Success", "Product variants retrieved successfully", variants);
     }
 
-    // Update variant
-    public ProductVariant updateVariant(Long id, ProductVariant variantDetails) {
+    // Update variant (Admin Only)
+    public ApiResponse<ProductVariant> updateVariant(Long id, ProductVariant variantDetails, String token) {
+        Users admin = validateAdminToken(token);
+        if (admin == null) {
+            return new ApiResponse<>("Error", "Invalid or Unauthorized Token", null);
+        }
+
         ProductVariant variant = productVariantRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Variant not found"));
-        
+
         if (variantDetails.getColor() != null) variant.setColor(variantDetails.getColor());
         if (variantDetails.getSize() != null) variant.setSize(variantDetails.getSize());
         if (variantDetails.getSku() != null) variant.setSku(variantDetails.getSku());
         if (variantDetails.getPrice() != 0) variant.setPrice(variantDetails.getPrice());
         if (variantDetails.getStockQuantity() != 0) variant.setStockQuantity(variantDetails.getStockQuantity());
-        
-        return productVariantRepository.save(variant);
+
+        productVariantRepository.save(variant);
+        return new ApiResponse<>("Success", "Variant updated successfully", variant);
     }
 
-    // Delete variant
-    public void deleteVariant(Long id) {
+    // Delete variant (Admin Only)
+    public ApiResponse<String> deleteVariant(Long id, String token) {
+        Users admin = validateAdminToken(token);
+        if (admin == null) {
+            return new ApiResponse<>("Error", "Invalid or Unauthorized Token", null);
+        }
+
         productVariantRepository.deleteById(id);
+        return new ApiResponse<>("Success", "Variant deleted successfully", null);
     }
+
 
 }
