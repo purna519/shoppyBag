@@ -44,5 +44,12 @@ public class Order {
 
     @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
     private Payment payment;
+
+    public Order(LocalDateTime orderDate, double totalAmount, String status, Users users) {
+        this.totalAmount = totalAmount;
+        this.orderdate = orderDate;
+        this.status = status;
+        this.users = users;
+    }
     
 }
