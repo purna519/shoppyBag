@@ -8,10 +8,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.shoppyBag.DTO.ApiResponse;
+import com.shoppyBag.DTO.OrderDTO;
+import com.shoppyBag.DTO.OrderItemDTO;
+import com.shoppyBag.DTO.PaymentDTO;
+import com.shoppyBag.DTO.ProductVariantDTO;
 import com.shoppyBag.Entity.Cart;
 import com.shoppyBag.Entity.CartItem;
 import com.shoppyBag.Entity.Order;
 import com.shoppyBag.Entity.OrderItem;
+import com.shoppyBag.Entity.Payment;
+import com.shoppyBag.Entity.ProductVariant;
 import com.shoppyBag.Entity.Users;
 import com.shoppyBag.Repository.CartRepository;
 import com.shoppyBag.Repository.OrderRepository;
@@ -28,15 +34,70 @@ public class OrderService {
     @Autowired
     private OrderRepository orderRepository;
 
-    public ApiResponse<Order> placeOrder(String token) {
+        private ProductVariantDTO convertToProductVariantDTO(ProductVariant variant) {
+        if (variant == null) return null;
+        
+        ProductVariantDTO dto = new ProductVariantDTO();
+        dto.setId(variant.getId());
+        dto.setColor(variant.getColor());
+        dto.setSize(variant.getSize());
+        dto.setSku(variant.getSku());
+        dto.setPrice(variant.getPrice());
+        dto.setStockQuantity(variant.getStockQuantity());
+        
+        return dto;
+    }
+
+
+    private OrderItemDTO convertToOrderItemDTO(OrderItem orderItem) {
+        OrderItemDTO dto = new OrderItemDTO();
+        dto.setId(orderItem.getId());
+        dto.setQuantity(orderItem.getQuantity());
+        dto.setPrice(orderItem.getPrice());
+        dto.setProductVariant(convertToProductVariantDTO(orderItem.getProductVariant()));
+        return dto;
+    }
+
+    private PaymentDTO convertToPaymentDTO(Payment payment) {
+        if (payment == null) return null;
+        PaymentDTO dto = new PaymentDTO();
+        dto.setId(payment.getId());
+        dto.setPaymentMethod(payment.getPaymentMethod());
+        dto.setAmountPaid(payment.getAmount()); 
+        dto.setPaymentStatus(payment.getPaymentStatus()); 
+        return dto;
+    }
+
+    public OrderDTO convertToOrderDTO(Order order) {
+        OrderDTO dto = new OrderDTO();
+        dto.setId(order.getId());
+        dto.setTotalAmount(order.getTotalAmount());
+        dto.setStatus(order.getStatus());
+        dto.setUserId(order.getUsers().getId());
+
+        if (order.getOrderItems() != null) {
+            List<OrderItemDTO> itemDTOs = order.getOrderItems().stream()
+                    .map(this::convertToOrderItemDTO)
+                    .toList();
+            dto.setOrderItems(itemDTOs);
+        }
+
+        dto.setPayment(convertToPaymentDTO(order.getPayment()));
+
+        return dto;
+    }
+    
+
+
+    public ApiResponse<OrderDTO> placeOrder(String token) {
         Users users = regularFunctions.validateToken(token);
         if (users == null) {
-            return new ApiResponse<Order>("Error", "Invalid User", null);
+            return new ApiResponse<>("Error", "Invalid User", null);
         }
 
         Cart cart = cartRepository.findByUser(users);
         if (cart.getItems().isEmpty()) {
-            return new ApiResponse<Order>("Error", "Cart Items are Empty", null);
+            return new ApiResponse<>("Error", "Cart Items are Empty", null);
         }
 
         Order order = new Order(LocalDateTime.now(), 0, "Pending", users);
@@ -64,29 +125,33 @@ public class OrderService {
 
         cartRepository.delete(cart);
 
-        return new ApiResponse<Order>("Success", "OrderItems Succesfully added", order);
+        return new ApiResponse<>("Success", "OrderItems Succesfully added", convertToOrderDTO(order));
 
     }
 
-    public ApiResponse<List<Order>> getOrders(String token) {
+    public ApiResponse<List<OrderDTO>> getOrders(String token) {
         Users users = regularFunctions.validateToken(token);
         if (users == null) {
-            return new ApiResponse<List<Order>>("Error", "Invalid User", null);
+            return new ApiResponse<List<OrderDTO>>("Error", "Invalid User", null);
         }
 
         List<Order> orders = orderRepository.findByUsersId(users.getId());
 
         if (orders.isEmpty()) {
-            return new ApiResponse<List<Order>>("Error", "No past Orders", null);
+            return new ApiResponse<List<OrderDTO>>("Error", "No past Orders", null);
         }
 
-        return new ApiResponse<List<Order>>("Success", "Orders fetched successfully", orders);
+        List<OrderDTO> orderDTOs = orders.stream()
+            .map(this::convertToOrderDTO)
+            .toList();
+
+        return new ApiResponse<List<OrderDTO>>("Success", "Orders fetched successfully", orderDTOs);
     }
 
-    public ApiResponse<Order> getOrderById(Long id, String token) {
+    public ApiResponse<OrderDTO> getOrderById(Long id, String token) {
         Users users = regularFunctions.validateToken(token);
         if (users == null) {
-            return new ApiResponse<Order>("Error", "Invalid User", null);
+            return new ApiResponse<>("Error", "Invalid User", null);
         }
 
         Order order = orderRepository.findById(id).orElseThrow(() -> new RuntimeException("Order not found"));
@@ -95,7 +160,7 @@ public class OrderService {
             return new ApiResponse<>("Error", "Access denied for this order", null);
         }
 
-        return new ApiResponse<Order>("Success", "Order succesfully fetched", order);
+        return new ApiResponse<>("Success", "Order succesfully fetched", convertToOrderDTO(order));
 
     }
 

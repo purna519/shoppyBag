@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.shoppyBag.DTO.ApiResponse;
+import com.shoppyBag.DTO.ProductImageDTO;
 import com.shoppyBag.Entity.ProductImage;
 import com.shoppyBag.Service.ProductImageService;
 
@@ -26,20 +27,20 @@ public class ProductImageController {
     private ProductImageService productImageService;
     
     @PostMapping("/addProductImage/{productId}")
-    public ApiResponse<ProductImage> addProductImage(@PathVariable Long productId,
+    public ApiResponse<ProductImageDTO> addProductImage(@PathVariable Long productId,
             @RequestBody ProductImage productImage, @RequestHeader("Authorization") String token) {
 
         return productImageService.addProductImages(productId, productImage, token);
 
     }
     
-    // ✅ Get all images by product
+    // Get all images by product
     @GetMapping("/getByProduct/{productId}")
-    public List<ProductImage> getImagesByProduct(@PathVariable Long productId) {
+    public List<ProductImageDTO> getImagesByProduct(@PathVariable Long productId) {
         return productImageService.getImagesByProduct(productId);
     }
 
-    // ✅ Delete image by ID (Admin only)
+    // Delete image by ID (Admin only)
     @DeleteMapping("/delete/{imageId}")
     public ApiResponse<String> deleteImage(
             @PathVariable Long imageId,

@@ -27,7 +27,7 @@ public class ProductVariant {
     private String size;
     
     @Column(name = "product_variant_sku", nullable = false)
-    private Long sku;
+    private String sku;
     
     @Column(name = "product_variant_price", nullable = false)
     private double price;

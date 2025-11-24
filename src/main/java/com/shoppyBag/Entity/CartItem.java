@@ -1,5 +1,7 @@
 package com.shoppyBag.Entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -14,6 +16,7 @@ public class CartItem {
 
     @ManyToOne
     @JoinColumn(name = "cart_id")
+    @JsonBackReference
     private Cart cart;
 
     @ManyToOne
@@ -27,12 +30,20 @@ public class CartItem {
     private int quantity;
     private Double price;
 
-    public CartItem(Cart cart, Product product, ProductVariant variant, int quantity, Double price) {
+    @ManyToOne
+    @JoinColumn(name = "users_id", nullable = false)
+    private Users users;
+
+    public CartItem() {
+    }
+
+    public CartItem(Cart cart, Product product, ProductVariant variant, int quantity, Double price, Users users) {
         this.cart = cart;
         this.product = product;
         this.variant = variant;
         this.quantity = quantity;
         this.price = price;
+        this.users = users;
     }
 
 }

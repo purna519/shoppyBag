@@ -13,9 +13,4 @@ public class ShoppyBagApplication {
 		SpringApplication.run(ShoppyBagApplication.class, args);
 	}
 
-	@Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
 }

@@ -27,7 +27,7 @@ public class Order {
     private Long id;
 
     @Column(name = "order_date",nullable=false)
-    private LocalDateTime orderdate;
+    private LocalDateTime orderdate = LocalDateTime.now();
 
     @Column(name="total_amount",nullable=false)
     private double totalAmount;
@@ -50,6 +50,9 @@ public class Order {
         this.orderdate = orderDate;
         this.status = status;
         this.users = users;
+    }
+
+    public Order() {
     }
     
 }

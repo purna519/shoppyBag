@@ -1,6 +1,7 @@
 package com.shoppyBag.Service;
 
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -44,9 +45,6 @@ public class PaymentService {
     private PaymentRepository paymentRepository;
 
 
-
-
-    // ⭐ 1. INITIATE PAYMENT
     public ApiResponse<Map<String, String>> intiatePayment(String token, Long orderId, String method) {
 
         Users users = regularFunctions.validateToken(token);
@@ -57,11 +55,16 @@ public class PaymentService {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new RuntimeException("Order Not Found"));
 
-        Payment payment = new Payment();
-        payment.setOrder(order);
+        Payment payment = paymentRepository.findByOrder(order);
+
+        if (payment == null) {
+            payment = new Payment();
+            payment.setOrder(order);
+        }
+
         payment.setPaymentStatus("PENDING");
         payment.setAmount(order.getTotalAmount());
-        paymentRepository.save(payment);
+        // paymentRepository.save(payment);
 
         if (method.equalsIgnoreCase("razorpay") || method.equalsIgnoreCase("UPI")) {
 
@@ -137,9 +140,6 @@ public class PaymentService {
     }
 
 
-
-
-    // ⭐ 2. VERIFY PAYMENT SIGNATURE — FRONTEND CALLS THIS
     public ApiResponse<String> verifyPaymentSignature(Map<String, Object> payload) {
 
         String orderId = (String) payload.get("razorpay_order_id");
@@ -173,9 +173,6 @@ public class PaymentService {
     }
 
 
-
-
-    // ⭐ 3. HANDLE RAZORPAY WEBHOOK
     public ApiResponse<String> handleWebhook(String signature, String body) {
 
         try {

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.shoppyBag.DTO.ApiResponse;
+import com.shoppyBag.DTO.ProductVariantDTO;
 import com.shoppyBag.Entity.Product;
 import com.shoppyBag.Entity.ProductVariant;
 import com.shoppyBag.Entity.Users;
@@ -30,6 +31,17 @@ public class ProductVariantService {
     @Autowired
     private ProductVariantRepository productVariantRepository;
 
+    private ProductVariantDTO convertToDTO(ProductVariant variant) {
+        ProductVariantDTO dto = new ProductVariantDTO();
+        dto.setId(variant.getId());
+        dto.setColor(variant.getColor());
+        dto.setSize(variant.getSize());
+        dto.setSku(variant.getSku());
+        dto.setPrice(variant.getPrice());
+        dto.setStockQuantity(variant.getStockQuantity());
+        return dto;
+    }
+
     private Users validateAdminToken(String token) {
         if (token == null || !token.startsWith("Bearer ")) return null;
         String actualToken = token.substring(7);
@@ -39,7 +51,7 @@ public class ProductVariantService {
         return user;
     }
 
-    public ApiResponse<ProductVariant> addProductVariant(Long id, ProductVariant productVariant, String token) {
+    public ApiResponse<ProductVariantDTO> addProductVariant(Long id, ProductVariant productVariant, String token) {
         Users admin = validateAdminToken(token);
         if (admin == null) {
             return new ApiResponse<>("Error", "Invalid or Unauthorized Token", null);
@@ -50,13 +62,13 @@ public class ProductVariantService {
     
         productVariant.setProduct(product);
         productVariantRepository.save(productVariant);
-    
-        return new ApiResponse<>("Success", "Product Variant added successfully", productVariant);
+
+        return new ApiResponse<>("Success", "Product Variant added successfully", convertToDTO(productVariant));
     }
     
     
     // Get all variants for a product
-    public ApiResponse<List<ProductVariant>> getVariantsByProduct(Long productId, String token) {
+    public ApiResponse<List<ProductVariantDTO>> getVariantsByProduct(Long productId, String token) {
         if (token == null || !token.startsWith("Bearer ")) {
             return new ApiResponse<>("Error", "Invalid Token", null);
         }
@@ -66,11 +78,11 @@ public class ProductVariantService {
         }
 
         List<ProductVariant> variants = productVariantRepository.findByProductId(productId);
-        return new ApiResponse<>("Success", "Product variants retrieved successfully", variants);
+        return new ApiResponse<>("Success", "Product variants retrieved successfully", variants.stream().map(this::convertToDTO).toList());
     }
 
     // Update variant (Admin Only)
-    public ApiResponse<ProductVariant> updateVariant(Long id, ProductVariant variantDetails, String token) {
+    public ApiResponse<ProductVariantDTO> updateVariant(Long id, ProductVariant variantDetails, String token) {
         Users admin = validateAdminToken(token);
         if (admin == null) {
             return new ApiResponse<>("Error", "Invalid or Unauthorized Token", null);
@@ -86,7 +98,7 @@ public class ProductVariantService {
         if (variantDetails.getStockQuantity() != 0) variant.setStockQuantity(variantDetails.getStockQuantity());
 
         productVariantRepository.save(variant);
-        return new ApiResponse<>("Success", "Variant updated successfully", variant);
+        return new ApiResponse<>("Success", "Variant updated successfully", convertToDTO(variant));
     }
 
     // Delete variant (Admin Only)

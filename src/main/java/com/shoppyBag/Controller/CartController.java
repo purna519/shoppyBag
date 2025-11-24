@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import com.shoppyBag.DTO.ApiResponse;
+import com.shoppyBag.DTO.CartDTO;
 import com.shoppyBag.Entity.Cart;
 import com.shoppyBag.Service.CartService;
 
@@ -25,7 +26,7 @@ public class CartController {
     }
 
     @GetMapping("/get")
-    public ApiResponse<Cart> getCart(@RequestHeader("Authorization") String token) {
+    public ApiResponse<CartDTO> getCart(@RequestHeader("Authorization") String token) {
         return cartService.getCartItems(token);
     }
 

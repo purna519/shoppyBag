@@ -22,7 +22,6 @@ public class AuthService {
     @Autowired
     private JWTUtil jwtUtil;
 
-    // ✅ Login and token generation
     public ApiResponse<String> loginTokenGeneration(LoginRequestDTO dto) {
         Users u = userRepository.findByEmail(dto.getEmail());
         if (u == null) {

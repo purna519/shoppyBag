@@ -23,7 +23,7 @@ public class OrderItem {
     @JoinColumn(name = "order_id", nullable = false)
     private Order order;
 
-    @ManyToOne
+    @ManyToOne  
     @JoinColumn(name = "product_variant_id", nullable = false)
     private ProductVariant productVariant;
 
