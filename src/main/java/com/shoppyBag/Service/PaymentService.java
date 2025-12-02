@@ -113,6 +113,7 @@ public class PaymentService {
                 return new ApiResponse<>("success", "Razorpay order created", response);
 
             } catch (Exception e) {
+                log.error("Razorpay API error: ", e);
                 return new ApiResponse<>("error", "Razorpay error: " + e.getMessage(), null);
             }
         }
@@ -142,11 +143,11 @@ public class PaymentService {
 
     public ApiResponse<String> verifyPaymentSignature(Map<String, Object> payload) {
 
-        String orderId = (String) payload.get("razorpay_order_id");
+        String razorpayOrderId = (String) payload.get("razorpay_order_id");
         String paymentId = (String) payload.get("razorpay_payment_id");
         String signature = (String) payload.get("razorpay_signature");
 
-        String data = orderId + "|" + paymentId;
+        String data = razorpayOrderId + "|" + paymentId;
 
         try {
             javax.crypto.Mac mac = javax.crypto.Mac.getInstance("HmacSHA256");
@@ -162,12 +163,30 @@ public class PaymentService {
             String computed = sb.toString();
 
             if (computed.equals(signature)) {
+                // Signature is valid, now update the payment and order status
+                Payment payment = paymentRepository.findByTransactionid(razorpayOrderId);
+                
+                if (payment != null) {
+                    payment.setPaymentStatus("SUCCESS");
+                    paymentRepository.save(payment);
+                    
+                    // Update order status
+                    Order order = payment.getOrder();
+                    if (order != null) {
+                        order.setStatus("PAID");
+                        orderRepository.save(order);
+                    }
+                    
+                    log.info("Payment verified and updated successfully for order: {}", razorpayOrderId);
+                }
+                
                 return new ApiResponse<>("Success", "Signature Verified", "VALID");
             } else {
                 return new ApiResponse<>("Error", "Signature Mismatch", "INVALID");
             }
 
         } catch (Exception e) {
+            log.error("Payment verification error: ", e);
             return new ApiResponse<>("Error", "Verification Failed: " + e.getMessage(), null);
         }
     }

@@ -1,0 +1,186 @@
+/* Theme Toggle Switch + Category Navbar Hover Effects */
+
+/* ========================================
+   SMOOTH THEME TOGGLE SWITCH
+   ======================================== */
+
+.theme-toggle-wrapper {
+    position: relative;
+    display: inline-block;
+    width: 54px;
+    height: 28px;
+}
+
+.theme-toggle-input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.theme-toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 50px;
+    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+.theme-toggle-slider::before {
+    content: '';
+    position: absolute;
+    height: 22px;
+    width: 22px;
+    left: 3px;
+    bottom: 3px;
+    background: #ffffff;
+    border-radius: 50%;
+    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.theme-toggle-slider:after {
+    content: '☀';
+    position: absolute;
+    top: 50%;
+    left: 7px;
+    transform: translateY(-50%);
+    font-size: 0.75rem;
+    transition: all 0.3s ease;
+    opacity: 1;
+}
+
+.theme-toggle-input:checked + .theme-toggle-slider {
+    background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+}
+
+.theme-toggle-input:checked + .theme-toggle-slider::before {
+    transform: translateX(26px);
+}
+
+.theme-toggle-input:checked + .theme-toggle-slider:after {
+    content: '🌙';
+    left: auto;
+    right: 7px;
+    opacity: 1;
+}
+
+.theme-toggle-wrapper:hover .theme-toggle-slider {
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+body.dark-mode .theme-toggle-wrapper:hover .theme-toggle-slider {
+    box-shadow: 0 4px 12px rgba(45, 55, 72, 0.6);
+}
+
+/* ========================================
+   CATEGORY NAVBAR HOVER EFFECTS
+   ======================================== */
+
+.category-navbar {
+    position: sticky;
+    top: 76px;
+    z-index: 1020;
+    background: #ffffff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+}
+
+.category-navbar .nav-link {
+    position: relative;
+    transition: all 0.3s ease;
+    border-radius: 8px;
+    margin: 0 4px;
+}
+
+.category-navbar .nav-link::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+    transition: width 0.3s ease;
+    border-radius: 2px;
+}
+
+.category-navbar .nav-link:hover {
+    background: rgba(102, 126, 234, 0.08);
+    color: #667eea !important;
+    transform: translateY(-2px);
+}
+
+.category-navbar .nav-link:hover::before {
+    width: 80%;
+}
+
+.category-navbar .dropdown-menu {
+    border-radius: 16px;
+    padding: 16px;
+    animation: fadeInDown 0.3s ease;
+    border: none;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.category-navbar .dropdown-item {
+    transition: all 0.2s ease;
+    border-radius: 8px;
+    padding: 10px 16px;
+    margin: 2px 0;
+}
+
+.category-navbar .dropdown-item:hover {
+    background: linear-gradient(90deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+    color: #667eea !important;
+    transform: translateX(4px);
+}
+
+/* Dark Mode for Category Navbar */
+body.dark-mode .category-navbar {
+    background: #0b1220;
+    border-bottom-color: rgba(255,255,255,0.08);
+}
+
+body.dark-mode .category-navbar .nav-link {
+    color: #e6eef8 !important;
+}
+
+body.dark-mode .category-navbar .nav-link:hover {
+    background: rgba(102, 126, 234, 0.15);
+    color: #9ec5fe !important;
+}
+
+body.dark-mode .category-navbar .dropdown-menu {
+    background: #1a2639;
+    color: #e6eef8;
+}
+
+body.dark-mode .category-navbar .dropdown-header {
+    color: #9ec5fe !important;
+}
+
+body.dark-mode .category-navbar .dropdown-item {
+    color: #d1d5db;
+}
+
+body.dark-mode .category-navbar .dropdown-item:hover {
+    color: #9ec5fe !important;
+    background: linear-gradient(90deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
+}

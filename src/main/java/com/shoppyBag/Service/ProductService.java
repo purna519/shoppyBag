@@ -142,4 +142,12 @@ public class ProductService {
         return new ApiResponse<>("Success", "Product updated successfully", existingProduct);
     }
 
+    public ApiResponse<Product> getProductById(Long id) {
+        Product product = productRepository.findById(id).orElse(null);
+        if (product == null) {
+            return new ApiResponse<>("Error", "Product not found", null);
+        }
+        return new ApiResponse<>("Success", "Product retrieved successfully", product);
+    }
+
 }

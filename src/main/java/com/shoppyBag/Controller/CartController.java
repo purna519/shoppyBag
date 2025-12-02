@@ -34,7 +34,7 @@ public class CartController {
     public ApiResponse<String> updateCartItem(
             @RequestHeader("Authorization") String token,
             @RequestParam Long productId,
-            @RequestParam Long variantId,
+            @RequestParam(required = false) Long variantId,
             @RequestParam int quantity) {
         return cartService.updateCartItem(token, productId, variantId, quantity);
     }
@@ -43,7 +43,7 @@ public class CartController {
     public ApiResponse<String> removeFromCart(
             @RequestHeader("Authorization") String token,
             @RequestParam Long productId,
-            @RequestParam Long variantId) {
+            @RequestParam(required = false) Long variantId) {
         return cartService.clearCart(token, productId, variantId);
     }
 }

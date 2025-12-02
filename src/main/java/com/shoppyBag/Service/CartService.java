@@ -39,6 +39,7 @@ public class CartService {
         CartItemDTO dto = new CartItemDTO();
         dto.setId(item.getId());
         dto.setProductName(item.getProduct().getName());
+        dto.setProduct(item.getProduct());
 
         if (item.getVariant() != null) {
             ProductVariant variant = item.getVariant();
@@ -118,6 +119,8 @@ public class CartService {
             double finalPrice = (variant != null) ? variant.getPrice() : product.getPrice();
 
             CartItem newItem = new CartItem(cart, product, variant, quantity, finalPrice, user);
+            
+            cart.getItems().add(newItem);
 
             cartItemRepository.save(newItem);
             updateCartTotal(cart);
@@ -138,6 +141,9 @@ public class CartService {
             return new ApiResponse<>("Error", "No items found in your cart.", null);
         }
 
+        updateCartTotal(cart);
+        cartRepository.save(cart);
+
         return new ApiResponse<>("Success", "Items in your cart", convertToCartDTO(cart));
 
     }
@@ -156,8 +162,11 @@ public class CartService {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new RuntimeException("Product not found"));
 
-        ProductVariant variant = productVariantRepository.findById(variantId)
-                .orElseThrow(() -> new RuntimeException("Product variant not found"));
+        ProductVariant variant = null;
+        if (variantId != null) {
+            variant = productVariantRepository.findById(variantId)
+                    .orElseThrow(() -> new RuntimeException("Product variant not found"));
+        }
 
         CartItem cartItem = cartItemRepository.findByCartAndProductAndVariant(cart, product, variant);
 
@@ -187,8 +196,11 @@ public class CartService {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new RuntimeException("Product not found"));
 
-        ProductVariant variant = productVariantRepository.findById(variantId)
-                .orElseThrow(() -> new RuntimeException("Product variant not found"));
+        ProductVariant variant = null;
+        if (variantId != null) {
+            variant = productVariantRepository.findById(variantId)
+                    .orElseThrow(() -> new RuntimeException("Product variant not found"));
+        }
 
         CartItem cartItem = cartItemRepository.findByCartAndProductAndVariant(cart, product, variant);
         if (cartItem == null) {

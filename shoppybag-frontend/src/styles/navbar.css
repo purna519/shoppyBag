@@ -1,0 +1,197 @@
+/* ========================================
+   NAVBAR / HEADER STYLES
+   ======================================== */
+
+/* Main Navbar Container */
+.app-navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: #ffffff !important;
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+    padding: 18px 0 !important;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+    transition: all 0.3s ease;
+}
+
+/* Brand Name - BOLD & PROMINENT */
+.app-navbar .navbar-brand {
+    font-size: 1.75rem !important;
+    font-weight: 700 !important;
+    color: #0d6efd !important;
+    letter-spacing: -0.5px;
+    margin-right: 48px !important;
+    padding: 0 !important;
+    transition: all 0.2s ease;
+}
+
+.app-navbar .navbar-brand:hover {
+    color: #0a58ca !important;
+    transform: translateY(-1px);
+}
+
+/* Search Form Container */
+.search-form {
+    position: relative;
+    width: 100%;
+    max-width: 500px;
+}
+
+/* Search Input */
+.search-input {
+    border-radius: 50px !important;
+    padding: 12px 24px !important;
+    padding-right: 54px !important;
+    border: 2px solid #e9ecef !important;
+    background: #f8f9fa !important;
+    font-size: 0.95rem !important;
+    transition: all 0.2s ease;
+    box-shadow: none !important;
+    color: #212529 !important;
+}
+
+.search-input::placeholder {
+    color: #6c757d;
+}
+
+.search-input:focus {
+    background: #ffffff !important;
+    border-color: #0d6efd !important;
+    box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.1) !important;
+    outline: none !important;
+}
+
+/* Search Button */
+.search-btn {
+    position: absolute;
+    right: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: none;
+    background: #0d6efd;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    padding: 0;
+    cursor: pointer;
+}
+
+.search-btn:hover {
+    background: #0a58ca;
+    transform: translateY(-50%) scale(1.05);
+}
+
+/* Icon Buttons (Cart, Theme, User) */
+.nav-icon-btn {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    color: #495057;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    background: transparent;
+    border: none;
+    position: relative;
+}
+
+.nav-icon-btn:hover {
+    background: #f1f3f5;
+    color: #0d6efd;
+    transform: translateY(-2px);
+}
+
+.nav-icon-btn.active {
+    background: rgba(13, 110, 253, 0.1);
+    color: #0d6efd;
+}
+
+/* Login Button */
+.btn-primary.rounded-pill {
+    padding: 10px 28px !important;
+    font-weight: 600 !important;
+    box-shadow: 0 2px 8px rgba(13, 110, 253, 0.25);
+    transition: all 0.2s ease !important;
+}
+
+.btn-primary.rounded-pill:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(13, 110, 253, 0.35);
+}
+
+/* ========================================
+   DARK MODE NAVBAR
+   ======================================== */
+
+body.dark-mode .app-navbar {
+    background: #0b1220 !important;
+    border-bottom-color: rgba(255,255,255,0.08);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+}
+
+body.dark-mode .app-navbar .navbar-brand {
+    color: #6ea8fe !important;
+}
+
+body.dark-mode .app-navbar .navbar-brand:hover {
+    color: #9ec5fe !important;
+}
+
+body.dark-mode .search-input {
+    background: #1a2639 !important;
+    border-color: rgba(255,255,255,0.1) !important;
+    color: #e6eef8 !important;
+}
+
+body.dark-mode .search-input::placeholder {
+    color: #9ca3af;
+}
+
+body.dark-mode .search-input:focus {
+    background: #0f1826 !important;
+    border-color: #0d6efd !important;
+    box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.2) !important;
+}
+
+body.dark-mode .search-btn {
+    background: #0d6efd;
+    color: #ffffff;
+}
+
+body.dark-mode .search-btn:hover {
+    background: #3182ce;
+}
+
+body.dark-mode .nav-icon-btn {
+    color: #e6eef8;
+}
+
+body.dark-mode .nav-icon-btn:hover {
+    background: rgba(255,255,255,0.08);
+    color: #6ea8fe;
+}
+
+body.dark-mode .nav-icon-btn.active {
+    background: rgba(13, 110, 253, 0.2);
+    color: #6ea8fe;
+}
+
+/* ========================================
+   PROFILE DROPDOWN Z-INDEX FIX
+   ======================================== */
+
+/* Ensure dropdown appears above category navbar (which has z-index: 1020) */
+.navbar {
+    z-index: 1030 !important;
+}
+
+.dropdown-menu {
+    z-index: 1200 !important;
+}

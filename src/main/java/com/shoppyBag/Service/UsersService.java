@@ -115,4 +115,20 @@ public class UsersService {
         Users updated = userRepository.save(targetUser);
         return new ApiResponse<>("success", "User updated successfully", updated);
     }
+
+    // Get current user profile
+    public ApiResponse<Users> getProfile(String token) {
+        if (token != null && token.startsWith("Bearer ")) {
+            token = token.substring(7);
+        }
+        if (token == null || !jwtUtil.validateToken(token))
+            return new ApiResponse<>("error", "Invalid or missing token", null);
+
+        String email = jwtUtil.extractEmail(token);
+        Users user = userRepository.findByEmail(email);
+        if (user == null)
+            return new ApiResponse<>("error", "User not found", null);
+
+        return new ApiResponse<>("success", "Profile fetched successfully", user);
+    }
 }

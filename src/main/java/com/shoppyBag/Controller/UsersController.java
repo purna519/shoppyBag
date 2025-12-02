@@ -37,4 +37,9 @@ public class UsersController {
     public ApiResponse<?> updateUser(@RequestBody UpdateRequestDTO request, @RequestHeader("Authorization") String token) {
         return usersService.updateUser(request, token);
     }
+
+    @GetMapping("/profile")
+    public ApiResponse<?> getProfile(@RequestHeader("Authorization") String token) {
+        return usersService.getProfile(token);
+    }
 }

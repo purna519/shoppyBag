@@ -9,6 +9,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.ToString;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Data
@@ -27,6 +29,8 @@ public class ProductImage {
     
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
+    @JsonIgnore
+    @ToString.Exclude
     private Product product;
 
 }

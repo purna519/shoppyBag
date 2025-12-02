@@ -65,4 +65,9 @@ public class ProductController {
         return productService.updateProduct(id, dto, token);
     }
 
+    @GetMapping("/{id}")
+    public ApiResponse<Product> getProductById(@PathVariable Long id) {
+        return productService.getProductById(id);
+    }
+
 }

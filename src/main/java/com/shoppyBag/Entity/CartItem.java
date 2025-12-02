@@ -1,9 +1,11 @@
 package com.shoppyBag.Entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 
 @Data
 @Entity
@@ -17,6 +19,7 @@ public class CartItem {
     @ManyToOne
     @JoinColumn(name = "cart_id")
     @JsonBackReference
+    @ToString.Exclude
     private Cart cart;
 
     @ManyToOne
@@ -32,6 +35,8 @@ public class CartItem {
 
     @ManyToOne
     @JoinColumn(name = "users_id", nullable = false)
+    @JsonIgnore
+    @ToString.Exclude
     private Users users;
 
     public CartItem() {
