@@ -8,19 +8,20 @@ import ProductDetail from './pages/ProductDetail'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import PaymentSuccess from './pages/PaymentSuccess'
-import PaymentFailed from './pages/PaymentFailed'
+import PaymentFailure from './pages/PaymentFailure'
 import SearchPage from './pages/SearchPage'
+import ProtectedRoute from './components/ProtectedRoute'
 
 export default function App(){
   return (
     <div className="d-flex flex-column min-vh-100">
       <Routes>
         <Route path="/" element={<Home/>} />
-        <Route path="/cart" element={<CartPage/>} />
-        <Route path="/checkout" element={<Checkout/>} />
-        <Route path="/profile" element={<Profile/>} />
-        <Route path="/payment-success" element={<PaymentSuccess/>} />
-        <Route path="/payment-failed" element={<PaymentFailed/>} />
+        <Route path="/cart" element={<ProtectedRoute><CartPage/></ProtectedRoute>} />
+        <Route path="/checkout" element={<ProtectedRoute><Checkout/></ProtectedRoute>} />
+        <Route path="/profile" element={<ProtectedRoute><Profile/></ProtectedRoute>} />
+        <Route path="/payment-success" element={<ProtectedRoute><PaymentSuccess/></ProtectedRoute>} />
+        <Route path="/payment-failed" element={<ProtectedRoute><PaymentFailure/></ProtectedRoute>} />
         <Route path="/login" element={<Login/>} />
         <Route path="/register" element={<Register/>} />
         <Route path="/product/:id" element={<ProductDetail/>} />

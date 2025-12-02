@@ -74,6 +74,7 @@ public class OrderService {
         dto.setTotalAmount(order.getTotalAmount());
         dto.setStatus(order.getStatus());
         dto.setUserId(order.getUsers().getId());
+        dto.setOrderDate(order.getOrderdate());
 
         if (order.getOrderItems() != null) {
             List<OrderItemDTO> itemDTOs = order.getOrderItems().stream()

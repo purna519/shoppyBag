@@ -42,6 +42,15 @@ export default function Navbar(){
     navigate('/')
   }
 
+  const [searchQuery, setSearchQuery] = useState('')
+
+  const handleSearch = (e) => {
+    e.preventDefault()
+    if (searchQuery.trim()) {
+      navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`)
+    }
+  }
+
   return (
     <nav className="navbar navbar-expand-lg app-navbar">
       <div className="container">
@@ -53,8 +62,15 @@ export default function Navbar(){
 
         <div className="collapse navbar-collapse" id="navMenu">
           {/* Search Bar */}
-          <form className="search-form mx-lg-auto my-3 my-lg-0" role="search" onSubmit={(e)=>e.preventDefault()}>
-            <input className="form-control search-input" type="search" placeholder="Search for products, brands and more..." aria-label="Search" />
+          <form className="search-form mx-lg-auto my-3 my-lg-0" role="search" onSubmit={handleSearch}>
+            <input 
+              className="form-control search-input" 
+              type="search" 
+              placeholder="Search for products, brands and more..." 
+              aria-label="Search"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
             <button className="search-btn" type="submit"><i className="bi bi-search"></i></button>
           </form>
 
@@ -84,12 +100,13 @@ export default function Navbar(){
             {/* User Profile / Login */}
             {token ? (
               <li className="nav-item dropdown">
-                <a className="nav-icon-btn" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <Link to="/profile?view=orders" className="nav-icon-btn" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   <i className="bi bi-person-circle" style={{fontSize: '1.2rem'}}></i>
-                </a>
+                </Link>
                 <ul className="dropdown-menu dropdown-menu-end border-0 shadow-lg p-2" style={{borderRadius: '12px', marginTop: '10px'}}>
                   <li><Link className="dropdown-item rounded px-3 py-2" to="/profile"><i className="bi bi-person me-2"></i>Account Details</Link></li>
                   <li><Link className="dropdown-item rounded px-3 py-2" to="/profile?view=addresses"><i className="bi bi-geo-alt me-2"></i>Addresses</Link></li>
+                  <li><Link className="dropdown-item rounded px-3 py-2" to="/profile?view=orders"><i className="bi bi-bag-check me-2"></i>My Orders</Link></li>
                   <li><hr className="dropdown-divider"/></li>
                   <li><button className="dropdown-item rounded px-3 py-2 text-danger" onClick={handleLogout}><i className="bi bi-box-arrow-right me-2"></i>Logout</button></li>
                 </ul>

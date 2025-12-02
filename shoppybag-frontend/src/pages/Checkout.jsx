@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import { useCart } from '../Context/CartContext'
 import api from '../api/api'
+import '../styles/checkout.css'
 
 // Helper: dynamically load Razorpay script
 const loadRazorpay = () =>
@@ -19,83 +20,138 @@ const loadRazorpay = () =>
 export default function Checkout() {
   const { cart } = useCart()
   const navigate = useNavigate()
+  const [addresses, setAddresses] = useState([])
+  const [selectedAddress, setSelectedAddress] = useState(null)
+  const [paymentMethod, setPaymentMethod] = useState('razorpay')
+  const [loading, setLoading] = useState(false)
 
-  const handlePay = async () => {
+  useEffect(() => {
+    loadAddresses()
+  }, [])
+
+  const loadAddresses = async () => {
+    try {
+      const res = await api.get('/address/my')
+      if (res?.data?.data && Array.isArray(res.data.data)) {
+        console.log('Addresses from backend:', res.data.data)
+        console.log('First address:', res.data.data[0])
+        setAddresses(res.data.data)
+        if (res.data.data.length > 0) {
+          setSelectedAddress(res.data.data[0].id)
+        }
+      }
+    } catch (err) {
+      console.error('Failed to load addresses', err)
+    }
+  }
+
+  const calculateTotal = () => {
+    if (!cart?.items) return 0
+    return cart.items.reduce((sum, item) => sum + (item.price * item.quantity), 0)
+  }
+
+  const handlePlaceOrder = async () => {
+    if (!selectedAddress) {
+      alert('Please select a delivery address')
+      return
+    }
+
+    if (!cart?.items?.length) {
+      alert('Your cart is empty')
+      return
+    }
+
+    setLoading(true)
+
     try {
       const token = localStorage.getItem('token')
       if (!token) {
-        console.error('No token found')
         return navigate('/login')
       }
 
-      console.log('Step 1: Placing order...')
-      // 1) Place order on server (server will build order from user's cart)
+      // 1) Place order on server
       const placeRes = await api.post('/orders/place')
-      console.log('Place order response:', placeRes)
-      
-      if (!placeRes || placeRes.status !== 200) {
-        console.error('Failed to place order, response:', placeRes)
-        throw new Error('Failed to place order')
-      }
-      
-      // OrderDTO has 'id' field, not 'orderId'
-      const orderId = placeRes.data?.data?.id || placeRes.data?.id || null
-      console.log('Order ID received:', orderId)
-      
+      const orderId = placeRes.data?.data?.id
+
       if (!orderId) {
-        console.error('No orderId in response:', placeRes.data)
         throw new Error('No orderId returned from server')
       }
 
-      console.log('Step 2: Initiating payment for order:', orderId)
-      // 2) Initiate payment (this endpoint is top-level /payment)
+      // 2) Initiate payment based on selected method
+      if (paymentMethod === 'COD') {
+        await handleCODPayment(orderId, token)
+      } else {
+        await handleOnlinePayment(orderId, token)
+      }
+    } catch (err) {
+      console.error('Order error:', err)
+      alert(`Order failed: ${err.message}`)
+      setLoading(false)
+    }
+  }
+
+  const handleCODPayment = async (orderId, token) => {
+    try {
+      const base = import.meta.env.VITE_API_HOST || 'http://localhost:8080'
+      console.log('Initiating COD payment for order:', orderId)
+      
+      const res = await fetch(`${base}/payment/initiate/${orderId}?method=COD`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        }
+      })
+
+      console.log('COD response status:', res.status)
+      const data = await res.json()
+      console.log('COD response data:', data)
+
+      if (data.status === 'Success' || data.status === 'success') {
+        navigate('/payment-success', { state: { orderId, method: 'COD' } })
+      } else {
+        throw new Error(data.message || 'COD confirmation failed')
+      }
+    } catch (err) {
+      console.error('COD error details:', err)
+      console.error('Error message:', err.message)
+      console.error('Error stack:', err.stack)
+      setLoading(false)
+      alert('COD order failed: ' + err.message)
+    }
+  }
+
+  const handleOnlinePayment = async (orderId, token) => {
+    try {
       const base = import.meta.env.VITE_API_HOST || 'http://localhost:8080'
       const initRes = await fetch(`${base}/payment/initiate/${orderId}?method=razorpay`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        }
       })
-      
-      console.log('Payment initiate response status:', initRes.status)
+
       const initJson = await initRes.json()
-      console.log('Payment initiate response:', initJson)
-      
-      // Check if backend returned an error
+
       if (initJson.status === 'error' || initJson.status === 'Error') {
-        console.error('Backend error:', initJson.message)
-        throw new Error(`Backend error: ${initJson.message}`)
-      }
-      
-      if (!initJson) {
-        console.error('Invalid initiate response')
-        throw new Error('Invalid initiate response')
+        throw new Error(initJson.message)
       }
 
-      // backend returns map under `data` or at root depending on ApiResponse wrapper
       const payload = initJson.data || initJson
-      console.log('Payment payload:', payload)
-      
-      const razorpayOrderId = payload.razorpayOrderId || payload.razorpay_order_id || payload.orderId
-      const razorpayKey = payload.razorpayKey || payload.razorpay_key || payload.key
-      const amount = payload.amount || payload.total || payload.value
-      
-      console.log('Razorpay details:', { razorpayOrderId, razorpayKey, amount })
-      
+      const razorpayOrderId = payload.razorpayOrderId
+      const razorpayKey = payload.razorpayKey
+      const amount = payload.amount
+
       if (!razorpayOrderId || !razorpayKey) {
-        console.error('Missing razorpay details. Full payload:', payload)
         throw new Error('Missing razorpay details')
       }
 
-      console.log('Step 3: Loading Razorpay script...')
-      // 3) Load Razorpay script
       const loaded = await loadRazorpay()
       if (!loaded) {
-        console.error('Failed to load Razorpay SDK')
         throw new Error('Failed to load Razorpay SDK')
       }
-      console.log('Razorpay loaded successfully')
 
-      console.log('Step 4: Opening Razorpay checkout...')
-      // 4) Open Razorpay checkout
       const options = {
         key: razorpayKey,
         amount: amount,
@@ -103,30 +159,23 @@ export default function Checkout() {
         order_id: razorpayOrderId,
         handler: async function (response) {
           try {
-            console.log('Payment successful, verifying...', response)
-            // response contains: razorpay_order_id, razorpay_payment_id, razorpay_signature
             const verifyBody = {
               razorpay_order_id: response.razorpay_order_id,
               razorpay_payment_id: response.razorpay_payment_id,
-              razorpay_signature: response.razorpay_signature,
+              razorpay_signature: response.razorpay_signature
             }
 
-            // 5) Verify with backend
             const verifyRes = await fetch(`${base}/payment/verify`, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(verifyBody),
+              body: JSON.stringify(verifyBody)
             })
-            const verifyJson = await verifyRes.json()
-            console.log('Verification response:', verifyJson)
             
-            // Check if backend returned success - matching actual backend response structure
+            const verifyJson = await verifyRes.json()
+
             if (verifyJson && (verifyJson.status === 'Success' || verifyJson.status === 'success') && verifyJson.data === 'VALID') {
-              // success
-              console.log('Payment verified successfully')
-              navigate('/payment-success', { state: { orderId } })
+              navigate('/payment-success', { state: { orderId, method: 'Online' } })
             } else {
-              console.error('Payment verification failed:', verifyJson)
               navigate('/payment-failed')
             }
           } catch (err) {
@@ -135,30 +184,186 @@ export default function Checkout() {
           }
         },
         prefill: {},
-        theme: { color: '#0d6efd' },
+        theme: { color: '#667eea' }
       }
 
       const rzp = new window.Razorpay(options)
       rzp.open()
+      setLoading(false)
     } catch (err) {
       console.error('Payment error:', err)
-      console.error('Error details:', err.message, err.stack)
-      alert(`Payment failed: ${err.message}`)
-      navigate('/payment-failed')
+      setLoading(false)
+      alert('Payment failed: ' + err.message)
     }
+  }
+
+  const formatPrice = (price) => {
+    return `₹${price?.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
   }
 
   return (
     <div>
       <Navbar />
-      <main className="container py-5">
-        <h3>Checkout</h3>
-        <p className="text-muted">This will place an order using the server-side cart and then open Razorpay checkout.</p>
-        <p className="text-muted">Make sure you're logged in and the backend is running on port 8080.</p>
-        <div className="mt-4">
-          <button className="btn btn-primary" onClick={handlePay} disabled={!cart?.items?.length}>
-            Pay Now
-          </button>
+      <main className="checkout-container">
+        <div className="checkout-header">
+          <h2>Checkout</h2>
+          <p>Complete your purchase</p>
+        </div>
+
+        <div className="checkout-grid">
+          {/* Left Column - Address & Payment */}
+          <div className="checkout-left">
+            {/* Delivery Address */}
+            <div className="checkout-card">
+              <div className="section-header">
+                <i className="bi bi-geo-alt"></i>
+                <h3>Delivery Address</h3>
+              </div>
+
+              {addresses.length === 0 ? (
+                <div className="empty-state">
+                  <i className="bi bi-house-door"></i>
+                  <p>No saved addresses</p>
+                  <button className="btn-add" onClick={() => navigate('/profile?view=addresses')}>
+                    Add Address
+                  </button>
+                </div>
+              ) : (
+                <div className="address-list">
+                  {addresses.map(addr => (
+                    <label key={addr.id} className={`address-card ${selectedAddress === addr.id ? 'selected' : ''}`}>
+                      <input
+                        type="radio"
+                        name="address"
+                        value={addr.id}
+                        checked={selectedAddress === addr.id}
+                        onChange={() => setSelectedAddress(addr.id)}
+                      />
+                      <div className="address-content">
+                        <div className="address-name">{addr.line1}</div>
+                        <div className="address-text">
+                          {addr.line2}
+                          {addr.line2 && addr.state && ', '}
+                          {addr.state}
+                          {addr.state && addr.country && ', '}
+                          {addr.country}
+                          {(addr.state || addr.country) && addr.pincode && ' - '}
+                          {addr.pincode}
+                        </div>
+                      </div>
+                      <i className="bi bi-check-circle-fill check-icon"></i>
+                    </label>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Payment Method */}
+            <div className="checkout-card">
+              <div className="section-header">
+                <i className="bi bi-credit-card"></i>
+                <h3>Payment Method</h3>
+              </div>
+
+              <div className="payment-options">
+                <label className={`payment-card ${paymentMethod === 'razorpay' ? 'selected' : ''}`}>
+                  <input
+                    type="radio"
+                    name="payment"
+                    value="razorpay"
+                    checked={paymentMethod === 'razorpay'}
+                    onChange={() => setPaymentMethod('razorpay')}
+                  />
+                  <div className="payment-content">
+                    <div className="payment-icon">💳</div>
+                    <div>
+                      <div className="payment-name">Online Payment</div>
+                      <div className="payment-desc">UPI, Cards, Net Banking, Wallets</div>
+                    </div>
+                  </div>
+                  <i className="bi bi-check-circle-fill check-icon"></i>
+                </label>
+
+                <label className={`payment-card ${paymentMethod === 'COD' ? 'selected' : ''}`}>
+                  <input
+                    type="radio"
+                    name="payment"
+                    value="COD"
+                    checked={paymentMethod === 'COD'}
+                    onChange={() => setPaymentMethod('COD')}
+                  />
+                  <div className="payment-content">
+                    <div className="payment-icon">💵</div>
+                    <div>
+                      <div className="payment-name">Cash on Delivery</div>
+                      <div className="payment-desc">Pay when you receive</div>
+                    </div>
+                  </div>
+                  <i className="bi bi-check-circle-fill check-icon"></i>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Column - Order Summary */}
+          <div className="checkout-right">
+            <div className="checkout-card summary-card">
+              <h3>Order Summary</h3>
+
+              <div className="order-items">
+                {cart?.items?.map((item, idx) => (
+                  <div key={idx} className="summary-item">
+                    <img src={item.variant?.imageUrl || item.product?.imageUrl} alt={item.product?.name} />
+                    <div className="item-details">
+                      <div className="item-name">{item.product?.name}</div>
+                      <div className="item-meta">Size: {item.variant?.size} • Qty: {item.quantity}</div>
+                    </div>
+                    <div className="item-price">{formatPrice(item.price * item.quantity)}</div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="summary-divider"></div>
+
+              <div className="summary-row">
+                <span>Subtotal</span>
+                <span>{formatPrice(calculateTotal())}</span>
+              </div>
+              
+              <div className="summary-row">
+                <span>Shipping</span>
+                <span className="free-badge">FREE</span>
+              </div>
+
+              <div className="summary-divider"></div>
+
+              <div className="summary-total">
+                <span>Total</span>
+                <span>{formatPrice(calculateTotal())}</span>
+              </div>
+
+              <button 
+                className="btn-place-order" 
+                onClick={handlePlaceOrder}
+                disabled={loading || !selectedAddress || !cart?.items?.length}
+              >
+                {loading ? (
+                  <>
+                    <span className="spinner"></span> Processing...
+                  </>
+                ) : (
+                  <>
+                    {paymentMethod === 'COD' ? 'Place Order (COD)' : 'Proceed to Payment'}
+                  </>
+                )}
+              </button>
+
+              <div className="secure-badge">
+                <i className="bi bi-shield-check"></i>
+                <span>Secure Checkout</span>
+              </div>
+            </div>
+          </div>
         </div>
       </main>
       <Footer />

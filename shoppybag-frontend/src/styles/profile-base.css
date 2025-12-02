@@ -1,0 +1,48 @@
+/* Profile Page - Base Styles */
+
+.profile-page-fashion {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    min-height: calc(100vh - 80px);
+    padding: 40px 0 80px;
+}
+
+.profile-header-section {
+    text-align: center;
+    margin-bottom: 48px;
+}
+
+.profile-main-title {
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: 12px;
+    letter-spacing: -0.5px;
+    background: linear-gradient(135deg, #1a1a1a 0%, #667eea 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.profile-main-subtitle {
+    font-size: 0.95rem;
+    color: #64748b;
+    font-weight: 500;
+}
+
+/* Dark Mode */
+body.dark-mode .profile-page-fashion {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+}
+
+body.dark-mode .profile-main-title {
+    background: linear-gradient(135deg, #ffffff 0%, #a0aec0 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .profile-main-title {
+        font-size: 1.75rem;
+    }
+}

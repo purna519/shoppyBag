@@ -1,81 +1,5 @@
-/* Profile Page Styles - Refined Sizing */
+/* Profile Cards & Address Styles */
 
-.profile-page-fashion {
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-    min-height: calc(100vh - 80px);
-    padding: 40px 0 80px;
-}
-
-.profile-header-section {
-    text-align: center;
-    margin-bottom: 48px;
-}
-
-.profile-main-title {
-    font-size: 2rem;
-    font-weight: 800;
-    margin-bottom: 12px;
-    letter-spacing: -0.5px;
-    background: linear-gradient(135deg, #1a1a1a 0%, #667eea 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-.profile-main-subtitle {
-    font-size: 0.95rem;
-    color: #64748b;
-    font-weight: 500;
-}
-
-/* Sidebar */
-.profile-sidebar-fashion {
-    background: rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(15px);
-    border-radius: 20px;
-    padding: 20px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    position: sticky;
-    top: 100px;
-}
-
-.sidebar-item-fashion {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    padding: 14px 18px;
-    margin-bottom: 10px;
-    border: none;
-    background: transparent;
-    border-radius: 14px;
-    color: #64748b;
-    font-weight: 600;
-    font-size: 0.95rem;
-    transition: all 0.3s ease;
-    text-align: left;
-    cursor: pointer;
-}
-
-.sidebar-item-fashion:hover {
-    background: rgba(102, 126, 234, 0.08);
-    color: #667eea;
-    transform: translateX(4px);
-}
-
-.sidebar-item-fashion.active {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: #ffffff;
-    box-shadow: 0 6px 16px rgba(102, 126, 234, 0.3);
-}
-
-.sidebar-item-fashion i {
-    font-size: 1.15rem;
-    width: 24px;
-    margin-right: 4px;
-}
-
-/* Profile Card */
 .profile-card-fashion {
     background: rgba(255, 255, 255, 0.9);
     backdrop-filter: blur(15px);
@@ -121,7 +45,6 @@
     font-weight: 500;
 }
 
-/* Detail Rows */
 .profile-details-fashion {
     display: flex;
     flex-direction: column;
@@ -182,15 +105,17 @@
     box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
 }
 
-/* Addresses Section */
-.addresses-header-fashion {
+/* Addresses Header */
+.addresses-header-fashion,
+.orders-header-fashion {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 32px;
 }
 
-.addresses-header-fashion h4 {
+.addresses-header-fashion h4,
+.orders-header-fashion h4 {
     font-size: 1.75rem;
     font-weight: 800;
     color: #1a202c;
@@ -218,7 +143,8 @@
     box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
 }
 
-.addresses-grid-fashion {
+.addresses-grid-fashion,
+.orders-grid-fashion {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: 24px;
@@ -321,142 +247,9 @@
     transform: scale(1.1);
 }
 
-/* Forms */
-.address-form-fashion,
-.password-change-card-fashion {
-    background: rgba(255, 255, 255, 0.9);
-    backdrop-filter: blur(15px);
-    border-radius: 24px;
-    padding: 40px;
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.6);
-    animation: slideUp 0.4s ease-out;
-}
-
-@keyframes slideUp {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-.form-header-fashion {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 32px;
-    padding-bottom: 20px;
-    border-bottom: 2px solid rgba(0, 0, 0, 0.06);
-}
-
-.form-header-fashion h5 {
-    font-size: 1.5rem;
-    font-weight: 800;
-    margin: 0;
-    color: #1a202c;
-}
-
-.close-form-btn {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    background: rgba(248, 250, 252, 0.8);
-    border: 2px solid rgba(226, 232, 240, 0.8);
-    color: #64748b;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-    cursor: pointer;
-}
-
-.close-form-btn:hover {
-    background: #ef4444;
-    border-color: #ef4444;
-    color: #ffffff;
-    transform: rotate(90deg);
-}
-
-.form-row-fashion {
-    display: flex;
-    gap: 20px;
-    margin-bottom: 20px;
-}
-
-.form-group-fashion {
-    flex: 1;
-    margin-bottom: 20px;
-}
-
-.form-label-fashion {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: 600;
-    color: #475569;
-    font-size: 0.9rem;
-}
-
-.form-input-fashion {
-    width: 100%;
-    padding: 12px 16px;
-    border: 2px solid #e2e8f0;
-    border-radius: 12px;
-    font-size: 0.95rem;
-    transition: all 0.3s ease;
-    background: rgba(248, 250, 252, 0.5);
-    font-weight: 500;
-    color: #1e293b;
-}
-
-.form-input-fashion:focus {
-    border-color: #667eea;
-    background: #ffffff;
-    outline: none;
-    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
-}
-
-.form-actions-fashion {
-    display: flex;
-    gap: 16px;
-    margin-top: 32px;
-}
-
-.btn-save-fashion {
-    padding: 12px 32px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: #ffffff;
-    border: none;
-    border-radius: 50px;
-    font-weight: 700;
-    font-size: 0.95rem;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    transition: all 0.3s ease;
-    cursor: pointer;
-    box-shadow: 0 6px 16px rgba(102, 126, 234, 0.3);
-}
-
-.btn-save-fashion:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
-}
-
-.btn-cancel-fashion {
-    padding: 12px 28px;
-    background: transparent;
-    color: #64748b;
-    border: none;
-    font-weight: 600;
-    font-size: 0.95rem;
-    transition: all 0.2s ease;
-    cursor: pointer;
-}
-
-.btn-cancel-fashion:hover {
-    color: #1e293b;
-}
-
-/* Empty State */
-.empty-addresses-fashion {
+/* Empty States */
+.empty-addresses-fashion,
+.empty-orders-fashion {
     text-align: center;
     padding: 60px 32px;
     background: rgba(255, 255, 255, 0.7);
@@ -479,33 +272,10 @@
 }
 
 /* Dark Mode */
-body.dark-mode .profile-page-fashion {
-    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-}
-
-body.dark-mode .profile-main-title {
-    background: linear-gradient(135deg, #ffffff 0%, #a0aec0 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-body.dark-mode .profile-sidebar-fashion,
 body.dark-mode .profile-card-fashion,
-body.dark-mode .address-card-fashion,
-body.dark-mode .address-form-fashion,
-body.dark-mode .password-change-card-fashion {
+body.dark-mode .address-card-fashion {
     background: rgba(30, 41, 59, 0.8);
     border-color: rgba(51, 65, 85, 0.6);
-}
-
-body.dark-mode .sidebar-item-fashion {
-    color: #94a3b8;
-}
-
-body.dark-mode .sidebar-item-fashion:hover {
-    background: rgba(102, 126, 234, 0.15);
-    color: #a5b4fc;
 }
 
 body.dark-mode .detail-row-fashion {
@@ -518,7 +288,7 @@ body.dark-mode .detail-row-fashion:hover {
 
 body.dark-mode .profile-name-fashion,
 body.dark-mode .addresses-header-fashion h4,
-body.dark-mode .form-header-fashion h5,
+body.dark-mode .orders-header-fashion h4,
 body.dark-mode .address-line-1 {
     color: #f1f5f9;
 }
@@ -529,54 +299,20 @@ body.dark-mode .address-location {
     color: #94a3b8;
 }
 
-body.dark-mode .form-input-fashion {
-    background: rgba(15, 23, 42, 0.5);
-    border-color: rgba(51, 65, 85, 0.8);
-    color: #f1f5f9;
-}
-
 /* Responsive */
-@media (max-width: 992px) {
-    .profile-sidebar-fashion {
-        position: static;
-        margin-bottom: 32px;
-        display: flex;
-        overflow-x: auto;
-        padding: 16px;
-        gap: 12px;
-    }
-    
-    .sidebar-item-fashion {
-        margin-bottom: 0;
-        white-space: nowrap;
-        width: auto;
-        flex-shrink: 0;
-    }
-}
-
 @media (max-width: 768px) {
-    .profile-main-title {
-        font-size: 1.75rem;
-    }
-    
     .profile-header-fashion {
         flex-direction: column;
         text-align: center;
         gap: 16px;
     }
     
-    .form-row-fashion {
-        flex-direction: column;
-        gap: 0;
-    }
-    
-    .addresses-grid-fashion {
+    .addresses-grid-fashion,
+    .orders-grid-fashion {
         grid-template-columns: 1fr;
     }
     
-    .profile-card-fashion,
-    .address-form-fashion,
-    .password-change-card-fashion {
+    .profile-card-fashion {
         padding: 24px;
     }
 }
