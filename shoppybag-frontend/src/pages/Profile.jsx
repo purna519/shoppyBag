@@ -34,7 +34,7 @@ export default function Profile(){
 
   const loadProfile = async () => {
     try {
-      const res = await api.get('/users/profile')
+      const res = await api.get('/api/users/profile')
       if (res?.data?.data) {
         setProfile(res.data.data)
       }
@@ -48,7 +48,7 @@ export default function Profile(){
 
   const loadAddresses = async () => {
     try {
-      const res = await api.get('/address/my')
+      const res = await api.get('/api/address/my')
       if (res?.data?.data && Array.isArray(res.data.data)) {
         setAddresses(res.data.data)
       } else if (res?.data?.data) {
@@ -62,7 +62,7 @@ export default function Profile(){
 
   const loadOrders = async () => {
     try {
-      const res = await api.get('/orders/history')
+      const res = await api.get('/api/orders/history')
       if (res?.data?.data && Array.isArray(res.data.data)) {
         setOrders(res.data.data)
       } else if (res?.data?.data) {
@@ -76,7 +76,7 @@ export default function Profile(){
 
   const handleAddAddress = async (formData) => {
     try {
-      const res = await api.post('/address/add', formData)
+      const res = await api.post('/api/address/add', formData)
       if (res?.data?.data) {
         setAddresses([...addresses, res.data.data])
         showToast('Address added successfully!', 'success')
@@ -89,7 +89,7 @@ export default function Profile(){
 
   const handleDeleteAddress = async (id) => {
     try {
-      await api.delete(`/address/delete/${id}`)
+      await api.delete(`/api/address/delete/${id}`)
       setAddresses(addresses.filter(a => a.id !== id))
       showToast('Address deleted', 'success')
     } catch (err) {

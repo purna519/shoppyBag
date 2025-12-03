@@ -28,8 +28,8 @@ export default function SearchPage() {
   const loadAllProducts = async () => {
     try {
       setLoading(true)
-      // Try to fetch from /products/all, fallback to /product/fetchallProducts
-      let res = await api.get('/products/all').catch(() => api.get('/product/fetchallProducts'))
+      // Fetch all products from backend
+      let res = await api.get('/api/product/fetchallProducts')
       
       let products = []
       if (res?.data?.data && Array.isArray(res.data.data)) {
@@ -131,7 +131,7 @@ export default function SearchPage() {
                   >
                     <div className="position-relative" style={{paddingTop: '100%', overflow: 'hidden', borderRadius: '12px 12px 0 0'}}>
                       <img 
-                        src={product.imageUrl || '/placeholder.jpg'} 
+                        src={product.productImage?.[0]?.imageUrl || product.imageUrl || '/placeholder.jpg'} 
                         alt={product.name}
                         className="position-absolute top-0 start-0 w-100 h-100"
                         style={{objectFit: 'cover'}}

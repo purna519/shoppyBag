@@ -31,7 +31,7 @@ export default function Checkout() {
 
   const loadAddresses = async () => {
     try {
-      const res = await api.get('/address/my')
+      const res = await api.get('/api/address/my')
       if (res?.data?.data && Array.isArray(res.data.data)) {
         console.log('Addresses from backend:', res.data.data)
         console.log('First address:', res.data.data[0])
@@ -70,7 +70,7 @@ export default function Checkout() {
       }
 
       // 1) Place order on server
-      const placeRes = await api.post('/orders/place')
+      const placeRes = await api.post('/api/orders/place')
       const orderId = placeRes.data?.data?.id
 
       if (!orderId) {

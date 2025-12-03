@@ -1,57 +1,87 @@
 import React, { useEffect, useState, useContext } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, Link } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import api from '../api/api'
 import CartContext from '../Context/CartContext'
 import { ToastContext } from '../Context/ToastContext'
+import '../styles/product-detail.css'
+import '../styles/mini-cart.css'
 
 export default function ProductDetail(){
   const { id } = useParams()
   const [product, setProduct] = useState(null)
   const [loading, setLoading] = useState(true)
   const [selectedVariant, setSelectedVariant] = useState(null)
-  const { addToCart } = useContext(CartContext)
+  const [quantity, setQuantity] = useState(1)
+  const [relatedProducts, setRelatedProducts] = useState([])
+  const { cart, addToCart } = useContext(CartContext)
   const { showToast } = useContext(ToastContext)
-
-  // Carousel state
   const [mainIndex, setMainIndex] = useState(0)
-  const [playing, setPlaying] = useState(false) // Default to false for better UX on detail page
 
   useEffect(()=>{
-    setLoading(true)
-    api.get(`/product/${id}`)
-      .then(res=>{
-        if(res?.data?.data){
-          const p = res.data.data
-          // Normalize backend data
-          p.variants = (p.productVariants || []).map(v => ({
-            ...v,
-            name: `${v.color} / ${v.size}`,
-            displayName: v.size, // Use size for display if color is separate
-            displayColor: v.color
-          }))
-          p.images = (p.productImage || []).map(img => img.imageUrl)
-          
-          setProduct(p)
-          setSelectedVariant((p.variants && p.variants[0]) || null)
-        } else {
-          setProduct(null)
-        }
-      })
-      .catch(err=>{
-        console.error('Failed to fetch product', err)
-        setProduct(null)
-      })
-      .finally(()=>{
-        setLoading(false)
-      })
+    loadProduct()
   },[id])
+
+  const loadProduct = async () => {
+    setLoading(true)
+    try {
+      const res = await api.get(`/api/product/${id}`)
+      if(res?.data?.data){
+        const p = res.data.data
+        // Normalize backend data
+        p.variants = (p.productVariants || []).map(v => ({
+          ...v,
+          name: `${v.color} / ${v.size}`,
+          displayName: v.size,
+          displayColor: v.color
+        }))
+        p.images = (p.productImage || []).map(img => img.imageUrl)
+        
+        setProduct(p)
+        setSelectedVariant((p.variants && p.variants[0]) || null)
+        
+        // Load related products
+        loadRelatedProducts(p.category)
+      }
+    } catch(err){
+      console.error('Failed to fetch product', err)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const loadRelatedProducts = async (category) => {
+    try {
+      // Get all products and filter by same category
+      const res = await api.get('/api/product/fetchallProducts')
+      let products = []
+      if (res?.data?.data && Array.isArray(res.data.data)) {
+        products = res.data.data
+      } else if (Array.isArray(res?.data)) {
+        products = res.data
+      }
+      
+      // Filter by same category, exclude current product, limit to 4
+      const related = products
+        .filter(p => p.category === category && p.id !== parseInt(id))
+        .slice(0, 4)
+      
+      setRelatedProducts(related)
+    } catch(err){
+      console.error('Failed to load related products', err)
+    }
+  }
 
   useEffect(()=>{ setMainIndex(0) }, [product])
 
-  if(loading) return (<div><Navbar/><div className="container py-5 text-center"><div className="spinner-border text-primary" role="status"></div></div><Footer/></div>)
-  if(!product) return (<div><Navbar/><div className="container py-5 text-center"><h3>Product not found</h3></div><Footer/></div>)
+  if(loading) return (
+    <div><Navbar/><div className="container py-5 text-center"><div className="spinner-border text-primary" role="status"></div></div><Footer/></div>
+  )
+  
+  if(!product) return (
+    <div><Navbar/><div className="container py-5 text-center"><h3>Product not found</h3></div><Footer/></div>
+  )
 
   const price = selectedVariant ? selectedVariant.price : (product.price || 0)
   const discount = product.discountPercentage || 0
@@ -60,44 +90,60 @@ export default function ProductDetail(){
 
   const handleAdd = async ()=>{
     try{
-      await addToCart({ productId: product.id, variantId: selectedVariant?.id || null, quantity: 1, price })
-      showToast('Added to cart', 'success')
-    }catch(e){ showToast('Failed to add', 'error') }
+      await addToCart({ 
+        productId: product.id, 
+        variantId: selectedVariant?.id || null, 
+        quantity, 
+        price 
+      })
+      showToast('Added to cart!', 'success')
+    }catch(e){ 
+      showToast('Failed to add to cart', 'error') 
+    }
   }
 
-  // Helper to get color code if valid
-  const getColorStyle = (colorName) => {
-    const ctx = document.createElement('canvas').getContext('2d');
-    ctx.fillStyle = colorName;
-    return ctx.fillStyle === '#000000' && colorName !== 'black' ? null : colorName;
+  const formatPrice = (price) => {
+    return `₹${price?.toLocaleString('en-IN')}`
   }
+
+  // Get unique sizes from variants
+  const uniqueSizes = [...new Set((product.variants||[]).map(v => v.displayName))]
 
   return (
     <div className="d-flex flex-column min-vh-100">
       <Navbar />
-      <main className="container py-5 flex-grow-1">
-        <div className="row g-5">
-          {/* Left Column: Gallery */}
-          <div className="col-md-6">
-            <div className="product-gallery-main shadow-sm">
+      <main className="product-detail-container">
+        <div className="product-detail-grid">
+          {/* Left Column: Image Gallery */}
+          <div className="product-gallery">
+            <div className="gallery-main">
               <img 
-                src={product.images?.[mainIndex] || '/placeholder.png'} 
+                src={product.images?.[mainIndex] || product.imageUrl || '/placeholder.png'} 
                 alt={product.name}
               />
-              {/* Navigation Arrows */}
               {(product.images||[]).length > 1 && (
                 <>
-                  <button className="btn btn-light rounded-circle position-absolute start-0 ms-3 shadow-sm" onClick={()=>setMainIndex(i => (i - 1 + product.images.length) % product.images.length)}>‹</button>
-                  <button className="btn btn-light rounded-circle position-absolute end-0 me-3 shadow-sm" onClick={()=>setMainIndex(i => (i + 1) % product.images.length)}>›</button>
+                  <button 
+                    className="gallery-nav gallery-nav-prev" 
+                    onClick={()=>setMainIndex(i => (i - 1 + product.images.length) % product.images.length)}
+                  >
+                    <i className="bi bi-chevron-left"></i>
+                  </button>
+                  <button 
+                    className="gallery-nav gallery-nav-next" 
+                    onClick={()=>setMainIndex(i => (i + 1) % product.images.length)}
+                  >
+                    <i className="bi bi-chevron-right"></i>
+                  </button>
                 </>
               )}
             </div>
 
-            <div className="product-gallery-thumbs">
+            <div className="gallery-thumbs">
               {(product.images||[]).map((src, idx) => (
                 <div 
                   key={idx} 
-                  className={`product-gallery-thumb ${mainIndex===idx ? 'active' : ''}`}
+                  className={`gallery-thumb ${mainIndex===idx ? 'active' : ''}`}
                   onClick={()=>setMainIndex(idx)}
                 >
                   <img src={src} alt={`thumb-${idx}`} />
@@ -106,75 +152,193 @@ export default function ProductDetail(){
             </div>
           </div>
 
-          {/* Right Column: Details */}
-          <div className="col-md-6">
-            <div className="ps-md-4">
-              <div className="text-uppercase text-muted fw-bold small mb-2">{product.brand}</div>
-              <h1 className="display-6 fw-bold mb-3">{product.name}</h1>
-              <div className="mb-4 text-muted">{product.description}</div>
+          {/* Right Column: Product Info */}
+          <div className="product-info">
+            <div className="product-brand">{product.brand}</div>
+            <h1 className="product-title">{product.name}</h1>
+            <p className="product-description">{product.description}</p>
 
-              <div className="mb-4">
-                {discount > 0 ? (
-                  <div className="d-flex align-items-center gap-3">
-                    <span className="display-6 fw-bold text-primary">₹{discountedPrice}</span>
-                    <span className="text-muted text-decoration-line-through fs-4">₹{price}</span>
-                    <span className="badge bg-danger rounded-pill px-3">SAVE {discount}%</span>
-                  </div>
-                ) : (
-                  <div className="display-6 fw-bold text-primary">₹{price}</div>
-                )}
-              </div>
-
-              {/* Variants */}
-              {(product.variants||[]).length > 0 && (
-                <div className="mb-4">
-                  <label className="form-label fw-bold mb-2">Select Variant</label>
-                  <div className="d-flex flex-wrap gap-2">
-                    {product.variants.map(v => {
-                      const colorStyle = getColorStyle(v.displayColor);
-                      return (
-                        <div 
-                          key={v.id} 
-                          className={`variant-selector-btn ${selectedVariant?.id === v.id ? 'active' : ''}`}
-                          onClick={()=>setSelectedVariant(v)}
-                        >
-                          {colorStyle && (
-                            <div className="color-swatch" style={{backgroundColor: colorStyle}}></div>
-                          )}
-                          <div className="fw-bold small">{v.name}</div>
-                          <div className="small text-muted">₹{v.price}</div>
-                        </div>
-                      )
-                    })}
-                  </div>
-                </div>
+            {/* Price */}
+            <div className="product-price-section">
+              {discount > 0 ? (
+                <>
+                  <span className="price-current">{formatPrice(discountedPrice)}</span>
+                  <span className="price-original">{formatPrice(price)}</span>
+                  <span className="price-discount">-{discount}% OFF</span>
+                </>
+              ) : (
+                <span className="price-current">{formatPrice(price)}</span>
               )}
+            </div>
 
-              {/* Actions */}
-              <div className="d-flex gap-3 mt-5">
-                <button 
-                  className="btn btn-primary btn-lg px-5 rounded-pill flex-grow-1" 
-                  onClick={handleAdd}
-                  disabled={stock <= 0}
-                >
-                  {stock > 0 ? 'Add to Cart' : 'Out of Stock'}
-                </button>
-                <button className="btn btn-outline-secondary btn-lg px-4 rounded-pill">
-                  <i className="bi bi-heart"></i>
-                </button>
-              </div>
-              
-              <div className="mt-4 pt-4 border-top">
-                <div className="d-flex gap-4 text-muted small">
-                  <div><i className="bi bi-truck me-2"></i>Free Delivery</div>
-                  <div><i className="bi bi-shield-check me-2"></i>1 Year Warranty</div>
-                  <div><i className="bi bi-arrow-return-left me-2"></i>7 Days Return</div>
+            {/* Size Selection */}
+            {uniqueSizes.length > 0 && (
+              <div className="product-options">
+                <label className="option-label">Select Size</label>
+                <div className="size-selector">
+                  {uniqueSizes.map((size, idx) => {
+                    const variant = product.variants.find(v => v.displayName === size)
+                    return (
+                      <button
+                        key={idx}
+                        className={`size-btn ${selectedVariant?.displayName === size ? 'active' : ''}`}
+                        onClick={()=>setSelectedVariant(variant)}
+                      >
+                        {size}
+                      </button>
+                    )
+                  })}
                 </div>
               </div>
+            )}
 
+            {/* Quantity */}
+            <div className="product-options">
+              <label className="option-label">Quantity</label>
+              <div className="quantity-selector">
+                <button 
+                  className="qty-btn" 
+                  onClick={()=>setQuantity(q => Math.max(1, q-1))}
+                  disabled={quantity <= 1}
+                >
+                  <i className="bi bi-dash"></i>
+                </button>
+                <span className="qty-value">{quantity}</span>
+                <button 
+                  className="qty-btn" 
+                  onClick={()=>setQuantity(q => Math.min(stock, q+1))}
+                  disabled={quantity >= stock}
+                >
+                  <i className="bi bi-plus"></i>
+                </button>
+              </div>
+            </div>
+
+            {/* Stock Status */}
+            {stock > 0 && stock <= 10 && (
+              <div className="stock-warning">
+                <i className="bi bi-exclamation-circle"></i>
+                Only {stock} left in stock!
+              </div>
+            )}
+
+            {/* Action Buttons */}
+            <div className="product-actions">
+              <button 
+                className="btn-add-to-cart" 
+                onClick={handleAdd}
+                disabled={stock <= 0}
+              >
+                {stock > 0 ? (
+                  <>
+                    <i className="bi bi-bag-plus"></i>
+                    Add to Cart
+                  </>
+                ) : (
+                  'Out of Stock'
+                )}
+              </button>
+              <button className="btn-wishlist">
+                <i className="bi bi-heart"></i>
+              </button>
+            </div>
+
+            {/* Features */}
+            <div className="product-features">
+              <div className="feature-item">
+                <i className="bi bi-truck"></i>
+                <span>Free Shipping</span>
+              </div>
+              <div className="feature-item">
+                <i className="bi bi-arrow-repeat"></i>
+                <span>Easy Returns</span>
+              </div>
+              <div className="feature-item">
+                <i className="bi bi-shield-check"></i>
+                <span>Secure Payment</span>
+              </div>
             </div>
           </div>
+
+          {/* Right Column: Mini Cart Sidebar */}
+          <div className="mini-cart-sidebar">
+            <div className="mini-cart-header">
+              <i className="bi bi-bag"></i>
+              <h3>Your Cart</h3>
+              <span className="cart-count">{cart?.items?.length || 0}</span>
+            </div>
+
+            {!cart || !cart.items || cart.items.length === 0 ? (
+              <div className="mini-cart-empty">
+                <i className="bi bi-cart-x"></i>
+                <p>Your cart is empty</p>
+              </div>
+            ) : (
+              <>
+                <div className="mini-cart-items">
+                  {cart.items.slice(0, 3).map((item, idx) => (
+                    <div key={idx} className="mini-cart-item">
+                      <img src={item.variant?.imageUrl || item.product?.imageUrl} alt={item.product?.name} />
+                      <div className="mini-item-details">
+                        <div className="mini-item-name">{item.product?.name}</div>
+                        <div className="mini-item-meta">
+                          {item.variant?.size} × {item.quantity}
+                        </div>
+                        <div className="mini-item-price">{formatPrice(item.price * item.quantity)}</div>
+                      </div>
+                    </div>
+                  ))}
+                  {cart.items.length > 3 && (
+                    <div className="mini-cart-more">
+                      +{cart.items.length - 3} more item(s)
+                    </div>
+                  )}
+                </div>
+
+                <div className="mini-cart-total">
+                  <span>Subtotal:</span>
+                  <span>{formatPrice(cart.items.reduce((sum, item) => sum + (item.price * item.quantity), 0))}</span>
+                </div>
+
+                <div className="mini-cart-actions">
+                  <Link to="/cart" className="mini-btn-cart">
+                    <i className="bi bi-cart3"></i>
+                    View Cart
+                  </Link>
+                  <Link to="/checkout" className="mini-btn-checkout">
+                    <i className="bi bi-lightning"></i>
+                    Checkout
+                  </Link>
+                </div>
+              </>
+            )}
+          </div>
         </div>
+
+        {/* Related Products */}
+        {relatedProducts.length > 0 && (
+          <div className="related-products-section">
+            <h2 className="section-title">You May Also Like</h2>
+            <div className="related-products-grid">
+              {relatedProducts.map(relProduct => (
+                <Link
+                  key={relProduct.id}
+                  to={`/product/${relProduct.id}`}
+                  className="related-product-card"
+                >
+                  <div className="related-product-image">
+                    <img src={relProduct.productImage?.[0]?.imageUrl || relProduct.imageUrl || '/placeholder.png'} alt={relProduct.name} />
+                  </div>
+                  <div className="related-product-info">
+                    <h3 className="related-product-name">{relProduct.name}</h3>
+                    <p className="related-product-category">{relProduct.category}</p>
+                    <div className="related-product-price">{formatPrice(relProduct.price)}</div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
       </main>
       <Footer />
     </div>

@@ -12,7 +12,7 @@ export default function Home(){
 
   useEffect(()=>{
     setLoading(true)
-    api.get('/product/fetchallProducts')
+    api.get('/api/product/fetchallProducts')
       .then(res=>{ 
         let prodList = []
         if(res?.data?.data && Array.isArray(res.data.data)) {

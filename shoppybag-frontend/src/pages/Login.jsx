@@ -14,7 +14,7 @@ export default function Login(){
     e.preventDefault()
     setLoading(true)
     try{
-      const res = await api.post('/auth/login', { email, password })
+      const res = await api.post('/api/users/signin', { email, password })
       if(res?.data?.status === 'success'){
         const token = res.data.data
         localStorage.setItem('token', token)
@@ -36,20 +36,41 @@ export default function Login(){
         {/* Left Side - Image/Branding */}
         <div className="auth-visual">
           <div className="auth-visual-content">
+            <div className="auth-brand-logo">
+              <i className="bi bi-bag-heart-fill"></i>
+            </div>
             <h1 className="auth-visual-title">ShoppyBag</h1>
             <p className="auth-visual-subtitle">Your Premium Fashion Destination</p>
+            
             <div className="auth-visual-features">
               <div className="feature-item">
-                <i className="bi bi-check-circle-fill"></i>
-                <span>Exclusive Collections</span>
+                <div className="feature-icon gradient-purple">
+                  <i className="bi bi-lightning-charge-fill"></i>
+                </div>
+                <div className="feature-text">
+                  <h4>Fast Delivery</h4>
+                  <p>Get your orders delivered quickly</p>
+                </div>
               </div>
+              
               <div className="feature-item">
-                <i className="bi bi-check-circle-fill"></i>
-                <span>Fast Delivery</span>
+                <div className="feature-icon gradient-blue">
+                  <i className="bi bi-shield-fill-check"></i>
+                </div>
+                <div className="feature-text">
+                  <h4>Secure Payments</h4>
+                  <p>100% safe and encrypted transactions</p>
+                </div>
               </div>
+              
               <div className="feature-item">
-                <i className="bi bi-check-circle-fill"></i>
-                <span>Secure Payments</span>
+                <div className="feature-icon gradient-pink">
+                  <i className="bi bi-award-fill"></i>
+                </div>
+                <div className="feature-text">
+                  <h4>Premium Quality</h4>
+                  <p>Exclusive collections just for you</p>
+                </div>
               </div>
             </div>
           </div>

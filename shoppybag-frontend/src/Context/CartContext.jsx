@@ -23,7 +23,7 @@ export function CartProvider({ children }){
     }
     setLoadingCart(true)
     try{
-      const res = await api.get('/cart/get')
+      const res = await api.get('/api/cart/get')
       const data = res?.data?.data
       setCart(data || null)
       const items = data?.items || []
@@ -36,19 +36,19 @@ export function CartProvider({ children }){
 
   const addToCart = async ({ productId, variantId = null, quantity = 1, price })=>{
     try{
-      await api.post('/cart/add', null, { params: { productId, variantId, quantity, price } })
+      await api.post('/api/cart/add', null, { params: { productId, variantId, quantity, price } })
       await loadCart()
       showToast('Added to cart', 'success')
     }catch(e){ console.error(e); showToast('Add to cart failed', 'error'); throw e }
   }
 
   const updateItem = async ({ productId, variantId = null, quantity })=>{
-    try{ await api.put('/cart/update', null, { params: { productId, variantId, quantity } }); await loadCart() }
+    try{ await api.put('/api/cart/update', null, { params: { productId, variantId, quantity } }); await loadCart() }
     catch(e){ console.error(e); showToast('Update failed', 'error'); throw e }
   }
 
   const removeItem = async ({ productId, variantId = null })=>{
-    try{ await api.delete('/cart/remove', { params: { productId, variantId } }); await loadCart() }
+    try{ await api.delete('/api/cart/remove', { params: { productId, variantId } }); await loadCart() }
     catch(e){ console.error(e); showToast('Remove failed', 'error'); throw e }
   }
 

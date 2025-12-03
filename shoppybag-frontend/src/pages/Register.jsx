@@ -37,7 +37,7 @@ export default function Register(){
         phoneNumber: formData.phoneNumber
       }
       
-      const res = await api.post('/users/register', registerData)
+      const res = await api.post('/api/users/register', registerData)
       
       if (res?.data?.status === 'success' || res?.data?.status === 'Success') {
         showToast('Registration successful! Please login', 'success')
@@ -58,20 +58,41 @@ export default function Register(){
         {/* Left Side - Image/Branding */}
         <div className="auth-visual">
           <div className="auth-visual-content">
+            <div className="auth-brand-logo">
+              <i className="bi bi-bag-heart-fill"></i>
+            </div>
             <h1 className="auth-visual-title">Join ShoppyBag</h1>
             <p className="auth-visual-subtitle">Start Your Fashion Journey Today</p>
+            
             <div className="auth-visual-features">
               <div className="feature-item">
-                <i className="bi bi-gift-fill"></i>
-                <span>Welcome Offers</span>
+                <div className="feature-icon gradient-pink">
+                  <i className="bi bi-gift-fill"></i>
+                </div>
+                <div className="feature-text">
+                  <h4>Welcome Offers</h4>
+                  <p>Exclusive deals for new members</p>
+                </div>
               </div>
+              
               <div className="feature-item">
-                <i className="bi bi-star-fill"></i>
-                <span>Member Benefits</span>
+                <div className="feature-icon gradient-purple">
+                  <i className="bi bi-star-fill"></i>
+                </div>
+                <div className="feature-text">
+                  <h4>Member Benefits</h4>
+                  <p>Earn rewards with every purchase</p>
+                </div>
               </div>
+              
               <div className="feature-item">
-                <i className="bi bi-trophy-fill"></i>
-                <span>Exclusive Access</span>
+                <div className="feature-icon gradient-blue">
+                  <i className="bi bi-trophy-fill"></i>
+                </div>
+                <div className="feature-text">
+                  <h4>Exclusive Access</h4>
+                  <p>First access to new collections</p>
+                </div>
               </div>
             </div>
           </div>
