@@ -3,6 +3,7 @@ package com.shoppyBag.Controller;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +26,7 @@ public class AddressController {
     }
 
     // Add new address
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     @PostMapping("/add")
 public ResponseEntity<?> addAddress(
         @RequestBody AddressRequest request,
@@ -44,6 +46,7 @@ public ResponseEntity<?> addAddress(
 }
 
     // Get all user addresses
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     @GetMapping("/my")
     public ResponseEntity<?> myAddresses(@AuthenticationPrincipal Users user) {
 
@@ -64,6 +67,7 @@ public ResponseEntity<?> addAddress(
     }
 
     // Update address
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     @PutMapping("/update/{id}")
     public ResponseEntity<?> update(
             @PathVariable Long id,
@@ -87,6 +91,7 @@ public ResponseEntity<?> addAddress(
 
 
     // Delete address
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> delete(
             @PathVariable Long id,

@@ -136,7 +136,14 @@ public class OrderService {
             return new ApiResponse<List<OrderDTO>>("Error", "Invalid User", null);
         }
 
-        List<Order> orders = orderRepository.findByUsersId(users.getId());
+        List<Order> orders;
+        
+        // If admin, return all orders. Otherwise, return only user's orders
+        if ("ADMIN".equalsIgnoreCase(users.getRole())) {
+            orders = orderRepository.findAll();
+        } else {
+            orders = orderRepository.findByUsersId(users.getId());
+        }
 
         if (orders.isEmpty()) {
             return new ApiResponse<List<OrderDTO>>("Error", "No past Orders", null);
@@ -157,7 +164,8 @@ public class OrderService {
 
         Order order = orderRepository.findById(id).orElseThrow(() -> new RuntimeException("Order not found"));
 
-        if (!order.getUsers().getId().equals(users.getId())) {
+        // Allow admin to view all orders, or users to view only their own orders
+        if (!users.getRole().equals("ADMIN") && !order.getUsers().getId().equals(users.getId())) {
             return new ApiResponse<>("Error", "Access denied for this order", null);
         }
 

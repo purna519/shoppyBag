@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import com.shoppyBag.DTO.ApiResponse;
@@ -18,6 +19,7 @@ public class PaymentController {
     private PaymentService paymentService;
 
     // INITIATE PAYMENT
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     @PostMapping("/initiate/{orderId}")
     public ResponseEntity<?> initiatePayment(
             @RequestHeader("Authorization") String token,

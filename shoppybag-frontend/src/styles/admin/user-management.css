@@ -1,0 +1,103 @@
+/* User Management Specific Styles */
+
+.user-management-table tbody td:last-child {
+  padding-left: 2rem !important;
+  padding-right: 2rem !important;
+  white-space: nowrap;
+}
+
+.user-management-table .btn-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--white-pure);
+  border: var(--border);
+  color: var(--text-medium);
+  padding: 0.625rem 1rem;
+  margin-right: 0.75rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.8125rem;
+  font-weight: 500;
+}
+
+.user-management-table .btn-action:last-child {
+  margin-right: 0;
+}
+
+.user-management-table .btn-view:hover {
+  background: #e8f4f8;
+  color: #2d7a9c;
+  border-color: #2d7a9c;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+.user-management-table .btn-delete:hover {
+  background: #fce8e8;
+  color: #c53030;
+  border-color: #c53030;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+/* User Details Modal */
+.user-details-modal {
+  max-width: 500px;
+}
+
+.user-details-modal .modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.user-details-modal .modal-header h2 {
+  font-size: 1.375rem;
+  font-weight: 500;
+  color: #0a0a0a;
+  margin: 40px 0px 0px 30px;
+  letter-spacing: -0.01em;
+}
+
+.user-details-modal .modal-body {
+  padding: 2rem;
+}
+
+.user-details-modal .info-row {
+  padding: 1.125rem 0;
+  border-bottom: 1px solid #f5f5f4;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.user-details-modal .info-row:last-child {
+  border-bottom: none;
+}
+
+.user-details-modal .info-row .label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #a3a3a3;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+.user-details-modal .info-row .value {
+  font-size: 0.9375rem;
+  color: #0a0a0a;
+  font-weight: 500;
+  text-align: right;
+}
+
+.user-details-modal .value.role-admin {
+  color: #b8985f;
+  font-weight: 600;
+}
+
+.user-details-modal .value.status-active {
+  color: #16a34a;
+  font-weight: 600;
+}

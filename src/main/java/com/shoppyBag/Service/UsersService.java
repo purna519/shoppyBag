@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import com.shoppyBag.DTO.*;
 import com.shoppyBag.Entity.Users;
@@ -21,6 +20,9 @@ public class UsersService {
     private final BCryptPasswordEncoder passwordEncoder;
     private final JWTUtil jwtUtil;
     private final AuthenticationManager authManager;
+
+    @Autowired
+    private RegularFunctions regularFunctions;
 
     @Autowired
     public UsersService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder, JWTUtil jwtUtil, AuthenticationManager authManager) {
@@ -61,46 +63,25 @@ public class UsersService {
 
     // Get all users (admin only)
     public ApiResponse<List<Users>> getAllUsers(String token) {
-        if (token == null || !jwtUtil.validateToken(token))
+        Users user = regularFunctions.validateToken(token);
+        if (user == null) {
             return new ApiResponse<>("error", "Invalid or missing token", null);
-
-        String email = jwtUtil.extractEmail(token);
-        Users u = userRepository.findByEmail(email);
-        if (u == null || !"ADMIN".equalsIgnoreCase(u.getRole()))
-            return new ApiResponse<>("error", "Unauthorized access", null);
+        }
 
         return new ApiResponse<>("success", "Users fetched successfully", userRepository.findAll());
     }
 
-    // Delete user (self or admin)
-    public ApiResponse<String> deleteUser(String token) {
-        if (token == null || !jwtUtil.validateToken(token))
-            return new ApiResponse<>("error", "Invalid or missing token", null);
-
-        String email = jwtUtil.extractEmail(token);
-        Users u = userRepository.findByEmail(email);
-        if (u == null)
-            return new ApiResponse<>("error", "User not found", null);
-
-        userRepository.deleteById(u.getId());
-        return new ApiResponse<>("success", "User deleted successfully", "ok");
-    }
-
     // Update user (self or admin)
     public ApiResponse<Users> updateUser(UpdateRequestDTO dto, String token) {
-        if (token == null || !jwtUtil.validateToken(token))
-            return new ApiResponse<>("error", "Invalid or missing token", null);
-
-        String emailFromToken = jwtUtil.extractEmail(token);
-        Users loggedUser = userRepository.findByEmail(emailFromToken);
+        Users loggedUser = regularFunctions.validateToken(token);
         if (loggedUser == null)
-            return new ApiResponse<>("error", "Invalid token user", null);
+            return new ApiResponse<>("error", "Invalid or missing token", null);
 
         Users targetUser = userRepository.findByEmail(dto.getEmail());
         if (targetUser == null)
             return new ApiResponse<>("error", "User not found", null);
 
-        boolean isSelf = emailFromToken.equalsIgnoreCase(dto.getEmail());
+        boolean isSelf = loggedUser.getEmail().equalsIgnoreCase(dto.getEmail());
         boolean isAdmin = "ADMIN".equalsIgnoreCase(loggedUser.getRole());
 
         if (!isSelf && !isAdmin)
@@ -116,18 +97,21 @@ public class UsersService {
         return new ApiResponse<>("success", "User updated successfully", updated);
     }
 
-    // Get current user profile
-    public ApiResponse<Users> getProfile(String token) {
-        if (token != null && token.startsWith("Bearer ")) {
-            token = token.substring(7);
-        }
-        if (token == null || !jwtUtil.validateToken(token))
+    // Delete user (self or admin)
+    public ApiResponse<String> deleteUser(String token) {
+        Users user = regularFunctions.validateToken(token);
+        if (user == null)
             return new ApiResponse<>("error", "Invalid or missing token", null);
 
-        String email = jwtUtil.extractEmail(token);
-        Users user = userRepository.findByEmail(email);
+        userRepository.delete(user);
+        return new ApiResponse<>("success", "User deleted successfully", null);
+    }
+
+    // Get current user profile
+    public ApiResponse<Users> getProfile(String token) {
+        Users user = regularFunctions.validateToken(token);
         if (user == null)
-            return new ApiResponse<>("error", "User not found", null);
+            return new ApiResponse<>("error", "Invalid or missing token", null);
 
         return new ApiResponse<>("success", "Profile fetched successfully", user);
     }

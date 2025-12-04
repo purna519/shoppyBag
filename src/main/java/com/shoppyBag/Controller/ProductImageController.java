@@ -11,6 +11,7 @@ import com.shoppyBag.Service.ProductImageService;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +27,7 @@ public class ProductImageController {
     @Autowired
     private ProductImageService productImageService;
     
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/addProductImage/{productId}")
     public ApiResponse<ProductImageDTO> addProductImage(@PathVariable Long productId,
             @RequestBody ProductImage productImage, @RequestHeader("Authorization") String token) {
@@ -35,12 +37,14 @@ public class ProductImageController {
     }
     
     // Get all images by product
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     @GetMapping("/getByProduct/{productId}")
     public List<ProductImageDTO> getImagesByProduct(@PathVariable Long productId) {
         return productImageService.getImagesByProduct(productId);
     }
 
     // Delete image by ID (Admin only)
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/delete/{imageId}")
     public ApiResponse<String> deleteImage(
             @PathVariable Long imageId,

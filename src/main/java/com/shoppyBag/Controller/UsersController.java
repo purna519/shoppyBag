@@ -1,6 +1,7 @@
 package com.shoppyBag.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import com.shoppyBag.Service.UsersService;
 import com.shoppyBag.Entity.Users;
@@ -23,21 +24,25 @@ public class UsersController {
         return usersService.login(dto);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/all")
     public ApiResponse<?> getAllUsers(@RequestHeader("Authorization") String token) {
         return usersService.getAllUsers(token);
     }
 
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     @DeleteMapping("/delete")
     public ApiResponse<?> deleteUser(@RequestHeader("Authorization") String token) {
         return usersService.deleteUser(token);
     }
 
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     @PutMapping("/update")
     public ApiResponse<?> updateUser(@RequestBody UpdateRequestDTO request, @RequestHeader("Authorization") String token) {
         return usersService.updateUser(request, token);
     }
 
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     @GetMapping("/profile")
     public ApiResponse<?> getProfile(@RequestHeader("Authorization") String token) {
         return usersService.getProfile(token);

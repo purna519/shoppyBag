@@ -18,10 +18,30 @@ export default function Login(){
       if(res?.data?.status === 'success'){
         const token = res.data.data
         localStorage.setItem('token', token)
-        showToast('Login successful', 'success')
-        navigate('/')
-        // reload to let contexts pick up token
-        setTimeout(()=> window.location.reload(), 200)
+        localStorage.setItem('authToken', token) // For admin routes
+        
+        // Decode JWT to check role
+        try {
+          const payload = JSON.parse(atob(token.split('.')[1]))
+          const role = payload.role
+          
+          showToast('Login successful', 'success')
+          
+          // Redirect based on role
+          if (role === 'ADMIN') {
+            navigate('/admin/dashboard')
+          } else {
+            navigate('/')
+          }
+          
+          // reload to let contexts pick up token
+          setTimeout(()=> window.location.reload(), 200)
+        } catch (decodeError) {
+          console.error('Error decoding token:', decodeError)
+          showToast('Login successful', 'success')
+          navigate('/')
+          setTimeout(()=> window.location.reload(), 200)
+        }
       } else {
         showToast(res?.data?.message || 'Login failed', 'error')
       }
