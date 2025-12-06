@@ -1,0 +1,40 @@
+
+/* Responsive */
+@media (max-width: 768px) {
+    .order-card-fashion {
+        padding: 16px;
+    }
+    
+    .order-header-fashion,
+    .order-footer-fashion {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+    }
+    
+    .order-item-row {
+        gap: 10px;
+    }
+    
+    .order-item-image {
+        width: 45px;
+        height: 45px;
+    }
+    
+    .order-item-name {
+        font-size: 0.8rem;
+    }
+    
+    .order-total-fashion {
+        justify-content: space-between;
+    }
+    
+    .view-order-btn-fashion {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .order-status-badge {
+        align-self: flex-start;
+    }
+}

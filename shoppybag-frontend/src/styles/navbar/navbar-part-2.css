@@ -1,0 +1,70 @@
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: none;
+    background: var(--accent-brown);
+    color: var(--primary-white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    padding: 0;
+    cursor: pointer;
+    font-size: 0.875rem;
+}
+
+.search-btn:hover {
+    background: var(--accent-dark-brown);
+}
+
+/* Icon Buttons (Cart, Theme, User) - Smaller, Cleaner */
+.nav-icon-btn {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    color: var(--gray-700);
+    text-decoration: none;
+    transition: all 0.2s ease;
+    background: transparent;
+    border: none;
+    position: relative;
+}
+
+.nav-icon-btn i {
+    font-size: 1.1rem !important;
+}
+
+.nav-icon-btn:hover {
+    background: var(--gray-100);
+    color: var(--accent-brown);
+}
+
+.nav-icon-btn.active {
+    background: rgba(44, 95, 45, 0.1);
+    color: var(--accent-brown);
+}
+
+/* Cart Badge - Brown */
+.nav-icon-btn .badge.bg-danger {
+    background: var(--accent-brown) !important;
+    font-size: 0.6rem;
+    padding: 0.2em 0.35em;
+}
+
+/* Login Button - Brown Theme */
+.btn-primary.rounded-pill {
+    padding: 8px 24px !important;
+    font-weight: 500 !important;
+    font-size: 0.9375rem !important;
+    box-shadow: 0 2px 6px rgba(44, 95, 45, 0.25);
+    transition: all 0.2s ease !important;
+    border-radius: 4px !important;
+}
+
+.btn-primary.rounded-pill:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(44, 95, 45, 0.35);
+}

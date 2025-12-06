@@ -1,0 +1,70 @@
+/* ========================================
+   DARK MODE NAVBAR
+   ======================================== */
+
+body.dark-mode .app-navbar {
+    background: #0b1220 !important;
+    border-bottom-color: rgba(255,255,255,0.08);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+}
+
+body.dark-mode .app-navbar .navbar-brand {
+    color: #e6eef8 !important;
+}
+
+body.dark-mode .app-navbar .navbar-brand:hover {
+    color: var(--accent-brown) !important;
+}
+
+body.dark-mode .search-input {
+    background: #1a2639 !important;
+    border-color: rgba(255,255,255,0.1) !important;
+    color: #e6eef8 !important;
+}
+
+body.dark-mode .search-input::placeholder {
+    color: #9ca3af;
+}
+
+body.dark-mode .search-input:focus {
+    background: #0f1826 !important;
+    border-color: var(--accent-brown) !important;
+    box-shadow: 0 0 0 3px rgba(44, 95, 45, 0.2) !important;
+}
+
+body.dark-mode .search-btn {
+    background: var(--accent-brown);
+    color: #ffffff;
+}
+
+body.dark-mode .search-btn:hover {
+    background: var(--accent-dark-brown);
+}
+
+body.dark-mode .nav-icon-btn {
+    color: #e6eef8;
+}
+
+body.dark-mode .nav-icon-btn:hover {
+    background: rgba(255,255,255,0.08);
+    color: var(--accent-brown);
+}
+
+body.dark-mode .nav-icon-btn.active {
+    background: rgba(44, 95, 45, 0.2);
+    color: var(--accent-brown);
+}
+
+body.dark-mode .theme-toggle-slider {
+    border-color: rgba(255,255,255,0.1);
+}
+
+body.dark-mode .dropdown-menu {
+    background: #0b1220 !important;
+    border-color: rgba(255,255,255,0.1) !important;
+}
+
+body.dark-mode .dropdown-item {
+    color: #e6eef8;
+}
+

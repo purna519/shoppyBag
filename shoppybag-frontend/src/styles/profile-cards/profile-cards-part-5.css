@@ -1,0 +1,38 @@
+body.dark-mode .detail-row-fashion {
+    background: rgba(15, 23, 42, 0.6);
+}
+
+body.dark-mode .detail-row-fashion:hover {
+    background: rgba(51, 65, 85, 0.5);
+}
+
+body.dark-mode .profile-name-fashion,
+body.dark-mode .addresses-header-fashion h4,
+body.dark-mode .orders-header-fashion h4,
+body.dark-mode .address-line-1 {
+    color: #f1f5f9;
+}
+
+body.dark-mode .detail-label-fashion,
+body.dark-mode .address-line-2,
+body.dark-mode .address-location {
+    color: #94a3b8;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .profile-header-fashion {
+        flex-direction: column;
+        text-align: center;
+        gap: 16px;
+    }
+    
+    .addresses-grid-fashion,
+    .orders-grid-fashion {
+        grid-template-columns: 1fr;
+    }
+    
+    .profile-card-fashion {
+        padding: 24px;
+    }
+}

@@ -1,0 +1,24 @@
+/* ========================================
+   DARK MODE
+   ======================================== */
+
+body.dark-mode .section-title {
+    color: #e6eef8;
+}
+
+body.dark-mode .section-subtitle {
+    color: #9ca3af;
+}
+
+body.dark-mode .luxury-features {
+    background: #1a2639;
+}
+
+body.dark-mode .feature-luxury-item h6 {
+    color: #e6eef8;
+}
+
+body.dark-mode .feature-luxury-item p {
+    color: #9ca3af;
+}
+

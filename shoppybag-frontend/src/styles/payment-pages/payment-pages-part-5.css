@@ -1,0 +1,70 @@
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(102, 126, 234, 0.4);
+    color: #ffffff;
+}
+
+.btn-secondary {
+    background: transparent;
+    color: #667eea;
+    border: 2px solid #667eea;
+}
+
+.btn-secondary:hover {
+    background: rgba(102, 126, 234, 0.05);
+    transform: translateY(-2px);
+    color: #667eea;
+}
+
+.btn-primary i,
+.btn-secondary i {
+    font-size: 1.1rem;
+}
+
+/* Help Text */
+.help-text {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: #64748b;
+    font-size: 0.9rem;
+}
+
+.help-text i {
+    font-size: 1.1rem;
+}
+
+.help-text a {
+    color: #667eea;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.help-text a:hover {
+    text-decoration: underline;
+}
+
+/* Dark Mode */
+body.dark-mode .payment-success-card,
+body.dark-mode .payment-failure-card {
+    background: rgba(30, 41, 59, 0.98);
+    border-color: rgba(102, 126, 234, 0.2);
+}
+
+body.dark-mode .payment-page-container {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+}
+
+body.dark-mode .info-row .value {
+    color: #f1f5f9;
+}
+
+body.dark-mode .order-info {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+}
+
+body.dark-mode .success-message {
+    background: rgba(16, 185, 129, 0.1);
+}

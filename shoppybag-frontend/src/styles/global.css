@@ -1,17 +1,53 @@
 /* ========================================
-   GLOBAL STYLES & THEME
+   GLOBAL STYLES & THEME - Premium Fashion
    ======================================== */
 
-/* CSS Variables */
+/* CSS Variables - Forest Green & Cream Natural Theme */
 :root { 
-    --brand: #0d6efd; 
-    --muted: #6c757d;
+    /* Primary Colors */
+    --primary-black: #1A1A1A;
+    --primary-white: #ffffff;
+    --off-white: #FAF6F1;
+    --cream: #F5EFE7;
+    
+    /* Accent - Natural Green */
+    --accent-green: #2C5F2D;
+    --accent-light-green: #97BC62;
+    --accent-sage: #6B8E4E;
+    --accent-dark-green: #1E4620;
+    
+    /* Legacy brown/gold variables mapped to green */
+    --accent-brown: #2C5F2D;
+    --accent-dark-brown: #1E4620;
+    --accent-gold: #97BC62;
+    --accent-dark-gold: #6B8E4E;
+    
+    /* Neutrals */
+    --gray-900: #1A1A1A;
+    --gray-700: #525252;
+    --gray-500: #737373;
+    --gray-300: #d6d3d1;
+    --gray-200: #e7e5e4;
+    --gray-100: #f5f5f4;
+    --gray-50: #fafafa;
+    
+    /* Semantic Colors */
+    --success: #10b981;
+    --danger: #dc2626;
+    --warning: #ea580c;
+    --info: #3b82f6;
+    
+    /* Legacy support */
+    --brand: var(--accent-green);
+    --muted: var(--gray-500);
 }
 
 /* Base Styles */
 body { 
-    background: #f8f9fa; 
-    color: #212529;
+    background: var(--off-white);
+    color: var(--gray-900);
+    font-size: 0.9375rem;
+    line-height: 1.6;
 }
 
 /* Dark Mode */
@@ -22,7 +58,7 @@ body.dark-mode {
 
 /* Smooth transitions for theme changes */
 html, body, .card, .navbar, .app-footer, .btn, .form-control {
-    transition: background-color .25s ease, color .25s ease, border-color .25s ease, box-shadow .2s ease;
+    transition: background-color .2s ease, color .2s ease, border-color .2s ease, box-shadow .2s ease;
 }
 
 /* ========================================
@@ -30,13 +66,15 @@ html, body, .card, .navbar, .app-footer, .btn, .form-control {
    ======================================== */
 
 .card { 
-    border-radius: .6rem;
-    background: #fff;
+    border-radius: 8px;
+    background: var(--primary-white);
+    border: 1px solid var(--gray-200);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .card-img-top { 
-    border-top-left-radius: .6rem; 
-    border-top-right-radius: .6rem;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
 }
 
 body.dark-mode .card {
@@ -56,22 +94,38 @@ body.dark-mode .card h6 {
    ======================================== */
 
 .btn { 
-    transition: all .18s ease;
+    transition: all .2s ease;
+    font-weight: 500;
+    border-radius: 4px;
+    font-size: 0.9375rem;
 }
 
 .btn-primary { 
-    background: var(--brand); 
-    border-color: var(--brand);
+    background: var(--accent-brown);
+    border-color: var(--accent-brown);
+    color: var(--primary-white);
+}
+
+.btn-primary:hover {
+    background: var(--accent-dark-brown);
+    border-color: var(--accent-dark-brown);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(44, 95, 45, 0.3);
 }
 
 body.dark-mode .btn-primary { 
-    background: #0b66d6; 
-    border-color: #0b66d6;
+    background: var(--accent-brown);
+    border-color: var(--accent-brown);
 }
 
 .btn-outline-secondary { 
-    color: #495057; 
-    border-color: rgba(0,0,0,0.08);
+    color: var(--gray-700);
+    border-color: var(--gray-200);
+}
+
+.btn-outline-secondary:hover {
+    background: var(--gray-100);
+    border-color: var(--gray-300);
 }
 
 body.dark-mode .btn-outline-secondary { 
@@ -80,21 +134,34 @@ body.dark-mode .btn-outline-secondary {
 }
 
 .btn-outline-primary {
-    color: var(--brand);
-    border-color: var(--brand);
+    color: var(--accent-brown);
+    border-color: var(--accent-brown);
+}
+
+.btn-outline-primary:hover {
+    background: var(--accent-brown);
+    border-color: var(--accent-brown);
+    color: var(--primary-white);
 }
 
 body.dark-mode .btn-outline-primary {
-    color: var(--brand);
-    border-color: rgba(13,110,253,0.25);
+    color: var(--accent-brown);
+    border-color: rgba(44, 95, 45, 0.25);
 }
 
 /* ========================================
    FORM CONTROLS
    ======================================== */
 
+.form-control {
+    border-radius: 4px;
+    border: 1px solid var(--gray-200);
+    font-size: 0.9375rem;
+}
+
 .form-control:focus { 
-    box-shadow: 0 0 0 .15rem rgba(13,110,253,0.12);
+    box-shadow: 0 0 0 .15rem rgba(44, 95, 45, 0.12);
+    border-color: var(--accent-brown);
 }
 
 body.dark-mode .form-control {
@@ -104,7 +171,7 @@ body.dark-mode .form-control {
 }
 
 body.dark-mode .form-control:focus { 
-    box-shadow: 0 0 0 .15rem rgba(13,110,253,0.18);
+    box-shadow: 0 0 0 .15rem rgba(44, 95, 45, 0.18);
 }
 
 /* ========================================
@@ -112,7 +179,7 @@ body.dark-mode .form-control:focus {
    ======================================== */
 
 .badge.bg-danger { 
-    background: #dc3545;
+    background: var(--danger);
 }
 
 body.dark-mode .badge.bg-danger { 
@@ -140,22 +207,28 @@ body.dark-mode .text-muted {
    ======================================== */
 
 .app-footer { 
-    background: #ffffff; 
-    border-top: 1px solid rgba(0,0,0,0.06);
+    background: var(--gray-100);
+    border-top: 1px solid var(--gray-200);
 }
 
 .app-footer .footer-text { 
-    color: var(--muted);
+    color: var(--gray-500);
+    font-size: 0.875rem;
 }
 
 .app-footer .footer-link { 
-    color: var(--muted); 
+    color: var(--gray-500);
     text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.app-footer .footer-link:hover {
+    color: var(--accent-brown);
 }
 
 .footer-small { 
-    font-size: .9rem; 
-    color: var(--muted);
+    font-size: 0.8125rem;
+    color: var(--gray-500);
 }
 
 body.dark-mode .app-footer {

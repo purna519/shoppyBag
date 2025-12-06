@@ -1,0 +1,36 @@
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+
+@media (max-width: 992px) {
+    .auth-container {
+        flex-direction: column;
+    }
+    
+    .auth-visual {
+        padding: 2.5rem 1.25rem;
+        min-height: 280px;
+    }
+    
+    .auth-visual-title {
+        font-size: 1.75rem;
+    }
+    
+    .auth-form-section {
+        padding: 2.5rem 2rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .auth-visual-title {
+        font-size: 1.5rem;
+    }
+    
+    .auth-title {
+        font-size: 1.5rem;
+    }
+}

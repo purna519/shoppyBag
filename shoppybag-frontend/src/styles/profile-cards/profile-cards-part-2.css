@@ -1,0 +1,70 @@
+    display: flex;
+    align-items: center;
+    color: #64748b;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.detail-label-fashion i {
+    color: var(--accent-brown);
+    font-size: 1.1rem;
+    margin-right: 8px;
+}
+
+.detail-value-fashion {
+    font-weight: 700;
+    color: #1e293b;
+    font-size: 0.95rem;
+}
+
+.change-password-btn-fashion {
+    padding: 10px 24px;
+    background: transparent;
+    border: 2px solid var(--accent-brown);
+    color: var(--accent-brown);
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.change-password-btn-fashion:hover {
+    background: var(--accent-brown);
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+/* Addresses Header */
+.addresses-header-fashion,
+.orders-header-fashion {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+}
+
+.addresses-header-fashion h4,
+.orders-header-fashion h4 {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: #1a202c;
+    margin: 0;
+}
+
+.add-address-btn-fashion {
+    padding: 12px 28px;
+    background: var(--accent-brown);
+    color: #ffffff;
+    border: none;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 16px rgba(102, 126, 234, 0.3);
+    cursor: pointer;
+}
+

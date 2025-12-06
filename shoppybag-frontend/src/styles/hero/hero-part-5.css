@@ -1,0 +1,70 @@
+}
+
+.trending-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 36px;
+    position: relative;
+    z-index: 1;
+}
+
+.trending-text h3 {
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 10px;
+}
+
+.trending-text p {
+    font-size: 1rem;
+    color: rgba(255,255,255,0.9);
+}
+
+.trending-tag {
+    display: inline-block;
+    padding: 6px 16px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 50px;
+    color: #ffffff;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    margin-bottom: 16px;
+}
+
+.btn-trending {
+    padding: 14px 36px;
+    background: #ffffff;
+    color: var(--accent-dark-brown);
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.btn-trending:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+}
+
+/* Products Grid */
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 28px;
+}
+
+.loading-state,
+.empty-state {
+    text-align: center;
+    padding: 70px 20px;
+    color: var(--gray-500);
+}
+
+.empty-state i {
+    font-size: 3.5rem;

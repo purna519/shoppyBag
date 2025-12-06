@@ -1,0 +1,42 @@
+/* ========================================
+   FOOTER
+   ======================================== */
+
+.app-footer { 
+    background: var(--gray-100);
+    border-top: 1px solid var(--gray-200);
+}
+
+.app-footer .footer-text { 
+    color: var(--gray-500);
+    font-size: 0.875rem;
+}
+
+.app-footer .footer-link { 
+    color: var(--gray-500);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.app-footer .footer-link:hover {
+    color: var(--accent-brown);
+}
+
+.footer-small { 
+    font-size: 0.8125rem;
+    color: var(--gray-500);
+}
+
+body.dark-mode .app-footer {
+    background: #071022; 
+    border-top-color: rgba(255,255,255,0.04);
+}
+
+body.dark-mode .app-footer .footer-text { 
+    color: rgba(230,238,248,0.7);
+}
+
+body.dark-mode .app-footer .footer-link { 
+    color: rgba(230,238,248,0.75);
+}
+

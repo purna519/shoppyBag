@@ -1,0 +1,70 @@
+    flex: 1;
+}
+
+.payment-icon {
+    font-size: 1.5rem;
+}
+
+.payment-name {
+    font-weight: 600;
+    color: var(--gray-900);
+    font-size: 0.9375rem;
+    margin-bottom: 0.25rem;
+}
+
+.payment-desc {
+    color: var(--gray-500);
+    font-size: 0.8125rem;
+}
+
+.payment-card .check-icon {
+    color: var(--accent-brown);
+    font-size: 1.125rem;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.payment-card.selected .check-icon {
+    opacity: 1;
+}
+
+/* Order Summary */
+.summary-card {
+    position: sticky;
+    top: 90px;
+}
+
+.summary-card h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--gray-900);
+    margin-bottom: 1.25rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 0.875rem;
+}
+
+.order-items {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+}
+
+.summary-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.summary-item img {
+    width: 50px;
+    height: 50px;
+    border-radius: 4px;
+    object-fit: cover;
+    background: var(--gray-100);
+    border: 1px solid var(--gray-200);
+}
+
+.item-details {
+    flex: 1;

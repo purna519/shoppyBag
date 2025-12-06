@@ -1,0 +1,28 @@
+}
+
+body.dark-mode .form-header-fashion h5 {
+    color: #f1f5f9;
+}
+
+body.dark-mode .form-label-fashion {
+    color: #94a3b8;
+}
+
+body.dark-mode .form-input-fashion {
+    background: rgba(15, 23, 42, 0.5);
+    border-color: rgba(51, 65, 85, 0.8);
+    color: #f1f5f9;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .form-row-fashion {
+        flex-direction: column;
+        gap: 0;
+    }
+    
+    .address-form-fashion,
+    .password-change-card-fashion {
+        padding: 24px;
+    }
+}

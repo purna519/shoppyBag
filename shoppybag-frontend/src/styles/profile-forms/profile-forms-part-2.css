@@ -1,0 +1,70 @@
+    color: #475569;
+    font-size: 0.9rem;
+}
+
+.form-input-fashion {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    background: rgba(248, 250, 252, 0.5);
+    font-weight: 500;
+    color: #1e293b;
+}
+
+.form-input-fashion:focus {
+    border-color: var(--accent-brown);
+    background: #ffffff;
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+}
+
+.form-actions-fashion {
+    display: flex;
+    gap: 16px;
+    margin-top: 32px;
+}
+
+.btn-save-fashion {
+    padding: 12px 32px;
+    background: var(--accent-brown);
+    color: #ffffff;
+    border: none;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    box-shadow: 0 6px 16px rgba(102, 126, 234, 0.3);
+}
+
+.btn-save-fashion:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+}
+
+.btn-cancel-fashion {
+    padding: 12px 28px;
+    background: transparent;
+    color: #64748b;
+    border: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.btn-cancel-fashion:hover {
+    color: #1e293b;
+}
+
+/* Dark Mode */
+body.dark-mode .address-form-fashion,
+body.dark-mode .password-change-card-fashion {
+    background: rgba(30, 41, 59, 0.8);
+    border-color: rgba(51, 65, 85, 0.6);

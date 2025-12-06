@@ -1,0 +1,126 @@
+/* Fashion-Forward Responsive Design */
+
+@media (max-width: 1200px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .admin-content {
+    padding: var(--space-lg);
+  }
+}
+
+@media (max-width: 1024px) {
+  .admin-sidebar {
+    transform: translateX(-100%);
+  }
+  
+  .admin-sidebar.open {
+    transform: translateX(0);
+  }
+  
+  .admin-content {
+    margin-left: 0;
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-dashboard h1,
+  .page-header h1 {
+    font-size: 2rem;
+    letter-spacing: 1px;
+  }
+  
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-md);
+  }
+  
+  .stat-card {
+    padding: var(--space-lg);
+  }
+  
+  .stat-value {
+    font-size: 2rem !important;
+  }
+  
+  .search-bar input {
+    min-width: 100%;
+    padding-right: var(--space-lg);
+  }
+  
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-md);
+  }
+  
+  table {
+    font-size: 0.8125rem;
+  }
+  
+  thead th,
+  tbody td {
+    padding: var(--space-md);
+  }
+  
+  thead th:first-child,
+  tbody td:first-child {
+    padding-left: var(--space-md);
+  }
+  
+  thead th:last-child,
+  tbody td:last-child {
+    padding-right: var(--space-md);
+  }
+  
+  .modal-content {
+    padding: var(--space-lg);
+  }
+  
+  .modal-content h2 {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-header {
+    padding: var(--space-md);
+  }
+  
+  .admin-content {
+    padding: var(--space-md);
+  }
+  
+  .admin-dashboard h1,
+  .page-header h1 {
+    font-size: 1.75rem;
+  }
+  
+  .stat-icon {
+    width: 60px;
+    height: 60px;
+    font-size: 1.5rem;
+  }
+  
+  .stat-value {
+    font-size: 1.75rem !important;
+  }
+  
+  .btn-icon {
+    width: 36px;
+    height: 36px;
+    font-size: 0.875rem;
+  }
+  
+  .filter-group {
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+  }
+  
+  .filter-group select {
+    width: 100%;
+  }
+}

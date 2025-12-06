@@ -1,0 +1,12 @@
+/* ========================================
+   Z-INDEX HIERARCHY
+   ======================================== */
+
+.navbar {
+    z-index: 1030 !important;
+}
+
+.dropdown-menu {
+    z-index: 1200 !important;
+}
+

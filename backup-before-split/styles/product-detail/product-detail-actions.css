@@ -1,0 +1,72 @@
+/* Product Detail - Action buttons */
+
+
+.related-product-price {
+    font-size: 0.9rem;
+    font-weight: 800;
+    background: var(--accent-brown);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Dark Mode */
+body.dark-mode .gallery-main {
+    background: #1e293b;
+}
+
+body.dark-mode .product-title,
+body.dark-mode .section-title {
+    color: #f1f5f9;
+}
+
+body.dark-mode .size-btn {
+    background: #1e293b;
+    border-color: #334155;
+    color: #94a3b8;
+}
+
+body.dark-mode .size-btn:hover {
+    border-color: var(--accent-brown);
+    color: var(--accent-brown);
+}
+
+body.dark-mode .quantity-selector {
+    background: #1e293b;
+    border-color: #334155;
+}
+
+body.dark-mode .qty-btn {
+    background: #0f172a;
+}
+
+body.dark-mode .related-product-card {
+    background: #1e293b;
+    border-color: #334155;
+}
+
+body.dark-mode .related-product-name {
+    color: #f1f5f9;
+}
+
+body.dark-mode .mini-cart-sidebar {
+    background: rgba(30, 41, 59, 0.98);
+    border-color: rgba(184, 152, 95, 0.15);
+}
+
+body.dark-mode .mini-cart-item {
+    background: #1e293b;
+}
+
+body.dark-mode .mini-cart-total {
+    background: #0f172a;
+    border-color: #334155;
+}
+
+body.dark-mode .mini-btn-cart {
+    background: #1e293b;
+    border-color: #334155;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {

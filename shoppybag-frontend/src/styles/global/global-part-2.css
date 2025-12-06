@@ -1,0 +1,28 @@
+/* ========================================
+   CARDS
+   ======================================== */
+
+.card { 
+    border-radius: 8px;
+    background: var(--primary-white);
+    border: 1px solid var(--gray-200);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.card-img-top { 
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+body.dark-mode .card {
+    background: #071428;
+    color: #e6eef8;
+    border-color: rgba(255,255,255,0.04);
+}
+
+body.dark-mode .card .card-body,
+body.dark-mode .card p,
+body.dark-mode .card h6 {
+    color: #e6eef8;
+}
+

@@ -1,0 +1,70 @@
+/* ========================================
+   NAVBAR / HEADER STYLES - Premium Brown/White
+   ======================================== */
+
+/* Main Navbar Container */
+.app-navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: var(--primary-white) !important;
+    border-bottom: 1px solid var(--gray-200);
+    padding: 12px 0 !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    transition: all 0.2s ease;
+}
+
+/* Brand Name - Minimalist & Clean */
+.app-navbar .navbar-brand {
+    font-size: 1.25rem !important;
+    font-weight: 600 !important;
+    color: var(--gray-900) !important;
+    letter-spacing: 0.5px;
+    margin-right: 36px !important;
+    padding: 0 !important;
+    transition: all 0.2s ease;
+}
+
+.app-navbar .navbar-brand:hover {
+    color: var(--accent-brown) !important;
+}
+
+/* Search Form Container */
+.search-form {
+    position: relative;
+    width: 100%;
+    max-width: 480px;
+}
+
+/* Search Input - More Compact */
+.search-input {
+    border-radius: 20px !important;
+    padding: 8px 16px !important;
+    padding-right: 44px !important;
+    border: 1px solid var(--gray-200) !important;
+    background: var(--gray-100) !important;
+    font-size: 0.875rem !important;
+    transition: all 0.2s ease;
+    box-shadow: none !important;
+    color: var(--gray-900) !important;
+    height: 38px;
+}
+
+.search-input::placeholder {
+    color: var(--gray-500);
+    font-size: 0.875rem;
+}
+
+.search-input:focus {
+    background: var(--primary-white) !important;
+    border-color: var(--accent-brown) !important;
+    box-shadow: 0 0 0 3px rgba(44, 95, 45, 0.1) !important;
+    outline: none !important;
+}
+
+/* Search Button - Brown Theme */
+.search-btn {
+    position: absolute;
+    right: 4px;
+    top: 50%;
+    transform: translateY(-50%);

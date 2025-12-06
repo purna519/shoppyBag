@@ -1,0 +1,70 @@
+/* Mini Cart Sidebar - Premium Fashion Ecommerce */
+.mini-cart-sidebar {
+    position: sticky;
+    top: 15px;
+    align-self: start;
+    width: 320px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.98) 100%);
+    backdrop-filter: blur(20px);
+    border-radius: 16px;
+    border: 1px solid rgba(102, 126, 234, 0.12);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06), 0 2px 8px rgba(102, 126, 234, 0.08);
+    overflow: hidden;
+}
+
+.mini-cart-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 18px 20px;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
+    border-bottom: 1px solid rgba(102, 126, 234, 0.15);
+    position: relative;
+    overflow: hidden;
+}
+
+.mini-cart-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+}
+
+.mini-cart-header i {
+    font-size: 1.3rem;
+    color: #667eea;
+}
+
+.mini-cart-header h3 {
+    flex: 1;
+    font-size: 1rem;
+    font-weight: 900;
+    color: #1e293b;
+    margin: 0;
+    letter-spacing: -0.3px;
+    text-transform: uppercase;
+}
+
+.cart-count {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    font-size: 0.7rem;
+    font-weight: 900;
+    padding: 4px 10px;
+    border-radius: 100px;
+    min-width: 26px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+.mini-cart-empty {
+    padding: 50px 24px;
+    text-align: center;
+    color: #94a3b8;
+}
+
+.mini-cart-empty i {
+    font-size: 3rem;

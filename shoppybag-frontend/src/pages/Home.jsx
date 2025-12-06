@@ -30,14 +30,14 @@ export default function Home(){
   },[])
 
   const categories = [
-    { name: 'Men Clothing', icon: 'bi-person', gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' },
-    { name: 'Women Clothing', icon: 'bi-gender-female', gradient: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)' },
-    { name: 'Footwear', icon: 'bi-shop', gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)' },
-    { name: 'Watches', icon: 'bi-watch', gradient: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)' },
-    { name: 'Jewelry', icon: 'bi-gem', gradient: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)' },
-    { name: 'Bags', icon: 'bi-handbag', gradient: 'linear-gradient(135deg, #30cfd0 0%, #330867 100%)' },
-    { name: 'Cosmetics', icon: 'bi-stars', gradient: 'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)' },
-    { name: 'Accessories', icon: 'bi-sunglasses', gradient: 'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)' }
+    { name: 'Men Clothing', icon: 'bi-person', gradient: 'linear-gradient(135deg, #2C5F2D 0%, #1E4620 100%)' },
+    { name: 'Women Clothing', icon: 'bi-gender-female', gradient: 'linear-gradient(135deg, #6B8E4E 0%, #4A6741 100%)' },
+    { name: 'Footwear', icon: 'bi-shop', gradient: 'linear-gradient(135deg, #1E4620 0%, #4A6741 100%)' },
+    { name: 'Watches', icon: 'bi-watch', gradient: 'linear-gradient(135deg, #2C5F2D 0%, #6B8E4E 100%)' },
+    { name: 'Jewelry', icon: 'bi-gem', gradient: 'linear-gradient(135deg, #97BC62 0%, #2C5F2D 100%)' },
+    { name: 'Bags', icon: 'bi-handbag', gradient: 'linear-gradient(135deg, #4A6741 0%, #3A5235 100%)' },
+    { name: 'Cosmetics', icon: 'bi-stars', gradient: 'linear-gradient(135deg, #B4D88A 0%, #2C5F2D 100%)' },
+    { name: 'Accessories', icon: 'bi-sunglasses', gradient: 'linear-gradient(135deg, #7FA956 0%, #1E4620 100%)' }
   ]
 
   return (

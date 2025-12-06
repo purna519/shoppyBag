@@ -1,0 +1,70 @@
+    border-top: 1px solid rgba(102, 126, 234, 0.08);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+
+.order-total-fashion {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
+    padding: 10px 16px;
+    border-radius: 12px;
+}
+
+.order-total-label {
+    font-weight: 700;
+    color: #475569;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.order-total-amount {
+    font-size: 1.1rem;
+    font-weight: 900;
+    background: var(--accent-brown);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -0.5px;
+}
+
+.view-order-btn-fashion {
+    padding: 8px 20px;
+    background: var(--accent-brown);
+    border: none;
+    color: #ffffff;
+    border-radius: 100px;
+    font-weight: 800;
+    font-size: 0.75rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.25);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    white-space: nowrap;
+}
+
+.view-order-btn-fashion:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.35);
+}
+
+.view-order-btn-fashion:active {
+    transform: translateY(0);
+}
+
+/* Empty State */
+.empty-orders-fashion {
+    text-align: center;
+    padding: 60px 30px;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+    border-radius: 20px;
+    border: 2px dashed rgba(102, 126, 234, 0.2);
+}
+
+.empty-orders-fashion .empty-icon-fashion {
+    font-size: 4rem;

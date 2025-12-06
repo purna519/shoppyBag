@@ -1,0 +1,70 @@
+/* Profile Orders Styles - Premium Fashion */
+
+.orders-header-fashion {
+    margin-bottom: 24px;
+}
+
+.orders-header-fashion h4 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    background: var(--accent-brown);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin: 0;
+    letter-spacing: -0.5px;
+}
+
+.orders-grid-fashion {
+    display: grid;
+    gap: 16px;
+}
+
+.order-card-fashion {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 16px;
+    padding: 20px;
+    border: 1px solid rgba(102, 126, 234, 0.1);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+    position: relative;
+    overflow: hidden;
+}
+
+.order-card-fashion::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--accent-brown);
+    transform: scaleX(0);
+    transition: transform 0.4s ease;
+}
+
+.order-card-fashion:hover {
+    border-color: rgba(102, 126, 234, 0.2);
+    box-shadow: 0 8px 24px rgba(102, 126, 234, 0.08);
+    transform: translateY(-3px);
+}
+
+.order-card-fashion:hover::before {
+    transform: scaleX(1);
+}
+
+.order-header-fashion {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(102, 126, 234, 0.08);
+}
+
+.order-id-fashion {
+    font-size: 0.95rem;
+    color: #1e293b;
+    font-weight: 800;
+    margin-bottom: 4px;

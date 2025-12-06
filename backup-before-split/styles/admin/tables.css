@@ -1,0 +1,148 @@
+/* Premium Fashion Tables */
+
+.table-container {
+  background: var(--white-pure);
+  border: var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead {
+  background: linear-gradient(to bottom, var(--beige-light) 0%, var(--beige) 100%);
+  border-bottom: var(--border);
+}
+
+thead th {
+  padding: 1.125rem 1.5rem;
+  text-align: left;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  font-size: 0.6875rem;
+  color: var(--text-medium);
+  white-space: nowrap;
+}
+
+thead th:first-child {
+  padding-left: 2rem;
+}
+
+thead th:last-child {
+  padding-right: 2rem;
+}
+
+tbody tr {
+  border-bottom: var(--border-light);
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+tbody tr:hover {
+  background: var(--cream);
+}
+
+tbody tr:last-child {
+  border-bottom: none;
+}
+
+tbody td {
+  padding: 1.25rem 1.5rem;
+  color: var(--text-dark);
+  font-size: 0.9375rem;
+  vertical-align: middle;
+}
+
+tbody td:first-child {
+  font-weight: 600;
+  padding-left: 2rem;
+}
+
+tbody td:last-child {
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+thead th:last-child,
+tbody td:last-child {
+  text-align: left;
+}
+
+
+.status-badge {
+  padding: 0.5rem 1rem;
+  border-radius: 16px;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.status-badge.pending { 
+  background: var(--warning-bg); 
+  color: var(--warning);
+  border: 1px solid #fde68a;
+}
+
+.status-badge.paid,
+.status-badge.success { 
+  background: var(--success-bg);
+  color: var(--success);
+  border: 1px solid #86efac;
+}
+
+.status-badge.confirmed_cod,
+.status-badge.pending_cod { 
+  background: var(--info-bg); 
+  color: var(--info);
+  border: 1px solid #7dd3fc;
+}
+
+.status-badge.processing { 
+  background: var(--warning-bg); 
+  color: var(--warning);
+  border: 1px solid #fde68a;
+}
+
+.status-badge.shipped { 
+  background: var(--info-bg); 
+  color: var(--info);
+  border: 1px solid #7dd3fc;
+}
+
+.status-badge.delivered { 
+  background: var(--success-bg); 
+  color: var(--success);
+  border: 1px solid #86efac;
+}
+
+.status-badge.cancelled,
+.status-badge.failed { 
+  background: var(--error-bg); 
+  color: var(--error);
+  border: 1px solid #fca5a5;
+}
+
+@media (max-width: 768px) {
+  thead th,
+  tbody td {
+    padding: 1rem 1.25rem;
+    font-size: 0.875rem;
+  }
+  
+  thead th:first-child,
+  tbody td:first-child {
+    padding-left: 1.25rem;
+  }
+  
+  thead th:last-child,
+  tbody td:last-child {
+    padding-right: 1.25rem;
+  }
+}

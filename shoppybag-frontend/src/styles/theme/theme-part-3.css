@@ -1,0 +1,9 @@
+
+.theme-toggle-wrapper:hover .theme-toggle-slider {
+    box-shadow: 0 4px 12px rgba(44, 95, 45, 0.4);
+}
+
+body.dark-mode .theme-toggle-wrapper:hover .theme-toggle-slider {
+    box-shadow: 0 4px 12px rgba(45, 55, 72, 0.6);
+}
+

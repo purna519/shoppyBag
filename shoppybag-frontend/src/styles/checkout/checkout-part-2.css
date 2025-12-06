@@ -1,0 +1,70 @@
+
+/* Address Section */
+.address-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.address-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 1rem;
+    border: 1px solid var(--gray-200);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.address-card input[type="radio"] {
+    margin-top: 0.25rem;
+    cursor: pointer;
+    accent-color: var(--accent-brown);
+}
+
+.address-card.selected {
+    border-color: var(--accent-brown);
+    background: rgba(44, 95, 45, 0.05);
+    box-shadow: 0 0 0 1px var(--accent-brown);
+}
+
+.address-content {
+    flex: 1;
+}
+
+.address-name {
+    font-weight: 600;
+    color: var(--gray-900);
+    font-size: 0.9375rem;
+    margin-bottom: 0.375rem;
+}
+
+.address-text {
+    color: var(--gray-600);
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    margin-bottom: 0.25rem;
+}
+
+.address-phone {
+    color: var(--gray-500);
+    font-size: 0.8125rem;
+    font-weight: 500;
+}
+
+.address-card .check-icon {
+    color: var(--accent-brown);
+    font-size: 1.125rem;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.address-card.selected .check-icon {
+    opacity: 1;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 2.5rem 1.25rem;

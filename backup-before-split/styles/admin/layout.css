@@ -1,0 +1,148 @@
+/* Premium Fashion Header & Layout */
+
+.admin-header {
+  background: var(--white-pure);
+  padding: 1.25rem 2.5rem;
+  border-bottom: var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: var(--shadow-sm);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  height: 72px;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.header-left h1 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  letter-spacing: 0;
+  margin: 0;
+}
+
+.admin-header-right {
+  display: flex;
+  align-items: center;
+  gap: 1.75rem;
+}
+
+.admin-name {
+  font-size: 0.875rem;
+  color: var(--text-medium);
+  font-weight: 500;
+  letter-spacing: 0.2px;
+}
+
+.logout-btn {
+  background: var(--text-dark);
+  color: var(--white-pure);
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 0.8125rem;
+  text-transform: uppercase;
+  height: 40px;
+}
+
+.logout-btn:hover {
+  background: var(--gold-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(154, 123, 79, 0.4);
+}
+
+.admin-main {
+  width: 100%;
+  max-width: calc(100vw - 240px);
+  margin-left: 240px;
+  box-sizing: border-box;
+}
+
+.admin-content {
+  padding: 3rem 2.5rem;
+  width: 100%;
+  min-height: 100vh;
+  background: var(--cream);
+  box-sizing: border-box;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2.5rem;
+  padding-bottom: 1.75rem;
+  border-bottom: var(--border);
+}
+
+.page-header h1 {
+  font-size: 2rem;
+  font-weight: 500;
+  margin: 0;
+  color: var(--text-dark);
+  letter-spacing: -0.03em;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.recent-orders h2,
+.stats-header h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1.75rem;
+  color: var(--text-dark);
+  letter-spacing: -0.01em;
+}
+
+@media (max-width: 1024px) {
+  .admin-main {
+    margin-left: 0;
+    width: 100%;
+    max-width: 100vw;
+  }
+  
+  .admin-content {
+    padding: 2rem 1.5rem;
+  }
+  
+  .admin-header {
+    padding: 1rem 1.5rem;
+    height: 64px;
+  }
+  
+  .admin-header-right {
+    gap: 1rem;
+  }
+  
+  .admin-name {
+    display: none;
+  }
+  
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+  
+  .header-actions {
+    width: 100%;
+  }
+}

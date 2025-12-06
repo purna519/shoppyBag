@@ -1,0 +1,45 @@
+    margin-bottom: 18px;
+    opacity: 0.5;
+}
+
+/* Luxury Features */
+.luxury-features {
+    background: var(--gray-100);
+    padding: 70px 0;
+}
+
+.feature-luxury-item {
+    text-align: center;
+    padding: 36px 18px;
+}
+
+.feature-icon-luxury {
+    width: 70px;
+    height: 70px;
+    margin: 0 auto 20px;
+    background: var(--accent-brown);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(44, 95, 45, 0.3);
+}
+
+.feature-icon-luxury i {
+    font-size: 1.75rem;
+    color: #ffffff;
+}
+
+.feature-luxury-item h6 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--gray-900);
+    margin-bottom: 8px;
+}
+
+.feature-luxury-item p {
+    color: var(--gray-600);
+    margin: 0;
+    font-size: 0.9375rem;
+}
+

@@ -1,0 +1,63 @@
+/* ========================================
+   THEME TOGGLE
+   ======================================== */
+
+.theme-toggle { 
+    display: inline-flex; 
+    align-items: center; 
+    justify-content: center; 
+    width: 36px; 
+    height: 36px; 
+    border-radius: 6px; 
+    transition: transform .2s ease, background-color .2s ease; 
+    background: transparent; 
+    border: 1px solid rgba(0,0,0,0.06);
+}
+
+.theme-toggle .icon { 
+    position: relative; 
+    width: 18px; 
+    height: 18px; 
+    display: inline-block;
+}
+
+.theme-toggle .icon .sun, 
+.theme-toggle .icon .moon { 
+    position: absolute; 
+    left: 0; 
+    top: 0; 
+    right: 0; 
+    bottom: 0; 
+    transform-origin: center center; 
+    transition: transform .25s ease, opacity .2s ease;
+}
+
+.theme-toggle .icon .sun { 
+    transform: scale(.6) rotate(-20deg); 
+    opacity: 0;
+}
+
+.theme-toggle .icon .moon { 
+    transform: scale(1) rotate(0deg); 
+    opacity: 1;
+}
+
+.theme-toggle.toggled { 
+    background: rgba(13,110,253,0.08); 
+    border-color: rgba(13,110,253,0.18);
+}
+
+.theme-toggle.toggled .icon .sun { 
+    transform: scale(1) rotate(0deg); 
+    opacity: 1;
+}
+
+.theme-toggle.toggled .icon .moon { 
+    transform: scale(.6) rotate(20deg); 
+    opacity: 0;
+}
+
+body.dark-mode .theme-toggle { 
+    border-color: rgba(255,255,255,0.06); 
+    background: rgba(255,255,255,0.02);
+}

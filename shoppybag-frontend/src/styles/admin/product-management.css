@@ -93,7 +93,7 @@
 .add-product-modal textarea:focus {
   outline: none;
   border-color: var(--gold);
-  box-shadow: 0 0 0 3px rgba(184, 152, 95, 0.1);
+  box-shadow: 0 0 0 3px rgba(44, 95, 45, 0.1);
 }
 
 .add-product-modal input::placeholder,

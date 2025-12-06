@@ -1,0 +1,284 @@
+/* ========================================
+   NAVBAR / HEADER STYLES - Premium Brown/White
+   ======================================== */
+
+/* Main Navbar Container */
+.app-navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: var(--primary-white) !important;
+    border-bottom: 1px solid var(--gray-200);
+    padding: 12px 0 !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    transition: all 0.2s ease;
+}
+
+/* Brand Name - Minimalist & Clean */
+.app-navbar .navbar-brand {
+    font-size: 1.25rem !important;
+    font-weight: 600 !important;
+    color: var(--gray-900) !important;
+    letter-spacing: 0.5px;
+    margin-right: 36px !important;
+    padding: 0 !important;
+    transition: all 0.2s ease;
+}
+
+.app-navbar .navbar-brand:hover {
+    color: var(--accent-brown) !important;
+}
+
+/* Search Form Container */
+.search-form {
+    position: relative;
+    width: 100%;
+    max-width: 480px;
+}
+
+/* Search Input - More Compact */
+.search-input {
+    border-radius: 20px !important;
+    padding: 8px 16px !important;
+    padding-right: 44px !important;
+    border: 1px solid var(--gray-200) !important;
+    background: var(--gray-100) !important;
+    font-size: 0.875rem !important;
+    transition: all 0.2s ease;
+    box-shadow: none !important;
+    color: var(--gray-900) !important;
+    height: 38px;
+}
+
+.search-input::placeholder {
+    color: var(--gray-500);
+    font-size: 0.875rem;
+}
+
+.search-input:focus {
+    background: var(--primary-white) !important;
+    border-color: var(--accent-brown) !important;
+    box-shadow: 0 0 0 3px rgba(184, 152, 95, 0.1) !important;
+    outline: none !important;
+}
+
+/* Search Button - Brown Theme */
+.search-btn {
+    position: absolute;
+    right: 4px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: none;
+    background: var(--accent-brown);
+    color: var(--primary-white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    padding: 0;
+    cursor: pointer;
+    font-size: 0.875rem;
+}
+
+.search-btn:hover {
+    background: var(--accent-dark-brown);
+}
+
+/* Icon Buttons (Cart, Theme, User) - Smaller, Cleaner */
+.nav-icon-btn {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    color: var(--gray-700);
+    text-decoration: none;
+    transition: all 0.2s ease;
+    background: transparent;
+    border: none;
+    position: relative;
+}
+
+.nav-icon-btn i {
+    font-size: 1.1rem !important;
+}
+
+.nav-icon-btn:hover {
+    background: var(--gray-100);
+    color: var(--accent-brown);
+}
+
+.nav-icon-btn.active {
+    background: rgba(184, 152, 95, 0.1);
+    color: var(--accent-brown);
+}
+
+/* Cart Badge - Brown */
+.nav-icon-btn .badge.bg-danger {
+    background: var(--accent-brown) !important;
+    font-size: 0.6rem;
+    padding: 0.2em 0.35em;
+}
+
+/* Login Button - Brown Theme */
+.btn-primary.rounded-pill {
+    padding: 8px 24px !important;
+    font-weight: 500 !important;
+    font-size: 0.9375rem !important;
+    box-shadow: 0 2px 6px rgba(184, 152, 95, 0.25);
+    transition: all 0.2s ease !important;
+    border-radius: 4px !important;
+}
+
+.btn-primary.rounded-pill:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(184, 152, 95, 0.35);
+}
+
+/* ========================================
+   DROPDOWN MENU - Minimal Design
+   ======================================== */
+
+.dropdown-menu {
+    border: 1px solid var(--gray-200) !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;
+    border-radius: 8px !important;
+    padding: 0.5rem !important;
+}
+
+.dropdown-item {
+    font-size: 0.875rem;
+    color: var(--gray-700);
+    padding: 0.5rem 0.875rem;
+    transition: all 0.2s ease;
+}
+
+.dropdown-item:hover {
+    background: var(--gray-100);
+    color: var(--accent-brown);
+}
+
+.dropdown-item.text-danger {
+    color: var(--danger) !important;
+}
+
+.dropdown-item.text-danger:hover {
+    background: rgba(220, 38, 38, 0.1);
+}
+
+.dropdown-item i {
+    font-size: 0.875rem;
+}
+
+/* ========================================
+   DARK MODE NAVBAR
+   ======================================== */
+
+body.dark-mode .app-navbar {
+    background: #0b1220 !important;
+    border-bottom-color: rgba(255,255,255,0.08);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+}
+
+body.dark-mode .app-navbar .navbar-brand {
+    color: #e6eef8 !important;
+}
+
+body.dark-mode .app-navbar .navbar-brand:hover {
+    color: var(--accent-brown) !important;
+}
+
+body.dark-mode .search-input {
+    background: #1a2639 !important;
+    border-color: rgba(255,255,255,0.1) !important;
+    color: #e6eef8 !important;
+}
+
+body.dark-mode .search-input::placeholder {
+    color: #9ca3af;
+}
+
+body.dark-mode .search-input:focus {
+    background: #0f1826 !important;
+    border-color: var(--accent-brown) !important;
+    box-shadow: 0 0 0 3px rgba(184, 152, 95, 0.2) !important;
+}
+
+body.dark-mode .search-btn {
+    background: var(--accent-brown);
+    color: #ffffff;
+}
+
+body.dark-mode .search-btn:hover {
+    background: var(--accent-dark-brown);
+}
+
+body.dark-mode .nav-icon-btn {
+    color: #e6eef8;
+}
+
+body.dark-mode .nav-icon-btn:hover {
+    background: rgba(255,255,255,0.08);
+    color: var(--accent-brown);
+}
+
+body.dark-mode .nav-icon-btn.active {
+    background: rgba(184, 152, 95, 0.2);
+    color: var(--accent-brown);
+}
+
+body.dark-mode .theme-toggle-slider {
+    border-color: rgba(255,255,255,0.1);
+}
+
+body.dark-mode .dropdown-menu {
+    background: #0b1220 !important;
+    border-color: rgba(255,255,255,0.1) !important;
+}
+
+body.dark-mode .dropdown-item {
+    color: #e6eef8;
+}
+
+body.dark-mode .dropdown-item:hover {
+    background: rgba(255,255,255,0.08);
+    color: var(--accent-brown);
+}
+
+/* ========================================
+   Z-INDEX HIERARCHY
+   ======================================== */
+
+.navbar {
+    z-index: 1030 !important;
+}
+
+.dropdown-menu {
+    z-index: 1200 !important;
+}
+
+/* ========================================
+   RESPONSIVE ADJUSTMENTS
+   ======================================== */
+
+@media (max-width: 992px) {
+    .app-navbar {
+        padding: 10px 0 !important;
+    }
+    
+    .app-navbar .navbar-brand {
+        font-size: 1.125rem !important;
+    }
+    
+    .search-form {
+        margin: 1rem 0;
+    }
+    
+    .navbar-nav {
+        gap: 0.5rem !important;
+    }
+}

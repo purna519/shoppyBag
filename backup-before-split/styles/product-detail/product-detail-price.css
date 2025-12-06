@@ -1,0 +1,72 @@
+/* Product Detail - Price display and discount */
+
+}
+
+.qty-btn {
+    width: 20px;
+    height: 20px;
+    border: none;
+    background: white;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: var(--accent-brown);
+    font-size: 0.75rem;
+}
+
+.qty-btn:hover:not(:disabled) {
+    background: var(--accent-brown);
+    color: white;
+}
+
+.qty-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.qty-value {
+    min-width: 22px;
+    text-align: center;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+/* Stock Warning */
+.stock-warning {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 5px 8px;
+    background: linear-gradient(135deg, rgba(251, 191, 36, 0.1) 0%, rgba(245, 158, 11, 0.1) 100%);
+    border-left: 2px solid #fbbf24;
+    border-radius: 4px;
+    color: #92400e;
+    font-weight: 600;
+    font-size: 0.65rem;
+    margin-bottom: 10px;
+}
+
+/* Actions */
+.product-actions {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 12px;
+}
+
+.btn-add-to-cart {
+    flex: 1;
+    padding: 8px 16px;
+    background: var(--accent-brown);
+    border: none;
+    color: white;
+    border-radius: 100px;
+    font-weight: 800;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 3px 12px rgba(184, 152, 95, 0.3);
+    display: flex;

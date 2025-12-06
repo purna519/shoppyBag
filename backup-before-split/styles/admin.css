@@ -1,0 +1,9 @@
+/* Main Admin Styles - Import All Modules */
+@import './admin/base.css';
+@import './admin/sidebar.css';
+@import './admin/layout.css';
+@import './admin/cards.css';
+@import './admin/tables.css';
+@import './admin/forms.css';
+@import './admin/modals.css';
+@import './admin/responsive.css';

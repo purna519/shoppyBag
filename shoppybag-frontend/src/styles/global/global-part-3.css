@@ -1,0 +1,60 @@
+/* ========================================
+   BUTTONS
+   ======================================== */
+
+.btn { 
+    transition: all .2s ease;
+    font-weight: 500;
+    border-radius: 4px;
+    font-size: 0.9375rem;
+}
+
+.btn-primary { 
+    background: var(--accent-brown);
+    border-color: var(--accent-brown);
+    color: var(--primary-white);
+}
+
+.btn-primary:hover {
+    background: var(--accent-dark-brown);
+    border-color: var(--accent-dark-brown);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(44, 95, 45, 0.3);
+}
+
+body.dark-mode .btn-primary { 
+    background: var(--accent-brown);
+    border-color: var(--accent-brown);
+}
+
+.btn-outline-secondary { 
+    color: var(--gray-700);
+    border-color: var(--gray-200);
+}
+
+.btn-outline-secondary:hover {
+    background: var(--gray-100);
+    border-color: var(--gray-300);
+}
+
+body.dark-mode .btn-outline-secondary { 
+    color: rgba(230,238,248,0.9); 
+    border-color: rgba(255,255,255,0.06);
+}
+
+.btn-outline-primary {
+    color: var(--accent-brown);
+    border-color: var(--accent-brown);
+}
+
+.btn-outline-primary:hover {
+    background: var(--accent-brown);
+    border-color: var(--accent-brown);
+    color: var(--primary-white);
+}
+
+body.dark-mode .btn-outline-primary {
+    color: var(--accent-brown);
+    border-color: rgba(44, 95, 45, 0.25);
+}
+

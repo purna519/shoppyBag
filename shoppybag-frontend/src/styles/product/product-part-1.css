@@ -1,0 +1,70 @@
+/* ========================================
+   PRODUCT CARD STYLES - Brown/White Theme
+   ======================================== */
+
+.product-card-wrapper {
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.product-card {
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+    background: var(--primary-white);
+    border: 1px solid var(--gray-200);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.product-card:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;
+    transform: translateY(-2px);
+    border-color: var(--accent-brown);
+}
+
+.product-card-img {
+    height: 240px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.product-card:hover .product-card-img {
+    transform: scale(1.03);
+}
+
+/* Product Card Body */
+.product-card .card-body {
+    padding: 1.25rem;
+}
+
+.product-card .card-title {
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--gray-900);
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
+}
+
+.product-card .card-text {
+    font-size: 0.8125rem;
+    color: var(--gray-500);
+    margin-bottom: 0.75rem;
+}
+
+/* Price Styling - Brown */
+.product-card .product-price {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--accent-brown);
+    margin-bottom: 0.75rem;
+}
+
+.product-card .product-price-old {
+    font-size: 0.875rem;
+    color: var(--gray-400);
+    text-decoration: line-through;
+    margin-left: 0.5rem;
+}
+
+/* Badge Styling - Brown */
+.product-card .badge {
+    font-size: 0.6875rem;

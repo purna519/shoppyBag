@@ -1,0 +1,48 @@
+
+body.dark-mode .success-message p {
+    color: #6ee7b7;
+}
+
+body.dark-mode .failure-message {
+    background: rgba(239, 68, 68, 0.1);
+}
+
+body.dark-mode .failure-message .message-title {
+    color: #fca5a5;
+}
+
+body.dark-mode .failure-message ul {
+    color: #fecaca;
+}
+
+body.dark-mode .help-text {
+    color: #94a3b8;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .payment-success-card,
+    .payment-failure-card {
+        padding: 32px 24px;
+    }
+
+    .checkmark-circle,
+    .cross-circle {
+        width: 100px;
+        height: 100px;
+    }
+
+    .checkmark-circle i,
+    .cross-circle i {
+        font-size: 3rem;
+    }
+
+    .payment-success-card h1,
+    .payment-failure-card h1 {
+        font-size: 2rem;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+    }
+}

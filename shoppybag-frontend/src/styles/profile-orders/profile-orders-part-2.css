@@ -1,0 +1,70 @@
+    letter-spacing: -0.3px;
+}
+
+.order-date-fashion {
+    font-size: 0.8rem;
+    color: #64748b;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.order-date-fashion::before {
+    content: '📅';
+    font-size: 0.75rem;
+}
+
+.order-status-badge {
+    padding: 6px 14px;
+    border-radius: 100px;
+    font-size: 0.65rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.order-status-badge.pending {
+    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+    color: #ffffff;
+    box-shadow: 0 2px 10px rgba(251, 191, 36, 0.3);
+}
+
+.order-status-badge.completed {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: #ffffff;
+    box-shadow: 0 2px 10px rgba(16, 185, 129, 0.3);
+}
+
+.order-status-badge.delivered {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    color: #ffffff;
+    box-shadow: 0 2px 10px rgba(59, 130, 246, 0.3);
+}
+
+.order-status-badge.cancelled {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    color: #ffffff;
+    box-shadow: 0 2px 10px rgba(239, 68, 68, 0.3);
+}
+
+.order-items-fashion {
+    margin: 12px 0;
+    background: rgba(248, 250, 252, 0.5);
+    border-radius: 12px;
+    padding: 10px;
+}
+
+.order-item-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(102, 126, 234, 0.05);
+}
+
+.order-item-row:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}

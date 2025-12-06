@@ -1,0 +1,70 @@
+    background: var(--gray-100);
+    border-radius: 6px;
+    border: 1px dashed var(--gray-300);
+}
+
+.empty-state i {
+    font-size: 2.5rem;
+    color: var(--gray-300);
+    margin-bottom: 0.75rem;
+}
+
+.empty-state p {
+    color: var(--gray-500);
+    margin-bottom: 1rem;
+    font-size: 0.9375rem;
+}
+
+.btn-add {
+    padding: 0.625rem 1.5rem;
+    background: var(--accent-brown);
+    border: none;
+    color: var(--primary-white);
+    border-radius: 4px;
+    font-weight: 500;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 6px rgba(44, 95, 45, 0.25);
+}
+
+.btn-add:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(44, 95, 45, 0.35);
+    background: var(--accent-dark-brown);
+}
+
+/* Payment Options */
+.payment-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.payment-card {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem;
+    border: 1px solid var(--gray-200);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.payment-card input[type="radio"] {
+    cursor: pointer;
+    accent-color: var(--accent-brown);
+}
+
+.payment-card.selected {
+    border-color: var(--accent-brown);
+    background: rgba(44, 95, 45, 0.05);
+    box-shadow: 0 0 0 1px var(--accent-brown);
+}
+
+.payment-content {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;

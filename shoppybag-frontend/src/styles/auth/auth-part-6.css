@@ -1,0 +1,43 @@
+/* ========================================
+   DARK MODE
+   ======================================== */
+
+body.dark-mode .auth-container {
+    background: #0b1220;
+}
+
+body.dark-mode .auth-form-section {
+    background: #0b1220;
+}
+
+body.dark-mode .auth-title {
+    color: #e6eef8;
+}
+
+body.dark-mode .auth-subtitle {
+    color: #9ca3af;
+}
+
+body.dark-mode .form-label {
+    color: #d1d5db;
+}
+
+body.dark-mode .form-input {
+    background: #1a2639;
+    border-color: rgba(255,255,255,0.1);
+    color: #e6eef8;
+}
+
+body.dark-mode .form-input:focus {
+    background: #0f1826;
+    border-color: var(--accent-brown);
+}
+
+body.dark-mode .input-icon {
+    color: #9ca3af;
+}
+
+body.dark-mode .auth-footer-text {
+    color: #9ca3af;
+}
+

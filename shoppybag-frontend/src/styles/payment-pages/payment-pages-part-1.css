@@ -1,0 +1,70 @@
+/* Payment Success/Failure Pages - Premium Fashion */
+
+.payment-page-container {
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.03) 0%, rgba(118, 75, 162, 0.03) 100%);
+}
+
+.payment-success-card,
+.payment-failure-card {
+    max-width: 600px;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(20px);
+    border-radius: 24px;
+    padding: 48px 40px;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(102, 126, 234, 0.1);
+}
+
+/* Success Animation */
+.success-animation {
+    position: relative;
+    margin-bottom: 32px;
+}
+
+.checkmark-circle {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 20px;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 12px 36px rgba(16, 185, 129, 0.3);
+    animation: scaleIn 0.5s ease-out;
+}
+
+.checkmark-circle i {
+    font-size: 4rem;
+    color: #ffffff;
+    font-weight: 800;
+    animation: checkmarkDraw 0.6s ease-in 0.3s;
+    animation-fill-mode: both;
+}
+
+@keyframes scaleIn {
+    from {
+        transform: scale(0);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes checkmarkDraw {
+    from {
+        transform: scale(0) rotate(-45deg);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;

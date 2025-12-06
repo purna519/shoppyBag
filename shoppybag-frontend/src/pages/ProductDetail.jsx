@@ -215,7 +215,7 @@ export default function ProductDetail(){
             </div>
 
             {/* Stock Status */}
-            {stock > 0 && stock <= 10 && (
+            {stock > 0 && stock < 20 && (
               <div className="stock-warning">
                 <i className="bi bi-exclamation-circle"></i>
                 Only {stock} left in stock!

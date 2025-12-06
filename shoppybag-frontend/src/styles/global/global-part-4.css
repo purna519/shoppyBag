@@ -1,0 +1,25 @@
+/* ========================================
+   FORM CONTROLS
+   ======================================== */
+
+.form-control {
+    border-radius: 4px;
+    border: 1px solid var(--gray-200);
+    font-size: 0.9375rem;
+}
+
+.form-control:focus { 
+    box-shadow: 0 0 0 .15rem rgba(44, 95, 45, 0.12);
+    border-color: var(--accent-brown);
+}
+
+body.dark-mode .form-control {
+    background: #0b1624;
+    color: #e6eef8;
+    border-color: rgba(255,255,255,0.06);
+}
+
+body.dark-mode .form-control:focus { 
+    box-shadow: 0 0 0 .15rem rgba(44, 95, 45, 0.18);
+}
+

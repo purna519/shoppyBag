@@ -1,0 +1,11 @@
+        padding: 16px;
+        gap: 12px;
+    }
+    
+    .sidebar-item-fashion {
+        margin-bottom: 0;
+        white-space: nowrap;
+        width: auto;
+        flex-shrink: 0;
+    }
+}

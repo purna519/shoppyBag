@@ -1,0 +1,21 @@
+/* ========================================
+   RESPONSIVE ADJUSTMENTS
+   ======================================== */
+
+@media (max-width: 992px) {
+    .app-navbar {
+        padding: 10px 0 !important;
+    }
+    
+    .app-navbar .navbar-brand {
+        font-size: 1.125rem !important;
+    }
+    
+    .search-form {
+        margin: 1rem 0;
+    }
+    
+    .navbar-nav {
+        gap: 0.5rem !important;
+    }
+}

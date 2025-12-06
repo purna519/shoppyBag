@@ -1,0 +1,70 @@
+
+.stat-value {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 4px;
+}
+
+.stat-label {
+    font-size: 0.8125rem;
+    color: rgba(255,255,255,0.85);
+    font-weight: 500;
+}
+
+.stat-divider {
+    width: 1px;
+    height: 40px;
+    background: rgba(255,255,255,0.25);
+}
+
+/* Sections */
+.section-categories,
+.section-products {
+    padding: 80px 0;
+}
+
+.section-header {
+    margin-bottom: 48px;
+}
+
+.section-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--gray-900);
+    margin-bottom: 12px;
+    letter-spacing: -0.5px;
+}
+
+.section-subtitle {
+    font-size: 1rem;
+    color: var(--gray-500);
+    max-width: 580px;
+    margin: 0 auto;
+}
+
+/* Luxury Category Cards */
+.luxury-category-card {
+    display: block;
+    text-decoration: none;
+    height: 100%;
+}
+
+.category-card-inner {
+    padding: 50px 28px;
+    border-radius: 12px;
+    text-align: center;
+    position: relative;
+    transition: all 0.3s ease;
+    height: 100%;
+    overflow: hidden;
+}
+
+.category-card-inner::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.15);

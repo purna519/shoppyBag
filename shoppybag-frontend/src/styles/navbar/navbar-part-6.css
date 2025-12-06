@@ -1,0 +1,5 @@
+body.dark-mode .dropdown-item:hover {
+    background: rgba(255,255,255,0.08);
+    color: var(--accent-brown);
+}
+
