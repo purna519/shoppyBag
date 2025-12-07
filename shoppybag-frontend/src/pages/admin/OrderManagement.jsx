@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../../styles/admin/order-management.css';
+import '../../styles/admin/order-management-enhancements.css';
 
 const OrderManagement = () => {
   const [orders, setOrders] = useState([]);
@@ -40,6 +41,32 @@ const OrderManagement = () => {
     } catch (error) {
       console.error('Error fetching data:', error);
       setLoading(false);
+    }
+  };
+
+  const updateDeliveryStatus = async (orderId, newStatus) => {
+    try {
+      const token = localStorage.getItem('authToken');
+      console.log('Updating delivery status:', { orderId, newStatus });
+      
+      const response = await axios.put(
+        `http://localhost:8080/api/orders/${orderId}/delivery-status`,
+        { deliveryStatus: newStatus },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      
+      console.log('Update response:', response.data);
+      
+      // Update local state
+      setOrders(orders.map(order => 
+        order.id === orderId ? { ...order, deliveryStatus: newStatus } : order
+      ));
+      
+      alert(`Delivery status updated to ${newStatus}`);
+    } catch (error) {
+      console.error('Error updating delivery status:', error);
+      console.error('Error response:', error.response?.data);
+      alert('Failed to update delivery status: ' + (error.response?.data?.message || error.message));
     }
   };
 
@@ -102,7 +129,8 @@ const OrderManagement = () => {
               <th>Order ID</th>
               <th>User Email</th>
               <th>Total Amount</th>
-              <th>Status</th>
+              <th>Payment Status</th>
+              <th>Delivery Status</th>
               <th>Date</th>
               <th>Actions</th>
             </tr>
@@ -115,6 +143,18 @@ const OrderManagement = () => {
                   <td>{usersMap[order.userId]?.email || 'Unknown'}</td>
                   <td>₹{order.totalAmount}</td>
                   <td><span className={`status-badge ${order.status?.toLowerCase()}`}>{order.status}</span></td>
+                  <td>
+                    <select 
+                      className="delivery-status-select"
+                      value={order.deliveryStatus || 'PENDING'}
+                      onChange={(e) => updateDeliveryStatus(order.id, e.target.value)}
+                    >
+                      <option value="PENDING">Pending</option>
+                      <option value="SHIPPED">Shipped</option>
+                      <option value="DELIVERED">Delivered</option>
+                      <option value="CANCELLED">Cancelled</option>
+                    </select>
+                  </td>
                   <td>{order.orderDate ? new Date(order.orderDate).toLocaleDateString() : 'N/A'}</td>
                   <td className="actions-cell">
                     <button
@@ -162,9 +202,16 @@ const OrderManagement = () => {
               </div>
 
               <div className="info-row">
-                <span className="label">Status</span>
+                <span className="label">Payment Status</span>
                 <span className={`value status-badge ${selectedOrder.status?.toLowerCase()}`}>
                   {selectedOrder.status}
+                </span>
+              </div>
+
+              <div className="info-row">
+                <span className="label">Delivery Status</span>
+                <span className={`value status-badge delivery-${selectedOrder.deliveryStatus?.toLowerCase()}`}>
+                  {selectedOrder.deliveryStatus || 'PENDING'}
                 </span>
               </div>
 

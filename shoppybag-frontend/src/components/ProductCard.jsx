@@ -5,18 +5,14 @@ export default function ProductCard({ p }) {
   const navigate = useNavigate()
   
   // Handle multiple image format possibilities from backend
-  // Handle multiple image format possibilities from backend
   let rawUrl = (p.productImage && p.productImage[0]?.imageUrl) || 
                    (p.images && p.images[0]) || 
                    (p.productImages && p.productImages[0]?.imageUrl) ||
                    (p.image) || 
                    '/placeholder.png'
   
-  // Heuristic: If it looks like an Amazon image ID but has no protocol, prepend Amazon URL
-  // Otherwise if it's just a filename, assume it might be local or broken, fallback to placeholder on error
   let imageUrl = rawUrl
   if (rawUrl && !rawUrl.startsWith('http') && !rawUrl.startsWith('/')) {
-     // Check if it looks like an amazon image file
      if (rawUrl.match(/^[A-Za-z0-9\-_]+\.jpg$/)) {
         imageUrl = `https://m.media-amazon.com/images/I/${rawUrl}`
      }
@@ -45,8 +41,9 @@ export default function ProductCard({ p }) {
         <div className="card-body d-flex flex-column">
           <h6 className="card-title text-truncate" title={p.name}>{p.name}</h6>
           <p className="text-muted small mb-2">{p.brand || 'Brand'} • {p.category || 'Category'}</p>
+          
           <div className="mt-auto d-flex justify-content-between align-items-center">
-            <div className="fw-bold product-price">₹{p.price || 'N/A'}</div>
+            <div className="fw-bold product-price">₹{p.price ? p.price.toLocaleString('en-IN') : 'N/A'}</div>
             <button 
                 className="btn btn-sm btn-primary" 
                 onClick={(e) => { e.stopPropagation(); handleNavigate() }}

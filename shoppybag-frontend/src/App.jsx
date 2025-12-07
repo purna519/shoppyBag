@@ -17,6 +17,7 @@ import Dashboard from './pages/admin/Dashboard'
 import UserManagement from './pages/admin/UserManagement'
 import ProductManagement from './pages/admin/ProductManagement'
 import OrderManagement from './pages/admin/OrderManagement'
+import ReviewManagement from './pages/admin/ReviewManagement'
 
 export default function App(){
   return (
@@ -39,6 +40,7 @@ export default function App(){
           <Route path="users" element={<UserManagement />} />
           <Route path="products" element={<ProductManagement />} />
           <Route path="orders" element={<OrderManagement />} />
+          <Route path="reviews" element={<ReviewManagement />} />
         </Route>
       </Routes>
     </div>

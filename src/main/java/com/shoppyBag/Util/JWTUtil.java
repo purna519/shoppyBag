@@ -4,6 +4,9 @@ import java.security.Key;
 import java.util.Date;
 import java.util.function.Function;
 
+import jakarta.annotation.PostConstruct;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.shoppyBag.Entity.Users;
@@ -17,17 +20,19 @@ import io.jsonwebtoken.security.Keys;
 @Component
 public class JWTUtil {
 
-    // IMPORTANT: Load this from an environment variable or secure vault in a real application.
-    private final String secretKey = "ShoppyBagSECRETKEYForJWTShoppyBagSECRETKEYForJWT_A_Very_Long_Secure_String";
+    @Value("${JWT_SECRET}")
+    private String secretKey;
     
-    private final Key key = Keys.hmacShaKeyFor(secretKey.getBytes());
+    private Key key;
     
-    // 1 hour validity for the Access Token
-    private final long expTime = 3600_000;
+    @Value("${JWT_EXPIRATION}")
+    private long expTime;
 
-    /**
-     * Generates a new Access Token for a user.
-     */
+    @PostConstruct
+    public void init() {
+        this.key = Keys.hmacShaKeyFor(secretKey.getBytes());
+    }
+
     public String generateToken(Users user) {
         return Jwts.builder()
                 .setSubject(user.getEmail())
@@ -39,9 +44,7 @@ public class JWTUtil {
                 .compact();
     }
 
-    /**
-     * Validates a JWT by checking its signature and expiration time.
-     */
+
     public boolean validateToken(String token) {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
@@ -60,31 +63,22 @@ public class JWTUtil {
                  .getBody();
     }
     
-    /**
-     * Extracts a specific claim from the token.
-     */
     public <T> T getClaim(String token, Function<Claims, T> claimsResolver) {
         Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
     }
 
-    /**
-     * Extracts the user's email (Subject) from the token.
-     */
+  
     public String extractEmail(String token) {
         return getClaim(token, Claims::getSubject);
     }
     
-    /**
-     * Extracts the user's role from the token's custom claim.
-     */
+   
     public String extractRole(String token) {
         return getClaim(token, claims -> claims.get("role", String.class));
     }
     
-    /**
-     * Checks if the token has expired.
-     */
+
      public boolean isTokenExpired(String token) {
          try {
              return extractAllClaims(token).getExpiration().before(new Date());

@@ -73,6 +73,7 @@ public class OrderService {
         dto.setId(order.getId());
         dto.setTotalAmount(order.getTotalAmount());
         dto.setStatus(order.getStatus());
+        dto.setDeliveryStatus(order.getDeliveryStatus()); // ✅ Added delivery status mapping
         dto.setUserId(order.getUsers().getId());
         dto.setOrderDate(order.getOrderdate());
 
@@ -171,6 +172,21 @@ public class OrderService {
 
         return new ApiResponse<>("Success", "Order succesfully fetched", convertToOrderDTO(order));
 
+    }
+    
+    public ApiResponse<?> updateDeliveryStatus(Long orderId, String deliveryStatus, String token) {
+        Users admin = regularFunctions.validateAdminToken(token);
+        if (admin == null) {
+            return new ApiResponse<>("Error", "Admin access required", null);
+        }
+        
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new RuntimeException("Order not found"));
+        
+        order.setDeliveryStatus(deliveryStatus);
+        orderRepository.save(order);
+        
+        return new ApiResponse<>("Success", "Delivery status updated successfully", convertToOrderDTO(order));
     }
 
 }

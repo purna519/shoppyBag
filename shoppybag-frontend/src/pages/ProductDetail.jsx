@@ -2,11 +2,15 @@ import React, { useEffect, useState, useContext } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
+import StarRating from '../components/StarRating'
+import ReviewList from '../components/ReviewList'
+import ReviewForm from '../components/ReviewForm'
 import api from '../api/api'
 import CartContext from '../Context/CartContext'
 import { ToastContext } from '../Context/ToastContext'
 import '../styles/product-detail.css'
 import '../styles/mini-cart.css'
+import '../styles/reviews.css'
 
 export default function ProductDetail(){
   const { id } = useParams()
@@ -15,6 +19,9 @@ export default function ProductDetail(){
   const [selectedVariant, setSelectedVariant] = useState(null)
   const [quantity, setQuantity] = useState(1)
   const [relatedProducts, setRelatedProducts] = useState([])
+  const [reviews, setReviews] = useState([])
+  const [ratingStats, setRatingStats] = useState(null)
+  const [userToken, setUserToken] = useState(null)
   const { cart, addToCart } = useContext(CartContext)
   const { showToast } = useContext(ToastContext)
   const [mainIndex, setMainIndex] = useState(0)
@@ -72,6 +79,33 @@ export default function ProductDetail(){
       console.error('Failed to load related products', err)
     }
   }
+
+  const loadReviews = async () => {
+    try {
+      const res = await api.get(`/api/reviews/product/${id}`)
+      setReviews(res.data || [])
+    } catch (err) {
+      console.error('Failed to load reviews', err)
+    }
+  }
+
+  const loadRatingStats = async () => {
+    try{
+      const res = await api.get(`/api/reviews/product/${id}/stats`)
+      setRatingStats(res.data)
+    } catch (err) {
+      console.error('Failed to load rating stats', err)
+    }
+  }
+
+  useEffect(() => {
+    const token = localStorage.getItem('token')
+    setUserToken(token)
+    if (id) {
+      loadReviews()
+      loadRatingStats()
+    }
+  }, [id])
 
   useEffect(()=>{ setMainIndex(0) }, [product])
 
@@ -312,6 +346,50 @@ export default function ProductDetail(){
                 </div>
               </>
             )}
+          </div>
+        </div>
+
+        {/* Reviews Section */}
+        <div className="reviews-section">
+          <div className="container">
+            <div className="reviews-header">
+              <h2 className="section-title">Customer Reviews</h2>
+              {ratingStats && ratingStats.averageRating > 0 && (
+                <div className="rating-summary">
+                  <div className="rating-average">{ratingStats.averageRating.toFixed(1)}</div>
+                  <div>
+                    <StarRating rating={ratingStats.averageRating} size="1.2rem" />
+                    <div className="text-muted small mt-1">
+                      Based on {ratingStats.reviewCount} review{ratingStats.reviewCount !== 1 ? 's' : ''}
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div className="row">
+              <div className="col-md-8">
+                <ReviewList reviews={reviews} />
+              </div>
+              <div className="col-md-4">
+                {userToken ? (
+                  <div className="review-form-wrapper">
+                    <ReviewForm 
+                      productId={id} 
+                      onReviewSubmitted={() => {
+                        loadReviews()
+                        loadRatingStats()
+                      }} 
+                    />
+                  </div>
+                ) : (
+                  <div className="text-center p-4 bg-light rounded">
+                    <i className="bi bi-person-circle" style={{ fontSize: '3rem', opacity: 0.3 }}></i>
+                    <p className="mt-3">Please <Link to="/login">login</Link> to write a review</p>
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
         </div>
 

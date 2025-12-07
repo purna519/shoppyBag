@@ -32,4 +32,10 @@ public class OrderController {
     public ApiResponse<?> getOrderById(@PathVariable Long orderId, @RequestHeader("Authorization") String token) {
         return orderService.getOrderById(orderId, token);
     }
+    
+    @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping("/{orderId}/delivery-status")
+    public ApiResponse<?> updateDeliveryStatus(@PathVariable Long orderId, @RequestBody com.shoppyBag.DTO.UpdateDeliveryStatusRequest request, @RequestHeader("Authorization") String token) {
+        return orderService.updateDeliveryStatus(orderId, request.getDeliveryStatus(), token);
+    }
 }

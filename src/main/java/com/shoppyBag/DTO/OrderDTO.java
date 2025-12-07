@@ -10,6 +10,7 @@ public class OrderDTO {
     private Long id;
     private double totalAmount;
     private String status;
+    private String deliveryStatus; // PENDING, SHIPPED, DELIVERED, CANCELLED
     private Long userId; 
     private LocalDateTime orderDate;
     

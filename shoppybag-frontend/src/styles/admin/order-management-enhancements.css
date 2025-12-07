@@ -1,0 +1,71 @@
+/* Delivery Status Dropdown Styling */
+.delivery-status-select {
+  padding: 0.5rem 0.75rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 6px;
+  background: white;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #1e293b;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 120px;
+}
+
+.delivery-status-select:hover {
+  border-color: #2C5F2D;
+}
+
+.delivery-status-select:focus {
+  outline: none;
+  border-color: #2C5F2D;
+  box-shadow: 0 0 0 3px rgba(44, 95, 45, 0.1);
+}
+
+.delivery-status-select option {
+  padding: 0.5rem;
+}
+
+/* Status Badge Enhancements for Delivery Status */
+.status-badge.delivery-pending {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.status-badge.delivery-shipped {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.status-badge.delivery-delivered {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.status-badge.delivery-cancelled {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+/* Table Column Alignment */
+.order-management-table table th:nth-child(1) { width: 80px; text-align: center; }
+.order-management-table table th:nth-child(2) { width: 200px; }
+.order-management-table table th:nth-child(3) { width: 120px; text-align: right; }
+.order-management-table table th:nth-child(4) { width: 130px; text-align: center; }
+.order-management-table table th:nth-child(5) { width: 150px; text-align: center; }
+.order-management-table table th:nth-child(6) { width: 120px; text-align: center; }
+.order-management-table table th:nth-child(7) { width: 140px; text-align: center; }
+
+.order-management-table table td:nth-child(1) { text-align: center; font-weight: 600; }
+.order-management-table table td:nth-child(3) { text-align: right; font-weight: 600; }
+.order-management-table table td:nth-child(4) { text-align: center; }
+.order-management-table table td:nth-child(5) { text-align: center; }
+.order-management-table table td:nth-child(6) { text-align: center; }
+.order-management-table table td:nth-child(7) { text-align: center; }
+
+/* Ensure proper spacing and padding */
+.order-management-table table td,
+.order-management-table table th {
+  padding: 1rem 0.75rem;
+  vertical-align: middle;
+}

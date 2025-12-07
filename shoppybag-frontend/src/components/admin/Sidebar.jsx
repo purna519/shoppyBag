@@ -34,6 +34,12 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
               <span>Orders</span>
             </NavLink>
           </li>
+          <li>
+            <NavLink to="/admin/reviews" className={({ isActive }) => isActive ? 'active' : ''}>
+              <i className="fas fa-star"></i>
+              <span>Reviews</span>
+            </NavLink>
+          </li>
         </ul>
       </nav>
     </aside>

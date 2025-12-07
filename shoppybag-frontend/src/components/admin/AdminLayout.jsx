@@ -23,6 +23,7 @@ const AdminLayout = () => {
     if (path.includes('/admin/users')) return 'User Management';
     if (path.includes('/admin/products')) return 'Product Management';
     if (path.includes('/admin/orders')) return 'Order Management';
+    if (path.includes('/admin/reviews')) return 'Review Management';
     return 'Admin Panel';
   };
 

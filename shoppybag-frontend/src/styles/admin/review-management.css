@@ -1,0 +1,107 @@
+/* Review Management Specific Styles */
+.product-cell,
+.user-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.product-cell strong,
+.user-cell strong {
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.product-cell small,
+.user-cell small {
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+.comment-cell {
+  max-width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 0.375rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.status-badge.approved {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.status-badge.pending {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.btn-approve {
+  background: #10b981 !important;
+  color: white !important;
+}
+
+.btn-approve:hover {
+  background: #059669 !important;
+}
+
+.filter-tabs {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.filter-tab {
+  padding: 0.625rem 1.25rem;
+  border: 2px solid #e2e8f0;
+  background: white;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.filter-tab:hover {
+  border-color: #2C5F2D;
+  color: #2C5F2D;
+}
+
+.filter-tab.active {
+  background: #2C5F2D;
+  border-color: #2C5F2D;
+  color: white;
+}
+
+.filter-tab .badge {
+  background: rgba(255, 255, 255, 0.3);
+  padding: 0.125rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: #64748b;
+}
+
+.empty-state h3 {
+  margin-top: 1rem;
+  color: #1e293b;
+  font-weight: 600;
+}
+
+.empty-state p {
+  margin-top: 0.5rem;
+}

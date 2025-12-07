@@ -36,6 +36,9 @@ public class Order {
 
     @Column(name="status",nullable=false)
     private String status;
+    
+    @Column(name="delivery_status", nullable=false)
+    private String deliveryStatus = "PENDING"; // PENDING, SHIPPED, DELIVERED, CANCELLED
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="users_id",nullable=false)

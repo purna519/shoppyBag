@@ -1,20 +1,16 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
+import ReviewForm from '../ReviewForm'
 import '../../styles/profile-orders.css'
+import '../../styles/order-detail-modal.css'
 
 function OrdersView({orders}) {
-  // Debug: Log the orders data to see the actual structure
-  React.useEffect(() => {
-    console.log('Orders received:', orders)
-    if (orders.length > 0) {
-      console.log('First order structure:', orders[0])
-      console.log('First order keys:', Object.keys(orders[0]))
-    }
-  }, [orders])
+  const [selectedOrder, setSelectedOrder] = useState(null)
+  const [reviewingProduct, setReviewingProduct] = useState(null)
 
   const formatDate = (dateStr) => {
     if (!dateStr) return 'Date unavailable'
     
-    // Handle timestamp format from DB: "2025-12-01 16:43:54.437411"
     try {
       const date = new Date(dateStr)
       if (isNaN(date.getTime())) return 'Invalid Date'
@@ -25,13 +21,17 @@ function OrdersView({orders}) {
         day: 'numeric' 
       })
     } catch (error) {
-      console.error('Date parsing error:', error)
       return 'Invalid Date'
     }
   }
 
   const formatPrice = (price) => {
     return `₹${price?.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+  }
+
+  const handleReviewSubmitted = () => {
+    setReviewingProduct(null)
+    alert('Thank you! Your review has been submitted and will appear after admin approval.')
   }
 
   return (
@@ -99,12 +99,110 @@ function OrdersView({orders}) {
                   <span className="order-total-label">Total:</span>
                   <span className="order-total-amount">{formatPrice(order.totalAmount)}</span>
                 </div>
-                <button className="view-order-btn-fashion">
+                <button 
+                  className="view-order-btn-fashion"
+                  onClick={() => setSelectedOrder(order)}
+                >
                   View Details
                 </button>
               </div>
             </div>
           ))}
+        </div>
+      )}
+
+      {/* Order Details Modal */}
+      {selectedOrder && (
+        <div className="modal-overlay" onClick={() => setSelectedOrder(null)}>
+          <div className="order-detail-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header-custom">
+              <h4>Order Details</h4>
+              <button className="close-modal-btn" onClick={() => setSelectedOrder(null)}>
+                <i className="bi bi-x-lg"></i>
+              </button>
+            </div>
+
+            <div className="modal-body-custom">
+              <div className="order-info-section">
+                <div className="info-row">
+                  <span className="info-label">Order Date:</span>
+                  <span>{formatDate(selectedOrder.orderDate)}</span>
+                </div>
+                <div className="info-row">
+                  <span className="info-label">Payment Status:</span>
+                  <span className={`order-status-badge ${selectedOrder.status?.toLowerCase()}`}>
+                    {selectedOrder.status}
+                  </span>
+                </div>
+                <div className="info-row">
+                  <span className="info-label">Delivery Status:</span>
+                  <span className={`order-status-badge delivery-${selectedOrder.deliveryStatus?.toLowerCase()}`}>
+                    {selectedOrder.deliveryStatus || 'PENDING'}
+                  </span>
+                </div>
+                <div className="info-row">
+                  <span className="info-label">Total Amount:</span>
+                  <span className="fw-bold">{formatPrice(selectedOrder.totalAmount)}</span>
+                </div>
+              </div>
+
+              <h5 className="section-title-modal">Order Items</h5>
+              <div className="order-items-detail">
+                {selectedOrder.orderItems?.map((item, idx) => (
+                  <div key={idx} className="order-item-detail-card">
+                    <div className="item-detail-content">
+                      {item.productVariant?.imageUrl && (
+                        <img 
+                          src={item.productVariant.imageUrl} 
+                          alt={item.productVariant?.product?.name} 
+                          className="item-detail-image"
+                        />
+                      )}
+                      <div className="item-detail-info">
+                        <h6>{item.productVariant?.product?.name || 'Product'}</h6>
+                        <p className="text-muted small mb-1">
+                          {item.productVariant?.size && `Size: ${item.productVariant.size}`}
+                          {item.productVariant?.color && ` | Color: ${item.productVariant.color}`}
+                        </p>
+                        <p className="mb-0">Quantity: {item.quantity} × {formatPrice(item.price)}</p>
+                      </div>
+                    </div>
+                    
+                    {/* Review Button for Delivered Orders */}
+                    {selectedOrder.deliveryStatus === 'DELIVERED' && item.productVariant?.product?.id && (
+                      <button 
+                        className="btn btn-sm btn-outline-success mt-2"
+                        onClick={() => setReviewingProduct(item.productVariant.product)}
+                      >
+                        <i className="bi bi-star me-1"></i>
+                        Write a Review
+                      </button>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Review Modal */}
+      {reviewingProduct && (
+        <div className="modal-overlay" onClick={() => setReviewingProduct(null)}>
+          <div className="review-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header-custom">
+              <h4>Review {reviewingProduct.name}</h4>
+              <button className="close-modal-btn" onClick={() => setReviewingProduct(null)}>
+                <i className="bi bi-x-lg"></i>
+              </button>
+            </div>
+            <div className="modal-body-custom">
+              <ReviewForm 
+                productId={reviewingProduct.id} 
+                onReviewSubmitted={handleReviewSubmitted}
+              />
+            </div>
+          </div>
         </div>
       )}
     </div>
