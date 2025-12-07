@@ -6,7 +6,8 @@ import '../../styles/admin/order-management-enhancements.css';
 const OrderManagement = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [filterStatus, setFilterStatus] = useState('ALL');
+  const [filterPaymentStatus, setFilterPaymentStatus] = useState('ALL');
+  const [filterDeliveryStatus, setFilterDeliveryStatus] = useState('ALL');
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [usersMap, setUsersMap] = useState({}); // Map userId to user
@@ -95,9 +96,11 @@ const OrderManagement = () => {
     }
   };
 
-  const filteredOrders = filterStatus === 'ALL' 
-    ? orders 
-    : orders.filter(order => order.status === filterStatus);
+  const filteredOrders = orders.filter(order => {
+    const matchPayment = filterPaymentStatus === 'ALL' || order.status === filterPaymentStatus;
+    const matchDelivery = filterDeliveryStatus === 'ALL' || order.deliveryStatus === filterDeliveryStatus;
+    return matchPayment && matchDelivery;
+  });
 
   if (loading) {
     return <div className="loading-spinner">Loading orders...</div>;
@@ -108,17 +111,25 @@ const OrderManagement = () => {
       <div className="page-header">
         <h1>Order Management</h1>
         <div className="filter-group">
-          <label>Filter by Status:</label>
-          <select value={filterStatus} onChange={(e) => setFilterStatus(e.target.value)}>
-            <option value="ALL">All Orders</option>
-            <option value="Pending">Pending</option>
-            <option value="PAID">Paid</option>
-            <option value="CONFIRMED_COD">Confirmed COD</option>
-            <option value="PROCESSING">Processing</option>
-            <option value="SHIPPED">Shipped</option>
-            <option value="DELIVERED">Delivered</option>
-            <option value="CANCELLED">Cancelled</option>
-          </select>
+          <div>
+            <label>Payment Status:</label>
+            <select value={filterPaymentStatus} onChange={(e) => setFilterPaymentStatus(e.target.value)}>
+              <option value="ALL">All</option>
+              <option value="Pending">Pending</option>
+              <option value="PAID">Paid</option>
+              <option value="CONFIRMED_COD">COD</option>
+            </select>
+          </div>
+          <div>
+            <label>Delivery Status:</label>
+            <select value={filterDeliveryStatus} onChange={(e) => setFilterDeliveryStatus(e.target.value)}>
+              <option value="ALL">All</option>
+              <option value="PENDING">Pending</option>
+              <option value="SHIPPED">Shipped</option>
+              <option value="DELIVERED">Delivered</option>
+              <option value="CANCELLED">Cancelled</option>
+            </select>
+          </div>
         </div>
       </div>
 

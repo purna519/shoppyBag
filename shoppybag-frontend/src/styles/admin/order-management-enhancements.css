@@ -1,3 +1,47 @@
+/* Filter Group Styling */
+.filter-group {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.filter-group > div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.filter-group label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.filter-group select {
+  padding: 0.625rem 1rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  background: white;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #1e293b;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 160px;
+}
+
+.filter-group select:hover {
+  border-color: #cbd5e1;
+}
+
+.filter-group select:focus {
+  outline: none;
+  border-color: #2C5F2D;
+  box-shadow: 0 0 0 3px rgba(44, 95, 45, 0.1);
+}
+
 /* Delivery Status Dropdown Styling */
 .delivery-status-select {
   padding: 0.5rem 0.75rem;
