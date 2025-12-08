@@ -54,9 +54,6 @@ public class UsersService {
         
         Users user = userRepository.findByEmail(u);
 
-        // if (!passwordEncoder.matches(dto.getPassword(), u.getPasswordHash()))
-        //     return new ApiResponse<>("error", "Invalid credentials", null);
-
         String token = jwtUtil.generateToken(user);
         return new ApiResponse<>("success", "Login successful", token);
     }
