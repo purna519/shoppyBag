@@ -1,14 +1,14 @@
 /* Product Detail Page - Compact Amazon Style */
 
 .product-detail-container {
-    max-width: 1300px;
+    max-width: 1400px;
     margin: 0 auto;
     padding: 15px 20px;
 }
 
 .product-detail-grid {
     display: grid;
-    grid-template-columns: 350px 420px 320px;
+    grid-template-columns: 380px 550px 320px;
     gap: 30px;
     margin-bottom: 20px;
     justify-content: center;
@@ -213,6 +213,8 @@
     background: #f8fafc;
     border-radius: 4px;
     border: 1px solid #e2e8f0;
+    width: auto;
+    max-width: fit-content;
 }
 
 .qty-btn {

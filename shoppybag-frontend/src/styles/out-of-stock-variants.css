@@ -1,0 +1,42 @@
+/* Out of Stock Variant Styling */
+.size-btn.out-of-stock {
+    opacity: 0.4;
+    background: #f1f5f9;
+    color: #94a3b8;
+    cursor: not-allowed;
+    position: relative;
+}
+
+.size-btn.out-of-stock::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 10%;
+    right: 10%;
+    height: 2px;
+    background: #94a3b8;
+    transform: translateY(-50%) rotate(-15deg);
+}
+
+.size-btn.out-of-stock:hover {
+    transform: none;
+    box-shadow: none;
+    border-color: #cbd5e1;
+}
+
+.size-btn.out-of-stock.active {
+    opacity: 0.6;
+    border-color: #64748b;
+    background: #e2e8f0;
+}
+
+/* Dark mode support */
+body.dark-mode .size-btn.out-of-stock {
+    background: #1e293b;
+    color: #475569;
+    border-color: #334155;
+}
+
+body.dark-mode .size-btn.out-of-stock::after {
+    background: #475569;
+}

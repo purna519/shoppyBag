@@ -190,3 +190,99 @@
     margin-top: 2rem;
   }
 }
+
+/* =============== Dark Mode Support =============== */
+body.dark-mode .reviews-section {
+  background: #1a1f2e;
+}
+
+body.dark-mode .section-title {
+  color: #e2e8f0;
+}
+
+body.dark-mode .rating-summary {
+  background: #253047;
+  border-color: #334155;
+}
+
+body.dark-mode .rating-average {
+  color: #f59e0b;
+}
+
+body.dark-mode .text-muted {
+  color: #94a3b8 !important;
+}
+
+body.dark-mode .review-item {
+  background: #253047;
+  border-color: #334155;
+}
+
+body.dark-mode .review-header h5 {
+  color: #e2e8f0;
+}
+
+body.dark-mode .review-date {
+  color: #94a3b8;
+}
+
+body.dark-mode .review-text {
+  color: #cbd5e1;
+}
+
+body.dark-mode .verified-badge {
+  background: #065f46;
+  color: #10b981;
+}
+
+body.dark-mode .review-form-wrapper {
+  background: #253047;
+  border-color: #334155;
+}
+
+body.dark-mode .review-form-wrapper h3 {
+  color: #e2e8f0;
+}
+
+body.dark-mode .form-label {
+  color: #cbd5e1;
+}
+
+body.dark-mode .form-control {
+  background: #1a1f2e;
+  border-color: #334155;
+  color: #e2e8f0;
+}
+
+body.dark-mode .form-control:focus {
+  background: #1a1f2e;
+  border-color: #22c55e;
+  color: #e2e8f0;
+}
+
+body.dark-mode .form-control::placeholder {
+  color: #64748b;
+}
+
+body.dark-mode .bg-light {
+  background: #253047 !important;
+}
+
+body.dark-mode .text-center.p-4.bg-light.rounded {
+  background: #253047 !important;
+  color: #cbd5e1;
+}
+
+/* Additional Dark Mode for Review List */
+body.dark-mode .review-list,
+body.dark-mode .no-reviews-message {
+    background: #1e293b !important;
+    color: #cbd5e1 !important;
+}
+
+body.dark-mode .review-list .card,
+body.dark-mode .review-list .list-group-item {
+    background: #253047 !important;
+    border-color: #334155 !important;
+    color: #cbd5e1 !important;
+}

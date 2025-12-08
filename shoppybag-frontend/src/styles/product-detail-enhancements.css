@@ -1,0 +1,355 @@
+/* =============== Enhanced Rating Display with Star Breakdown =============== */
+.product-rating-enhanced {
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.rating-summary-inline {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+}
+
+.rating-summary-inline .rating-value {
+    font-size: 1.2rem;
+    font-weight: 900;
+    color: #1e293b;
+}
+
+.rating-summary-inline .rating-star {
+    font-size: 1.2rem;
+    color: #fbbf24;
+}
+
+.rating-summary-inline .rating-count,
+.rating-summary-inline .review-count {
+    font-size: 0.75rem;
+    color: #64748b;
+    font-weight: 600;
+}
+
+.rating-summary-inline .rating-separator {
+    font-size: 0.75rem;
+    color: #cbd5e1;
+}
+
+.rating-breakdown {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 12px;
+    background: #f8fafc;
+    border-radius: 8px;
+}
+
+.rating-bar-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.rating-bar-row .star-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #1e293b;
+    min-width: 12px;
+}
+
+.rating-bar-row .star-icon {
+    font-size: 0.7rem;
+    color: #fbbf24;
+}
+
+.rating-bar {
+    flex: 1;
+    height: 6px;
+    background: #e2e8f0;
+    border-radius: 100px;
+    overflow: hidden;
+}
+
+.rating-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #fbbf24 0%, #f59e0b 100%);
+    border-radius: 100px;
+    transition: width 0.6s ease;
+}
+
+.rating-bar-row .rating-count-small {
+    font-size: 0.7rem;
+    color: #64748b;
+    min-width: 24px;
+    text-align: right;
+    font-weight: 600;
+}
+
+/* =============== Delivery Estimate =============== */
+.delivery-estimate {
+    padding: 12px;
+    background: linear-gradient(135deg, rgba(44, 95, 45, 0.05) 0%, rgba(30, 70, 32, 0.05) 100%);
+    border-radius: 8px;
+    margin-bottom: 16px;
+    border: 1px solid rgba(44, 95, 45, 0.1);
+}
+
+.delivery-info,
+.delivery-dates {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.75rem;
+}
+
+.delivery-info {
+    margin-bottom: 6px;
+    color: #1e293b;
+}
+
+.delivery-info i {
+    color: var(--accent-brown);
+    font-size: 0.9rem;
+}
+
+.delivery-info strong {
+    color: #ef4444;
+    font-weight: 800;
+}
+
+.delivery-dates {
+    color: #64748b;
+    font-weight: 600;
+}
+
+.delivery-dates i {
+    color: var(--accent-brown);
+    font-size: 0.9rem;
+}
+
+/* =============== Collapsible Sections =============== */
+.collapsible-section {
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.collapsible-section:hover {
+    border-color: rgba(44, 95, 45, 0.2);
+}
+
+.collapsible-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background: #f8fafc;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.2s ease;
+}
+
+.collapsible-header:hover {
+    background: rgba(44, 95, 45, 0.05);
+}
+
+.collapsible-header span {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #1e293b;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.collapsible-icon {
+    color: var(--accent-brown);
+    font-size: 0.9rem;
+    transition: transform 0.3s ease;
+}
+
+.collapsible-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease, padding 0.3s ease;
+    padding: 0 16px;
+}
+
+.collapsible-content.open {
+    max-height: 500px;
+    padding: 16px;
+}
+
+.collapsible-content p {
+    margin: 0;
+    font-size: 0.8rem;
+    line-height: 1.6;
+    color: #64748b;
+}
+
+/* Shipping Info Styles */
+.shipping-info {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.shipping-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.shipping-item i {
+    font-size: 1.2rem;
+    color: var(--accent-brown);
+    margin-top: 2px;
+}
+
+.shipping-item strong {
+    display: block;
+    font-size: 0.8rem;
+    color: #1e293b;
+    margin-bottom: 2px;
+}
+
+.shipping-item p {
+    font-size: 0.75rem;
+    color: #64748b;
+    margin: 0;
+}
+
+/* =============== Enhanced Size Selector =============== */
+.size-btn {
+    min-width: 40px;
+    height: 40px;
+    padding: 0 12px;
+    border: 2px solid #e2e8f0;
+    background: white;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: #64748b;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.size-btn:hover {
+    border-color: var(--accent-brown);
+    color: var(--accent-brown);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(44, 95, 45, 0.15);
+}
+
+.size-btn.active {
+    border-color: var(--accent-brown);
+    background: linear-gradient(135deg, rgba(44, 95, 45, 0.15) 0%, rgba(30, 70, 32, 0.15) 100%);
+    color: var(--accent-brown);
+    box-shadow: 0 2px 8px rgba(44, 95, 45, 0.2);
+}
+
+/* =============== Enhanced Wishlist Button =============== */
+.btn-wishlist {
+    width: 35px;
+    height: 35px;
+    border: 2px solid #e2e8f0;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+    color: #64748b;
+}
+
+.btn-wishlist:hover {
+    border-color: #ef4444;
+    color: #ef4444;
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+}
+
+.btn-wishlist:hover i {
+    animation: heartBeat 0.5s ease;
+}
+
+@keyframes heartBeat {
+    0%, 100% { transform: scale(1); }
+    25% { transform: scale(1.2); }
+    50% { transform: scale(0.95); }
+    75% { transform: scale(1.1); }
+}
+
+/* =============== Dark Mode Enhancements =============== */
+body.dark-mode .product-rating-enhanced {
+    border-color: #334155;
+}
+
+body.dark-mode .rating-summary-inline .rating-value,
+body.dark-mode .collapsible-header span {
+    color: #f1f5f9;
+}
+
+body.dark-mode .rating-breakdown {
+    background: #1e293b;
+}
+
+body.dark-mode .rating-bar {
+    background: #334155;
+}
+
+body.dark-mode .delivery-estimate {
+    background: rgba(44, 95, 45, 0.1);
+    border-color: rgba(44, 95, 45, 0.2);
+}
+
+body.dark-mode .collapsible-section {
+    border-color: #334155;
+}
+
+body.dark-mode .collapsible-header {
+    background: #1e293b;
+}
+
+body.dark-mode .collapsible-header:hover {
+    background: rgba(44, 95, 45, 0.1);
+}
+
+body.dark-mode .collapsible-content p,
+body.dark-mode .shipping-item p {
+    color: #94a3b8;
+}
+
+body.dark-mode .shipping-item strong {
+    color: #e2e8f0;
+}
+
+/* =============== Responsive Adjustments =============== */
+@media (max-width: 768px) {
+    .rating-breakdown {
+        padding: 8px;
+    }
+    
+    .delivery-estimate {
+        padding: 10px;
+    }
+    
+    .delivery-info,
+    .delivery-dates {
+        font-size: 0.7rem;
+    }
+    
+    .collapsible-header span {
+        font-size: 0.8rem;
+    }
+    
+    .size-btn {
+        min-width: 36px;
+        height: 36px;
+        font-size: 0.8rem;
+    }
+}

@@ -5,10 +5,17 @@ import Footer from '../components/Footer'
 import StarRating from '../components/StarRating'
 import ReviewList from '../components/ReviewList'
 import ReviewForm from '../components/ReviewForm'
+import RatingBreakdown from '../components/RatingBreakdown'
+import DeliveryEstimate from '../components/DeliveryEstimate'
+import CollapsibleSection from '../components/CollapsibleSection'
+import ShippingInfo from '../components/ShippingInfo'
 import api from '../api/api'
 import CartContext from '../Context/CartContext'
 import { ToastContext } from '../Context/ToastContext'
 import '../styles/product-detail.css'
+import '../styles/product-detail-enhancements.css'
+import '../styles/product-detail-dark-mode.css'
+import '../styles/out-of-stock-variants.css'
 import '../styles/mini-cart.css'
 import '../styles/reviews.css'
 
@@ -192,16 +199,8 @@ export default function ProductDetail(){
             <h1 className="product-title">{product.name}</h1>
             <p className="product-category">{product.category}</p>
             
-            {/* Rating Display - Format: 4.0★ (3,451)Rating & (367)Reviews */}
-            {ratingStats && ratingStats.averageRating > 0 && (
-              <div className="product-rating-display">
-                <span className="rating-value">{ratingStats.averageRating.toFixed(1)}</span>
-                <span className="rating-star">★</span>
-                <span className="rating-count">({ratingStats.ratingCount})Rating</span>
-                <span className="rating-separator"> & </span>
-                <span className="review-count">({ratingStats.reviewCount})Reviews</span>
-              </div>
-            )}
+            {/* Rating Display with Star Breakdown */}
+            <RatingBreakdown ratingStats={ratingStats} />
 
             {/* Price */}
             <div className="product-price-section">
@@ -216,6 +215,9 @@ export default function ProductDetail(){
               )}
             </div>
 
+            {/* Delivery Estimate */}
+            <DeliveryEstimate />
+
             {/* Size Selection */}
             {uniqueSizes.length > 0 && (
               <div className="product-options">
@@ -223,11 +225,14 @@ export default function ProductDetail(){
                 <div className="size-selector">
                   {uniqueSizes.map((size, idx) => {
                     const variant = product.variants.find(v => v.displayName === size)
+                    const isOutOfStock = variant?.stockQuantity === 0
+                    const isSelected = selectedVariant?.displayName === size
                     return (
                       <button
                         key={idx}
-                        className={`size-btn ${selectedVariant?.displayName === size ? 'active' : ''}`}
+                        className={`size-btn ${isSelected ? 'active' : ''} ${isOutOfStock ? 'out-of-stock' : ''}`}
                         onClick={()=>setSelectedVariant(variant)}
+                        title={isOutOfStock ? 'Out of stock - Available soon' : `${variant?.stockQuantity} in stock`}
                       >
                         {size}
                       </button>
@@ -280,7 +285,10 @@ export default function ProductDetail(){
                     Add to Cart
                   </>
                 ) : (
-                  'Out of Stock'
+                  <>
+                    <i className="bi bi-hourglass-split"></i>
+                    Out of Stock - Available Soon
+                  </>
                 )}
               </button>
               <button className="btn-wishlist">
@@ -288,21 +296,15 @@ export default function ProductDetail(){
               </button>
             </div>
 
-            {/* Features */}
-            <div className="product-features">
-              <div className="feature-item">
-                <i className="bi bi-truck"></i>
-                <span>Free Shipping</span>
-              </div>
-              <div className="feature-item">
-                <i className="bi bi-arrow-repeat"></i>
-                <span>Easy Returns</span>
-              </div>
-              <div className="feature-item">
-                <i className="bi bi-shield-check"></i>
-                <span>Secure Payment</span>
-              </div>
-            </div>
+            {/* Collapsible: Description & Fit */}
+            <CollapsibleSection title="Description & Fit">
+              <p>{product.description || 'Experience unmatched comfort with this premium product. Made from high-quality materials with attention to detail. Perfect for everyday wear with a modern fit that complements any style.'}</p>
+            </CollapsibleSection>
+
+            {/* Collapsible: Shipping */}
+            <CollapsibleSection title="Shipping">
+              <ShippingInfo />
+            </CollapsibleSection>
           </div>
 
           {/* Right Column: Mini Cart Sidebar */}

@@ -145,3 +145,60 @@
     align-items: flex-start;
   }
 }
+
+/* Dark Mode for Review Form */
+body.dark-mode .review-form-container {
+    background: #253047 !important;
+    border-color: #334155 !important;
+}
+
+body.dark-mode .review-form-title {
+    color: #e2e8f0 !important;
+}
+
+body.dark-mode .review-form-label {
+    color: #cbd5e1 !important;
+}
+
+body.dark-mode .review-textarea {
+    background: #1a1f2e !important;
+    border-color: #334155 !important;
+    color: #e2e8f0 !important;
+}
+
+body.dark-mode .review-textarea::placeholder {
+    color: #64748b !important;
+}
+
+body.dark-mode .review-textarea:focus {
+    background: #1a1f2e !important;
+    border-color: #22c55e !important;
+}
+
+body.dark-mode .review-hint {
+    color: #94a3b8 !important;
+}
+
+body.dark-mode .rating-text {
+    color: #cbd5e1 !important;
+}
+
+body.dark-mode .review-error {
+    background: #7f1d1d !important;
+    color: #fecaca !important;
+    border-color: #991b1b !important;
+}
+
+body.dark-mode .review-submit-btn {
+    background: #15803d !important;
+    color: #ffffff !important;
+}
+
+body.dark-mode .review-submit-btn:hover:not(:disabled) {
+    background: #166534 !important;
+}
+
+body.dark-mode .review-submit-btn:disabled {
+    background: #334155 !important;
+    color: #64748b !important;
+}

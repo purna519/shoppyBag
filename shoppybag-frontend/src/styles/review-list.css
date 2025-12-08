@@ -106,3 +106,43 @@
     padding: 0.2rem 0.6rem;
   }
 }
+
+/* Dark Mode for Review List */
+body.dark-mode .reviews-list-empty {
+    background: #1e293b !important;
+    color: #cbd5e1 !important;
+}
+
+body.dark-mode .reviews-list-empty i {
+    color: #64748b !important;
+}
+
+body.dark-mode .reviews-list-empty p {
+    color: #cbd5e1 !important;
+}
+
+body.dark-mode .reviews-list {
+    background: transparent !important;
+}
+
+body.dark-mode .review-item {
+    background: #253047 !important;
+    border-color: #334155 !important;
+}
+
+body.dark-mode .review-user-name {
+    color: #e2e8f0 !important;
+}
+
+body.dark-mode .review-date {
+    color: #94a3b8 !important;
+}
+
+body.dark-mode .review-comment {
+    color: #cbd5e1 !important;
+}
+
+body.dark-mode .verified-badge {
+    background: #065f46 !important;
+    color: #10b981 !important;
+}
