@@ -1,313 +1,101 @@
-import React, { useEffect, useState, useContext } from 'react'
-import { useParams, Link } from 'react-router-dom'
-import Navbar from '../components/Navbar'
-import Footer from '../components/Footer'
-import StarRating from '../components/StarRating'
-import ReviewList from '../components/ReviewList'
-import ReviewForm from '../components/ReviewForm'
-import RatingBreakdown from '../components/RatingBreakdown'
-import DeliveryEstimate from '../components/DeliveryEstimate'
-import CollapsibleSection from '../components/CollapsibleSection'
-import ShippingInfo from '../components/ShippingInfo'
-import api from '../api/api'
-import CartContext from '../Context/CartContext'
-import { ToastContext } from '../Context/ToastContext'
-import '../styles/product-detail.css'
-import '../styles/product-detail-enhancements.css'
-import '../styles/product-detail-dark-mode.css'
-import '../styles/out-of-stock-variants.css'
-import '../styles/mini-cart.css'
-import '../styles/reviews.css'
+import React, { useEffect, useState, useContext } from 'react';
+import { useParams, Link } from 'react-router-dom';
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
+import StarRating from '../components/StarRating';
+import ReviewList from '../components/ReviewList';
+import ReviewForm from '../components/ReviewForm';
+import CollapsibleSection from '../components/CollapsibleSection';
+import ShippingInfo from '../components/ShippingInfo';
+import ProductImages from '../components/product/ProductImages';
+import ProductInfo from '../components/product/ProductInfo';
+import { useProductData } from '../hooks/useProductData';
+import CartContext from '../Context/CartContext';
+import { ToastContext } from '../Context/ToastContext';
+import '../styles/product-detail.css';
+import '../styles/product-detail-enhancements.css';
+import '../styles/product-detail-dark-mode.css';
+import '../styles/out-of-stock-variants.css';
+import '../styles/mini-cart.css';
+import '../styles/reviews.css';
 
-export default function ProductDetail(){
-  const { id } = useParams()
-  const [product, setProduct] = useState(null)
-  const [loading, setLoading] = useState(true)
-  const [selectedVariant, setSelectedVariant] = useState(null)
-  const [quantity, setQuantity] = useState(1)
-  const [relatedProducts, setRelatedProducts] = useState([])
-  const [reviews, setReviews] = useState([])
-  const [ratingStats, setRatingStats] = useState(null)
-  const [userToken, setUserToken] = useState(null)
-  const { cart, addToCart } = useContext(CartContext)
-  const { showToast } = useContext(ToastContext)
-  const [mainIndex, setMainIndex] = useState(0)
-
-  useEffect(()=>{
-    loadProduct()
-  },[id])
-
-  const loadProduct = async () => {
-    setLoading(true)
-    try {
-      const res = await api.get(`/api/product/${id}`)
-      if(res?.data?.data){
-        const p = res.data.data
-        // Normalize backend data
-        p.variants = (p.productVariants || []).map(v => ({
-          ...v,
-          name: `${v.color} / ${v.size}`,
-          displayName: v.size,
-          displayColor: v.color
-        }))
-        p.images = (p.productImage || []).map(img => img.imageUrl)
-        
-        setProduct(p)
-        setSelectedVariant((p.variants && p.variants[0]) || null)
-        
-        // Load related products
-        loadRelatedProducts(p.category)
-      }
-    } catch(err){
-      console.error('Failed to fetch product', err)
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  const loadRelatedProducts = async (category) => {
-    try {
-      // Get all products and filter by same category
-      const res = await api.get('/api/product/fetchallProducts')
-      let products = []
-      if (res?.data?.data && Array.isArray(res.data.data)) {
-        products = res.data.data
-      } else if (Array.isArray(res?.data)) {
-        products = res.data
-      }
-      
-      // Filter by same category, exclude current product, limit to 4
-      const related = products
-        .filter(p => p.category === category && p.id !== parseInt(id))
-        .slice(0, 4)
-      
-      setRelatedProducts(related)
-    } catch(err){
-      console.error('Failed to load related products', err)
-    }
-  }
-
-  const loadReviews = async () => {
-    try {
-      const res = await api.get(`/api/reviews/product/${id}`)
-      setReviews(res.data || [])
-    } catch (err) {
-      console.error('Failed to load reviews', err)
-    }
-  }
-
-  const loadRatingStats = async () => {
-    try{
-      const res = await api.get(`/api/reviews/product/${id}/stats`)
-      setRatingStats(res.data)
-    } catch (err) {
-      console.error('Failed to load rating stats', err)
-    }
-  }
+export default function ProductDetail() {
+  const { id } = useParams();
+  const [selectedVariant, setSelectedVariant] = useState(null);
+  const [quantity, setQuantity] = useState(1);
+  const [mainIndex, setMainIndex] = useState(0);
+  const [userToken, setUserToken] = useState(null);
+  
+  const { cart, addToCart } = useContext(CartContext);
+  const { showToast } = useContext(ToastContext);
+  
+  const { product, loading, relatedProducts, reviews, ratingStats, refreshReviews, refreshRatingStats } = useProductData(id);
 
   useEffect(() => {
-    const token = localStorage.getItem('token')
-    setUserToken(token)
-    if (id) {
-      loadReviews()
-      loadRatingStats()
+    if (product) {
+      setSelectedVariant(product.variants?.[0] || null);
+      setMainIndex(0);
     }
-  }, [id])
+  }, [product]);
 
-  useEffect(()=>{ setMainIndex(0) }, [product])
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    setUserToken(token);
+  }, []);
 
-  if(loading) return (
-    <div><Navbar/><div className="container py-5 text-center"><div className="spinner-border text-primary" role="status"></div></div><Footer/></div>
-  )
-  
-  if(!product) return (
-    <div><Navbar/><div className="container py-5 text-center"><h3>Product not found</h3></div><Footer/></div>
-  )
-
-  const price = selectedVariant ? selectedVariant.price : (product.price || 0)
-  const discount = product.discountPercentage || 0
-  const discountedPrice = Math.round(price * (1 - discount/100))
-  const stock = selectedVariant ? selectedVariant.stockQuantity : product.stockQuantity
-
-  const handleAdd = async ()=>{
-    try{
-      await addToCart({ 
-        productId: product.id, 
-        variantId: selectedVariant?.id || null, 
-        quantity, 
-        price 
-      })
-      showToast('Added to cart!', 'success')
-    }catch(e){ 
-      showToast('Failed to add to cart', 'error') 
+  const handleAdd = async () => {
+    try {
+     const price = selectedVariant ? selectedVariant.price : (product.price || 0);
+      await addToCart({
+        productId: product.id,
+        variantId: selectedVariant?.id || null,
+        quantity,
+        price
+      });
+      showToast('Added to cart!', 'success');
+    } catch (e) {
+      showToast('Failed to add to cart', 'error');
     }
-  }
+  };
 
-  const formatPrice = (price) => {
-    return `₹${price?.toLocaleString('en-IN')}`
-  }
+  const formatPrice = (price) => `₹${price?.toLocaleString('en-IN')}`;
 
-  // Get unique sizes from variants
-  const uniqueSizes = [...new Set((product.variants||[]).map(v => v.displayName))]
+  if (loading) return (
+    <div><Navbar /><div className="container py-5 text-center"><div className="spinner-border text-primary" role="status"></div></div><Footer /></div>
+  );
+
+  if (!product) return (
+    <div><Navbar /><div className="container py-5 text-center"><h3>Product not found</h3></div><Footer /></div>
+  );
+
+  const stock = selectedVariant ? selectedVariant.stockQuantity : product.stockQuantity;
 
   return (
     <div className="d-flex flex-column min-vh-100">
       <Navbar />
       <main className="product-detail-container">
         <div className="product-detail-grid">
-          {/* Left Column: Image Gallery */}
-          <div className="product-gallery">
-            <div className="gallery-main">
-              <img 
-                src={product.images?.[mainIndex] || product.imageUrl || '/placeholder.png'} 
-                alt={product.name}
-              />
-              {(product.images||[]).length > 1 && (
-                <>
-                  <button 
-                    className="gallery-nav gallery-nav-prev" 
-                    onClick={()=>setMainIndex(i => (i - 1 + product.images.length) % product.images.length)}
-                  >
-                    <i className="bi bi-chevron-left"></i>
-                  </button>
-                  <button 
-                    className="gallery-nav gallery-nav-next" 
-                    onClick={()=>setMainIndex(i => (i + 1) % product.images.length)}
-                  >
-                    <i className="bi bi-chevron-right"></i>
-                  </button>
-                </>
-              )}
-            </div>
+          {/* Product Images */}
+          <ProductImages 
+            images={product.images}
+            mainIndex={mainIndex}
+            setMainIndex={setMainIndex}
+            productName={product.name}
+          />
 
-            <div className="gallery-thumbs">
-              {(product.images||[]).map((src, idx) => (
-                <div 
-                  key={idx} 
-                  className={`gallery-thumb ${mainIndex===idx ? 'active' : ''}`}
-                  onClick={()=>setMainIndex(idx)}
-                >
-                  <img src={src} alt={`thumb-${idx}`} />
-                </div>
-              ))}
-            </div>
-          </div>
+          {/* Product Info */}
+          <ProductInfo 
+            product={product}
+            selectedVariant={selectedVariant}
+            setSelectedVariant={setSelectedVariant}
+            quantity={quantity}
+            setQuantity={setQuantity}
+            ratingStats={ratingStats}
+            handleAdd={handleAdd}
+            stock={stock}
+          />
 
-          {/* Right Column: Product Info */}
-          <div className="product-info">
-            <div className="product-brand">{product.brand}</div>
-            <h1 className="product-title">{product.name}</h1>
-            <p className="product-category">{product.category}</p>
-            
-            {/* Rating Display with Star Breakdown */}
-            <RatingBreakdown ratingStats={ratingStats} />
-
-            {/* Price */}
-            <div className="product-price-section">
-              {discount > 0 ? (
-                <>
-                  <span className="price-current">{formatPrice(discountedPrice)}</span>
-                  <span className="price-original">{formatPrice(price)}</span>
-                  <span className="price-discount">-{discount}% OFF</span>
-                </>
-              ) : (
-                <span className="price-current">{formatPrice(price)}</span>
-              )}
-            </div>
-
-            {/* Delivery Estimate */}
-            <DeliveryEstimate />
-
-            {/* Size Selection */}
-            {uniqueSizes.length > 0 && (
-              <div className="product-options">
-                <label className="option-label">Select Size</label>
-                <div className="size-selector">
-                  {uniqueSizes.map((size, idx) => {
-                    const variant = product.variants.find(v => v.displayName === size)
-                    const isOutOfStock = variant?.stockQuantity === 0
-                    const isSelected = selectedVariant?.displayName === size
-                    return (
-                      <button
-                        key={idx}
-                        className={`size-btn ${isSelected ? 'active' : ''} ${isOutOfStock ? 'out-of-stock' : ''}`}
-                        onClick={()=>setSelectedVariant(variant)}
-                        title={isOutOfStock ? 'Out of stock - Available soon' : `${variant?.stockQuantity} in stock`}
-                      >
-                        {size}
-                      </button>
-                    )
-                  })}
-                </div>
-              </div>
-            )}
-
-            {/* Quantity */}
-            <div className="product-options">
-              <label className="option-label">Quantity</label>
-              <div className="quantity-selector">
-                <button 
-                  className="qty-btn" 
-                  onClick={()=>setQuantity(q => Math.max(1, q-1))}
-                  disabled={quantity <= 1}
-                >
-                  <i className="bi bi-dash"></i>
-                </button>
-                <span className="qty-value">{quantity}</span>
-                <button 
-                  className="qty-btn" 
-                  onClick={()=>setQuantity(q => Math.min(stock, q+1))}
-                  disabled={quantity >= stock}
-                >
-                  <i className="bi bi-plus"></i>
-                </button>
-              </div>
-            </div>
-
-            {/* Stock Status */}
-            {stock > 0 && stock < 20 && (
-              <div className="stock-warning">
-                <i className="bi bi-exclamation-circle"></i>
-                Only {stock} left in stock!
-              </div>
-            )}
-
-            {/* Action Buttons */}
-            <div className="product-actions">
-              <button 
-                className="btn-add-to-cart" 
-                onClick={handleAdd}
-                disabled={stock <= 0}
-              >
-                {stock > 0 ? (
-                  <>
-                    <i className="bi bi-bag-plus"></i>
-                    Add to Cart
-                  </>
-                ) : (
-                  <>
-                    <i className="bi bi-hourglass-split"></i>
-                    Out of Stock - Available Soon
-                  </>
-                )}
-              </button>
-              <button className="btn-wishlist">
-                <i className="bi bi-heart"></i>
-              </button>
-            </div>
-
-            {/* Collapsible: Description & Fit */}
-            <CollapsibleSection title="Description & Fit">
-              <p>{product.description || 'Experience unmatched comfort with this premium product. Made from high-quality materials with attention to detail. Perfect for everyday wear with a modern fit that complements any style.'}</p>
-            </CollapsibleSection>
-
-            {/* Collapsible: Shipping */}
-            <CollapsibleSection title="Shipping">
-              <ShippingInfo />
-            </CollapsibleSection>
-          </div>
-
-          {/* Right Column: Mini Cart Sidebar */}
+          {/* Mini Cart Sidebar */}
           <div className="mini-cart-sidebar">
             <div className="mini-cart-header">
               <i className="bi bi-bag"></i>
@@ -362,6 +150,20 @@ export default function ProductDetail(){
           </div>
         </div>
 
+        {/* Collapsible Sections */}
+        <div className="product-detail-grid">
+          <div></div>
+          <div>
+            <CollapsibleSection title="Description & Fit">
+              <p>{product.description || 'Experience unmatched comfort with this premium product. Made from high-quality materials with attention to detail. Perfect for everyday wear with a modern fit that complements any style.'}</p>
+            </CollapsibleSection>
+
+            <CollapsibleSection title="Shipping">
+              <ShippingInfo />
+            </CollapsibleSection>
+          </div>
+        </div>
+
         {/* Reviews Section */}
         <div className="reviews-section">
           <div className="container">
@@ -387,12 +189,12 @@ export default function ProductDetail(){
               <div className="col-md-4">
                 {userToken ? (
                   <div className="review-form-wrapper">
-                    <ReviewForm 
-                      productId={id} 
+                    <ReviewForm
+                      productId={id}
                       onReviewSubmitted={() => {
-                        loadReviews()
-                        loadRatingStats()
-                      }} 
+                        refreshReviews();
+                        refreshRatingStats();
+                      }}
                     />
                   </div>
                 ) : (
@@ -433,5 +235,5 @@ export default function ProductDetail(){
       </main>
       <Footer />
     </div>
-  )
+  );
 }
