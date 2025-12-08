@@ -2,20 +2,10 @@ import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
+import PaymentModal from '../components/PaymentModal'
 import { useCart } from '../Context/CartContext'
 import api from '../api/api'
 import '../styles/checkout.css'
-
-// Helper: dynamically load Razorpay script
-const loadRazorpay = () =>
-  new Promise((resolve) => {
-    if (window.Razorpay) return resolve(true)
-    const script = document.createElement('script')
-    script.src = 'https://checkout.razorpay.com/v1/checkout.js'
-    script.onload = () => resolve(true)
-    script.onerror = () => resolve(false)
-    document.body.appendChild(script)
-  })
 
 export default function Checkout() {
   const { cart } = useCart()
@@ -24,6 +14,8 @@ export default function Checkout() {
   const [selectedAddress, setSelectedAddress] = useState(null)
   const [paymentMethod, setPaymentMethod] = useState('razorpay')
   const [loading, setLoading] = useState(false)
+  const [showPaymentModal, setShowPaymentModal] = useState(false)
+  const [orderDetails, setOrderDetails] = useState(null)
 
   useEffect(() => {
     loadAddresses()
@@ -123,78 +115,23 @@ export default function Checkout() {
 
   const handleOnlinePayment = async (orderId, token) => {
     try {
-      const base = import.meta.env.VITE_API_HOST || 'http://localhost:8080'
-      const initRes = await fetch(`${base}/payment/initiate/${orderId}?method=razorpay`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`
-        }
+      // Open custom payment modal instead of Razorpay popup
+      setOrderDetails({
+        orderId: orderId,
+        amount: calculateTotal()
       })
-
-      const initJson = await initRes.json()
-
-      if (initJson.status === 'error' || initJson.status === 'Error') {
-        throw new Error(initJson.message)
-      }
-
-      const payload = initJson.data || initJson
-      const razorpayOrderId = payload.razorpayOrderId
-      const razorpayKey = payload.razorpayKey
-      const amount = payload.amount
-
-      if (!razorpayOrderId || !razorpayKey) {
-        throw new Error('Missing razorpay details')
-      }
-
-      const loaded = await loadRazorpay()
-      if (!loaded) {
-        throw new Error('Failed to load Razorpay SDK')
-      }
-
-      const options = {
-        key: razorpayKey,
-        amount: amount,
-        currency: payload.currency || 'INR',
-        order_id: razorpayOrderId,
-        handler: async function (response) {
-          try {
-            const verifyBody = {
-              razorpay_order_id: response.razorpay_order_id,
-              razorpay_payment_id: response.razorpay_payment_id,
-              razorpay_signature: response.razorpay_signature
-            }
-
-            const verifyRes = await fetch(`${base}/payment/verify`, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(verifyBody)
-            })
-            
-            const verifyJson = await verifyRes.json()
-
-            if (verifyJson && (verifyJson.status === 'Success' || verifyJson.status === 'success') && verifyJson.data === 'VALID') {
-              navigate('/payment-success', { state: { orderId, method: 'Online' } })
-            } else {
-              navigate('/payment-failed')
-            }
-          } catch (err) {
-            console.error('Verify error', err)
-            navigate('/payment-failed')
-          }
-        },
-        prefill: {},
-        theme: { color: '#667eea' }
-      }
-
-      const rzp = new window.Razorpay(options)
-      rzp.open()
+      setShowPaymentModal(true)
       setLoading(false)
     } catch (err) {
       console.error('Payment error:', err)
       setLoading(false)
       alert('Payment failed: ' + err.message)
     }
+  }
+
+  const handlePaymentSuccess = (response) => {
+    setShowPaymentModal(false)
+    navigate('/payment-success', { state: { orderId: orderDetails.orderId, method: 'Online' } })
   }
 
   const formatPrice = (price) => {
@@ -367,6 +304,14 @@ export default function Checkout() {
         </div>
       </main>
       <Footer />
+      
+      {/* Custom Payment Modal */}
+      <PaymentModal
+        isOpen={showPaymentModal}
+        onClose={() => setShowPaymentModal(false)}
+        orderDetails={orderDetails}
+        onPaymentSuccess={handlePaymentSuccess}
+      />
     </div>
   )
 }

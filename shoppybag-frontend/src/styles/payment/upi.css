@@ -1,0 +1,303 @@
+/* Payment Modal - UPI Payment Styles */
+
+/* UPI Payment Container */
+.upi-payment-container {
+    width: 100%;
+    max-width: 100%;
+}
+
+.upi-payment-container h4 {
+    font-size: 1.1rem;
+    margin: 0 0 20px;
+    color: #1f2937;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.upi-payment-container h4::before {
+    content: '';
+    width: 4px;
+    height: 20px;
+    background: linear-gradient(180deg, #16a34a, #15803d);
+    border-radius: 2px;
+}
+
+/* Two Column Layout */
+.upi-two-column-layout {
+    display: grid;
+    grid-template-columns: 2fr 2fr;
+    gap: 80px;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.upi-column {
+    min-width: 0;
+    width: 100%;
+}
+
+.upi-column .upi-id-section,
+.upi-column .upi-qr-section {
+    margin-bottom: 0;
+    width: 100%;
+}
+
+.upi-column h4 {
+    margin-bottom: 16px;
+}
+
+/* UPI ID Section */
+.upi-id-section {
+    margin-bottom: 28px;
+    width: 100%;
+}
+
+.upi-id-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+}
+
+.upi-id-input {
+    flex: 1;
+    width: 100%;
+    padding: 14px 18px;
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: all 0.2s;
+    font-weight: 500;
+    box-sizing: border-box;
+}
+
+.upi-id-input:focus {
+    outline: none;
+    border-color: #16a34a;
+    box-shadow: 0 0 0 4px rgba(22, 163, 74, 0.1);
+    transform: translateY(-1px);
+}
+
+.upi-id-input::placeholder {
+    color: #9ca3af;
+}
+
+.upi-verify-btn {
+    width: 100%;
+    padding: 14px 28px;
+    background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 4px 12px rgba(22, 163, 74, 0.25);
+}
+
+.upi-verify-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(22, 163, 74, 0.35);
+}
+
+.upi-verify-btn:active {
+    transform: translateY(0);
+}
+
+.upi-hint {
+    display: block;
+    margin-top: 10px;
+    color: #6b7280;
+    font-size: 0.85rem;
+    font-style: italic;
+}
+
+.upi-error {
+    color: #ef4444;
+    background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+    padding: 12px 16px;
+    border-radius: 10px;
+    border-left: 4px solid #ef4444;
+    margin-top: 12px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    animation: shake 0.4s;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+/* Test Info Box */
+.upi-test-info {
+    margin-top: 20px;
+    padding: 16px 18px;
+    background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+    border: 2px solid #86efac;
+    border-radius: 12px;
+    font-size: 0.875rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.upi-test-info strong {
+    color: #15803d;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 10px;
+    font-size: 0.95rem;
+}
+
+.upi-test-info strong::before {
+    content: '🧪';
+    font-size: 1.1rem;
+}
+
+.upi-test-info ul {
+    margin: 0;
+    padding-left: 24px;
+}
+
+.upi-test-info li {
+    margin: 8px 0;
+    color: #166534;
+}
+
+.upi-test-info code {
+    background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-family: 'Monaco', 'Courier New', monospace;
+    color: #15803d;
+    font-weight: 600;
+    border: 1px solid #86efac;
+}
+
+/* QR Code Section */
+.upi-qr-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.upi-qr-section h4 {
+    align-self: flex-start;
+}
+
+.show-qr-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 32px;
+    background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+    border: 2px dashed #d1d5db;
+    border-radius: 12px;
+    font-weight: 700;
+    color: #374151;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.show-qr-btn:hover {
+    background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+    border-color: #16a34a;
+    border-style: solid;
+    color: white;
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(22, 163, 74, 0.3);
+}
+
+.show-qr-btn i {
+    font-size: 1.4rem;
+}
+
+.qr-code-display {
+    padding: 28px;
+    background: linear-gradient(135deg, #f9fafb 0%, #ffffff 100%);
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 2px solid #e5e7eb;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    width: 100%;
+}
+
+.qr-code-display canvas {
+    border-radius: 8px;
+}
+
+.qr-instruction {
+    margin-top: 16px;
+    color: #6b7280;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.qr-note {
+    margin-top: 10px;
+    font-size: 0.8rem;
+    color: #f59e0b;
+    font-style: italic;
+    font-weight: 600;
+}
+
+/* UPI Apps Info */
+.upi-apps-info {
+    margin-top: 28px;
+    padding: 20px;
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    border-radius: 14px;
+    text-align: center;
+    border: 1px solid #e2e8f0;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.upi-apps-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-weight: 700;
+    color: #334155;
+    margin-bottom: 14px;
+    font-size: 0.95rem;
+}
+
+.upi-apps-title i {
+    color: #3b82f6;
+}
+
+.upi-apps-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.upi-app-tag {
+    padding: 8px 16px;
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    border: 1.5px solid #cbd5e1;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    color: #475569;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.upi-app-tag:hover {
+    background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+    border-color: #16a34a;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(22, 163, 74, 0.25);
+}

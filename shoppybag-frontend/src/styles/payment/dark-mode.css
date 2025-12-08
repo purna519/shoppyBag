@@ -1,0 +1,146 @@
+/* Payment Modal - Dark Mode Styles */
+
+body.dark-mode .payment-modal-content {
+    background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+    box-shadow: 
+        0 25px 50px -12px rgba(0, 0, 0, 0.5),
+        0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+
+body.dark-mode .payment-modal-header {
+    background: linear-gradient(135deg, #1e3a2f 0%, #14532d 100%);
+    border-bottom-color: #166534;
+}
+
+body.dark-mode .payment-modal-header h3 {
+    background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+body.dark-mode .payment-order-id {
+    color: #86efac;
+}
+
+body.dark-mode .payment-modal-close {
+    background: linear-gradient(135deg, #374151 0%, #1f2937 100%);
+    border-color: #4b5563;
+    color: #9ca3af;
+}
+
+body.dark-mode .payment-modal-close:hover {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    border-color: #ef4444;
+    color: white;
+}
+
+body.dark-mode .payment-tabs {
+    background: #0f172a;
+}
+
+body.dark-mode .payment-tab {
+    background: #1e293b;
+    border-color: #334155;
+    color: #94a3b8;
+}
+
+body.dark-mode .payment-tab:hover {
+    border-color: #22c55e;
+}
+
+body.dark-mode .payment-tab.active {
+    background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+    color: white;
+}
+
+body.dark-mode .payment-content {
+    background: #1e293b;
+}
+
+body.dark-mode .upi-payment-container h4 {
+    color: #e2e8f0;
+}
+
+body.dark-mode .upi-id-input {
+    background: #0f172a;
+    border-color: #334155;
+    color: #e2e8f0;
+}
+
+body.dark-mode .upi-id-input::placeholder {
+    color: #64748b;
+}
+
+body.dark-mode .upi-id-input:focus {
+    border-color: #22c55e;
+}
+
+body.dark-mode .upi-test-info {
+    background: linear-gradient(135deg, #14532d 0%, #15803d 100%);
+    border-color: #16a34a;
+}
+
+body.dark-mode .upi-test-info strong,
+body.dark-mode .upi-test-info li {
+    color: #bbf7d0;
+}
+
+body.dark-mode .upi-test-info code {
+    background: linear-gradient(135deg, #166534 0%, #15803d 100%);
+    color: #dcfce7;
+    border-color: #22c55e;
+}
+
+body.dark-mode .payment-divider span {
+    background: #1e293b;
+}
+
+body.dark-mode .show-qr-btn {
+    background: linear-gradient(135deg, #334155 0%, #1f2937 100%);
+    border-color: #475569;
+    color: #e2e8f0;
+}
+
+body.dark-mode .qr-code-display {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    border-color: #334155;
+}
+
+body.dark-mode .upi-apps-info {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    border-color: #334155;
+}
+
+body.dark-mode .upi-apps-title {
+    color: #e2e8f0;
+}
+
+body.dark-mode .upi-app-tag {
+    background: linear-gradient(135deg, #334155 0%, #1e293b 100%);
+    border-color: #475569;
+    color: #cbd5e1;
+}
+
+body.dark-mode .payment-info-box {
+    background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+    border-color: #3b82f6;
+}
+
+body.dark-mode .payment-info-box i {
+    color: #93c5fd;
+}
+
+body.dark-mode .payment-info-box p {
+    color: #dbeafe;
+}
+
+body.dark-mode .payment-info-box ul {
+    color: #bfdbfe;
+}
+
+body.dark-mode .payment-security-badge {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    border-top-color: #334155;
+    color: #94a3b8;
+}

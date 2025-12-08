@@ -1,6 +1,7 @@
 // Refactored User Management with extracted components
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNotification } from '../../hooks/useNotification';
 import UserTableRow from '../../components/admin/UserTableRow';
 import UserDetailsModal from '../../components/admin/UserDetailsModal';
 import DeleteConfirmModal from '../../components/admin/DeleteConfirmModal';
@@ -12,6 +13,7 @@ const UserManagement = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedUser, setSelectedUser] = useState(null);
   const [userToDelete, setUserToDelete] = useState(null);
+  const { showSuccess, showError } = useNotification();
 
   useEffect(() => {
     fetchUsers();
@@ -42,14 +44,14 @@ const UserManagement = () => {
       });
       
       if (response.data && response.data.status === 'success') {
-        alert('User role updated successfully');
+        showSuccess('User role updated successfully');
         fetchUsers();
       } else {
-        alert('Failed to update role: ' + (response.data?.message || 'Unknown error'));
+        showError('Failed to update role', response.data?.message || 'Unknown error');
       }
     } catch (error) {
       console.error('Error updating role:', error);
-      alert('Failed to update user role: ' + (error.response?.data?.message || error.message));
+      showError('Failed to update user role', error.response?.data?.message || error.message);
     }
   };
 
@@ -64,15 +66,15 @@ const UserManagement = () => {
       });
       
       if (response.data && response.data.status === 'success') {
-        alert('User deleted successfully');
+        showSuccess('User deleted successfully');
         setUserToDelete(null);
         fetchUsers();
       } else {
-        alert('Failed to delete user: ' + (response.data?.message || 'Unknown error'));
+        showError('Failed to delete user', response.data?.message || 'Unknown error');
       }
     } catch (error) {
       console.error('Error deleting user:', error);
-      alert('Failed to delete user: ' + (error.response?.data?.message || error.message));
+      showError('Failed to delete user', error.response?.data?.message || error.message);
     }
   };
 

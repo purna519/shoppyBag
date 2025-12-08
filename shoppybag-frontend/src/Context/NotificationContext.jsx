@@ -1,97 +1,73 @@
-import React, { createContext, useContext, useState, useCallback } from 'react'
-import '../styles/notification.css'
+import React, { createContext, useState, useCallback } from 'react';
 
-const NotificationContext = createContext()
+export const NotificationContext = createContext();
 
-export const useNotification = () => {
-  const context = useContext(NotificationContext)
-  if (!context) {
-    throw new Error('useNotification must be used within NotificationProvider')
-  }
-  return context
-}
+let notificationId = 0;
 
-export function NotificationProvider({ children }) {
-  const [notifications, setNotifications] = useState([])
+export const NotificationProvider = ({ children }) => {
+  const [notifications, setNotifications] = useState([]);
 
-  const showNotification = useCallback((message, type = 'success', duration = 5000) => {
-    const id = Date.now() + Math.random()
-    const notification = { id, message, type, duration }
+  const addNotification = useCallback((type, message, description = '') => {
+    const id = ++notificationId;
     
-    setNotifications(prev => [...prev, notification])
+    // Check for duplicates
+    const isDuplicate = notifications.some(
+      n => n.message === message && n.type === type
+    );
     
-    if (duration > 0) {
-      setTimeout(() => {
-        removeNotification(id)
-      }, duration)
-    }
-    
-    return id
-  }, [])
+    if (isDuplicate) return;
+
+    const notification = {
+      id,
+      type, // 'success', 'error', 'warning', 'info'
+      message,
+      description
+    };
+
+    setNotifications(prev => {
+      // Keep max 3 notifications
+      const updated = [...prev, notification];
+      return updated.slice(-3);
+    });
+
+    // Auto dismiss after 5 seconds
+    setTimeout(() => {
+      removeNotification(id);
+    }, 5000);
+  }, [notifications]);
 
   const removeNotification = useCallback((id) => {
-    setNotifications(prev => prev.filter(n => n.id !== id))
-  }, [])
+    setNotifications(prev => prev.filter(n => n.id !== id));
+  }, []);
 
-  const showSuccess = useCallback((message, duration) => {
-    return showNotification(message, 'success', duration)
-  }, [showNotification])
+  const showSuccess = useCallback((message, description) => {
+    addNotification('success', message, description);
+  }, [addNotification]);
 
-  const showError = useCallback((message, duration) => {
-    return showNotification(message, 'error', duration)
-  }, [showNotification])
+  const showError = useCallback((message, description) => {
+    addNotification('error', message, description);
+  }, [addNotification]);
 
-  const showInfo = useCallback((message, duration) => {
-    return showNotification(message, 'info', duration)
-  }, [showNotification])
+  const showWarning = useCallback((message, description) => {
+    addNotification('warning', message, description);
+  }, [addNotification]);
 
-  const showWarning = useCallback((message, duration) => {
-    return showNotification(message, 'warning', duration)
-  }, [showNotification])
+  const showInfo = useCallback((message, description) => {
+    addNotification('info', message, description);
+  }, [addNotification]);
 
   return (
-    <NotificationContext.Provider value={{ showSuccess, showError, showInfo, showWarning, removeNotification }}>
+    <NotificationContext.Provider 
+      value={{ 
+        notifications, 
+        showSuccess, 
+        showError, 
+        showWarning, 
+        showInfo,
+        removeNotification 
+      }}
+    >
       {children}
-      <div className="notification-container">
-        {notifications.map(notification => (
-          <Notification
-            key={notification.id}
-            {...notification}
-            onClose={() => removeNotification(notification.id)}
-          />
-        ))}
-      </div>
     </NotificationContext.Provider>
-  )
-}
-
-function Notification({ id, message, type, onClose }) {
-  const icons = {
-    success: 'bi-check-circle-fill',
-    error: 'bi-x-circle-fill',
-    warning: 'bi-exclamation-triangle-fill',
-    info: 'bi-info-circle-fill'
-  }
-
-  const titles = {
-    success: 'Success!',
-    error: 'Error!',
-    warning: 'Warning!',
-    info: 'Info'
-  }
-
-  return (
-    <div className={`notification notification-${type}`}>
-      <div className="notification-icon">
-        <i className={`bi ${icons[type]}`}></i>
-      </div>
-      <div className="notification-content">
-        <h4>{titles[type]}</h4>
-        <p>{message}</p>
-      </div>
-      <button className="notification-close" onClick={onClose}>
-        <i className="bi bi-x"></i>
-      </button>
-    </div>
-  )
-}
+  );
+};

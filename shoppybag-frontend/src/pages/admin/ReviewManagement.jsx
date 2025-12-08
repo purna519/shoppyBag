@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNotification } from '../../hooks/useNotification';
 import StarRating from '../../components/StarRating';
 import '../../styles/admin/product-management.css';
 import '../../styles/admin/review-management.css';
@@ -8,6 +9,7 @@ const ReviewManagement = () => {
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('pending'); // 'pending' or 'all'
+  const { showSuccess, showError } = useNotification();
 
   useEffect(() => {
     fetchReviews();
@@ -41,11 +43,11 @@ const ReviewManagement = () => {
       await axios.put(`http://localhost:8080/api/reviews/${reviewId}/approve`, {}, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      alert('Review approved successfully!');
+      showSuccess('Review approved successfully!');
       fetchReviews();
     } catch (error) {
       console.error('Error approving review:', error);
-      alert('Failed to approve review');
+      showError('Failed to approve review', error.response?.data?.message || error.message);
     }
   };
 
@@ -57,11 +59,11 @@ const ReviewManagement = () => {
       await axios.delete(`http://localhost:8080/api/reviews/${reviewId}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      alert('Review deleted successfully!');
+      showSuccess('Review deleted successfully!');
       fetchReviews();
     } catch (error) {
       console.error('Error deleting review:', error);
-      alert('Failed to delete review');
+      showError('Failed to delete review', error.response?.data?.message || error.message);
     }
   };
 

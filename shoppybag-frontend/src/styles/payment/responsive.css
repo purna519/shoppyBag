@@ -1,0 +1,72 @@
+/* Payment Modal - Responsive Styles */
+
+@media (max-width: 768px) {
+    .upi-two-column-layout {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .upi-id-input-group {
+        flex-direction: row;
+    }
+    
+    .upi-verify-btn {
+        width: auto;
+    }
+}
+
+@media (max-width: 640px) {
+    .payment-modal-content {
+        max-width: 100%;
+        border-radius: 20px 20px 0 0;
+        max-height: 95vh;
+    }
+
+    .payment-modal-header {
+        padding: 24px 20px 16px;
+    }
+
+    .payment-modal-header h3 {
+        font-size: 1.5rem;
+    }
+
+    .payment-amount-display {
+        padding: 20px;
+    }
+
+    .payment-amount-value {
+        font-size: 1.75rem;
+    }
+
+    .payment-tabs {
+        padding: 20px 20px 16px;
+        gap: 8px;
+    }
+
+    .payment-tab {
+        padding: 12px 16px;
+        font-size: 0.875rem;
+    }
+
+    .payment-content {
+        padding: 20px;
+    }
+
+    .upi-id-input-group {
+        flex-direction: column;
+    }
+
+    .upi-verify-btn {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .payment-tabs {
+        flex-direction: column;
+    }
+
+    .payment-tab {
+        width: 100%;
+    }
+}

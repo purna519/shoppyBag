@@ -11,6 +11,7 @@ import './styles/hero.css'
 import './styles/cart.css'
 import './styles/auth.css'
 import './styles/theme.css'
+import { NotificationProvider } from './context/NotificationContext'
 import { ToastProvider } from './Context/ToastContext'
 import { CartProvider } from './Context/CartContext'
 import ToastContainer from './components/ToastContainer'
@@ -19,14 +20,16 @@ import ErrorBoundary from './components/ErrorBoundary'
 createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <BrowserRouter>
-      <ToastProvider>
-        <CartProvider>
-          <ErrorBoundary>
-            <App />
-          </ErrorBoundary>
-          <ToastContainer />
-        </CartProvider>
-      </ToastProvider>
+      <NotificationProvider>
+        <ToastProvider>
+          <CartProvider>
+            <ErrorBoundary>
+              <App />
+            </ErrorBoundary>
+            <ToastContainer />
+          </CartProvider>
+        </ToastProvider>
+      </NotificationProvider>
     </BrowserRouter>
   </React.StrictMode>
 )

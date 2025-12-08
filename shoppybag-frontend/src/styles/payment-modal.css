@@ -1,0 +1,10 @@
+/* Payment Modal - Main Entry Point */
+/* Import all modular CSS files */
+
+@import './payment/base.css';
+@import './payment/header.css';
+@import './payment/tabs.css';
+@import './payment/upi.css';
+@import './payment/card.css';
+@import './payment/dark-mode.css';
+@import './payment/responsive.css';

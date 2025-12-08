@@ -30,10 +30,10 @@ public class UsersController {
         return usersService.getAllUsers(token);
     }
 
-    @PreAuthorize("hasAnyRole('USER','ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/delete")
-    public ApiResponse<?> deleteUser(@RequestHeader("Authorization") String token) {
-        return usersService.deleteUser(token);
+    public ApiResponse<?> deleteUser(@RequestBody DeleteUserRequestDTO request, @RequestHeader("Authorization") String token) {
+        return usersService.deleteUser(request, token);
     }
 
     @PreAuthorize("hasAnyRole('USER','ADMIN')")

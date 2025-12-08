@@ -97,13 +97,26 @@ public class UsersService {
         return new ApiResponse<>("success", "User updated successfully", updated);
     }
 
-    // Delete user (self or admin)
-    public ApiResponse<String> deleteUser(String token) {
-        Users user = regularFunctions.validateToken(token);
-        if (user == null)
+    // Delete user (admin only)
+    public ApiResponse<String> deleteUser(DeleteUserRequestDTO request, String token) {
+        Users admin = regularFunctions.validateToken(token);
+        if (admin == null)
             return new ApiResponse<>("error", "Invalid or missing token", null);
 
-        userRepository.delete(user);
+        // Only admins can delete users
+        if (!"ADMIN".equalsIgnoreCase(admin.getRole()))
+            return new ApiResponse<>("error", "Permission denied - admin access required", null);
+
+        // Find the target user to delete
+        Users targetUser = userRepository.findByEmail(request.getEmail());
+        if (targetUser == null)
+            return new ApiResponse<>("error", "User not found", null);
+
+        // Prevent admin from deleting themselves
+        if (admin.getEmail().equalsIgnoreCase(targetUser.getEmail()))
+            return new ApiResponse<>("error", "Cannot delete your own admin account", null);
+
+        userRepository.delete(targetUser);
         return new ApiResponse<>("success", "User deleted successfully", null);
     }
 
