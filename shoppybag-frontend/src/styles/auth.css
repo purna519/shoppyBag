@@ -145,20 +145,6 @@
 .auth-form-section {
     flex: 1;
     padding: 2.5rem 2rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--primary-white);
-}
-
-.auth-form-container {
-    width: 100%;
-    max-width: 420px;
-}
-
-.auth-header {
-    margin-bottom: 2rem;
-    text-align: center;
 }
 
 .auth-title {
@@ -374,4 +360,272 @@ body.dark-mode .auth-footer-text {
     .auth-title {
         font-size: 1.5rem;
     }
+}
+
+/* Password Strength Indicator */
+.password-strength-container {
+  margin-top: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.password-strength-bar {
+  flex: 1;
+  height: 6px;
+  background: rgba(0, 0, 0, 0.08);
+  border-radius: 100px;
+  overflow: hidden;
+}
+
+.password-strength-fill {
+  height: 100%;
+  transition: all 0.3s ease;
+  border-radius: 100px;
+}
+
+.password-strength-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  min-width: 70px;
+  text-align: right;
+}
+
+/* Password Requirements */
+.password-requirements {
+  margin-top: 0.75rem;
+  padding: 1rem;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.04) 0%, rgba(118, 75, 162, 0.04) 100%);
+  border-radius: 12px;
+  border: 1px solid rgba(102, 126, 234, 0.1);
+}
+
+.requirements-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #475569;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.requirement {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+  color: #64748b;
+  margin: 0.4rem 0;
+  transition: all 0.2s ease;
+}
+
+.requirement i {
+  font-size: 1rem;
+  color: #cbd5e1;
+  transition: all 0.2s ease;
+}
+
+.requirement.met {
+  color: #10b981;
+  font-weight: 600;
+}
+
+.requirement.met i {
+  color: #10b981;
+}
+
+/* Enhanced Password Input Styling */
+.password-wrapper {
+  position: relative;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  padding: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  border-radius: 6px;
+  z-index: 2;
+}
+
+.password-toggle:hover {
+  color: #667eea;
+  background: rgba(102, 126, 234, 0.08);
+}
+
+.password-toggle i {
+  font-size: 1.125rem;
+}
+
+.password-wrapper .form-input {
+  padding-right: 42px;
+}
+
+/* Enhanced Password Strength Label */
+.password-strength-label {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.password-strength-label i {
+  font-size: 0.875rem;
+}
+
+/* Enhanced Requirements Title */
+.requirements-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.requirements-title i {
+  color: #667eea;
+  font-size: 0.875rem;
+}
+
+/* Password Mismatch Message */
+.password-mismatch {
+  margin-top: 0.5rem;
+  padding: 0.625rem 0.875rem;
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.08) 0%, rgba(220, 38, 38, 0.08) 100%);
+  border-radius: 8px;
+  font-size: 0.8125rem;
+  color: #ef4444;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.password-mismatch i {
+  font-size: 1rem;
+}
+
+/* Enhanced Form Labels */
+.form-label {
+  font-weight: 700 !important;
+}
+
+/* Enhanced Requirements Box */
+.password-requirements {
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .password-toggle {
+    right: 10px;
+  }
+}
+
+/* Compact Password Requirements - Matching Reference Design */
+.password-requirements-compact {
+  margin-top: 0.625rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.requirement-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.requirement-item i {
+  font-size: 0.875rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.requirement-item.success {
+  color: #10b981;
+}
+
+.requirement-item.success i {
+  color: #10b981;
+}
+
+.requirement-item.error {
+  color: #ef4444;
+}
+
+.requirement-item.error i {
+  color: #ef4444;
+}
+
+.requirement-item.pending {
+  color: #94a3b8;
+}
+
+.requirement-item.pending i {
+  color: #cbd5e1;
+}
+
+.requirement-item strong {
+  font-weight: 700;
+}
+
+/* Remove old styles */
+.password-strength-container,
+.password-requirements {
+  display: none;
+}
+
+/* Fix icon display using Unicode symbols */
+.req-icon {
+  font-size: 1rem;
+  font-weight: 700;
+  flex-shrink: 0;
+  font-family: Arial, sans-serif;
+  line-height: 1;
+}
+
+.requirement-item i {
+  display: none;
+}
+
+/* Form Container - Wider for better use of space */
+.auth-form-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--primary-white);
+}
+
+.auth-form-container {
+    width: 100%;
+    max-width: 580px;
+}
+
+.auth-header {
+    margin-bottom: 2rem;
+    text-align: center;
 }

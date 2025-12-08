@@ -190,7 +190,18 @@ export default function ProductDetail(){
           <div className="product-info">
             <div className="product-brand">{product.brand}</div>
             <h1 className="product-title">{product.name}</h1>
-            <p className="product-description">{product.description}</p>
+            <p className="product-category">{product.category}</p>
+            
+            {/* Rating Display - Format: 4.0★ (3,451)Rating & (367)Reviews */}
+            {ratingStats && ratingStats.averageRating > 0 && (
+              <div className="product-rating-display">
+                <span className="rating-value">{ratingStats.averageRating.toFixed(1)}</span>
+                <span className="rating-star">★</span>
+                <span className="rating-count">({ratingStats.ratingCount})Rating</span>
+                <span className="rating-separator"> & </span>
+                <span className="review-count">({ratingStats.reviewCount})Reviews</span>
+              </div>
+            )}
 
             {/* Price */}
             <div className="product-price-section">

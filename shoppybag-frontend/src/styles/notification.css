@@ -1,0 +1,226 @@
+/* Enhanced Notification System - Matching Existing UI Theme */
+.notification-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 450px;
+  pointer-events: none;
+}
+
+.notification {
+  background: white;
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12), 0 4px 16px rgba(0, 0, 0, 0.08);
+  display: flex;
+  align-items: flex-start;
+  gap: 1.25rem;
+  animation: slideInRight 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: all;
+  border: 2px solid;
+  min-width: 360px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Gradient accent bar */
+.notification::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 5px;
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(120px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+/* Success - Brown Gradient Theme */
+.notification-success {
+  border-color: rgba(102, 126, 234, 0.2);
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+}
+
+.notification-success::before {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.notification-success .notification-icon {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+/* Error - Red Gradient */
+.notification-error {
+  border-color: rgba(239, 68, 68, 0.2);
+  background: linear-gradient(135deg, #ffffff 0%, #fef2f2 100%);
+}
+
+.notification-error::before {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+}
+
+.notification-error .notification-icon {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: white;
+}
+
+/* Warning - Amber Gradient */
+.notification-warning {
+  border-color: rgba(245, 158, 11, 0.2);
+  background: linear-gradient(135deg, #ffffff 0%, #fffbeb 100%);
+}
+
+.notification-warning::before {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+}
+
+.notification-warning .notification-icon {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  color: white;
+}
+
+/* Info - Blue Gradient */
+.notification-info {
+  border-color: rgba(59, 130, 246, 0.2);
+  background: linear-gradient(135deg, #ffffff 0%, #eff6ff 100%);
+}
+
+.notification-info::before {
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+}
+
+.notification-info .notification-icon {
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  color: white;
+}
+
+.notification-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.notification-content {
+  flex: 1;
+  min-width: 0;
+  padding-top: 2px;
+}
+
+.notification-content h4 {
+  margin: 0 0 0.375rem 0;
+  font-size: 1.0625rem;
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: -0.3px;
+}
+
+.notification-content p {
+  margin: 0;
+  font-size: 0.875rem;
+  color: #475569;
+  line-height: 1.5;
+  word-wrap: break-word;
+  font-weight: 500;
+}
+
+.notification-close {
+  background: rgba(0, 0, 0, 0.06);
+  border: none;
+  color: #64748b;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.notification-close:hover {
+  background: rgba(0, 0, 0, 0.12);
+  color: #1e293b;
+  transform: scale(1.05);
+}
+
+.notification-close:active {
+  transform: scale(0.95);
+}
+
+.notification-close i {
+  font-size: 1.125rem;
+  font-weight: 700;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .notification-container {
+    left: 16px;
+    right: 16px;
+    max-width: none;
+  }
+
+  .notification {
+    min-width: auto;
+    padding: 1.25rem;
+  }
+
+  .notification-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 1.25rem;
+  }
+
+  .notification-content h4 {
+    font-size: 0.9375rem;
+  }
+
+  .notification-content p {
+    font-size: 0.8125rem;
+  }
+}
+
+/* Dark mode support */
+body.dark-mode .notification {
+  background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+  border-color: rgba(148, 163, 184, 0.2);
+}
+
+body.dark-mode .notification-content h4 {
+  color: #f1f5f9;
+}
+
+body.dark-mode .notification-content p {
+  color: #cbd5e1;
+}
+
+body.dark-mode .notification-close {
+  background: rgba(255, 255, 255, 0.1);
+  color: #cbd5e1;
+}
+
+body.dark-mode .notification-close:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #f1f5f9;
+}

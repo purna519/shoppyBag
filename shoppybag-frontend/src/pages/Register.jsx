@@ -13,15 +13,65 @@ export default function Register(){
     phoneNumber: ''
   })
   const [loading, setLoading] = useState(false)
+  const [passwordStrength, setPasswordStrength] = useState({ strength: 0, label: '', color: '' })
+  const [showPasswordRequirements, setShowPasswordRequirements] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const { showToast } = useContext(ToastContext)
   const navigate = useNavigate()
 
+  // Password validation requirements
+  const getPasswordRequirements = (password) => {
+    return {
+      minLength: password.length >= 8,
+      hasUpperCase: /[A-Z]/.test(password),
+      hasLowerCase: /[a-z]/.test(password),
+      hasNumber: /[0-9]/.test(password),
+      hasSpecialChar: /[!@#$%^&*(),.?":{}|<>]/.test(password)
+    }
+  }
+
+  // Calculate password strength
+  const calculatePasswordStrength = (password) => {
+    if (!password) return { strength: 0, label: '', color: '' }
+    
+    const requirements = getPasswordRequirements(password)
+    const fulfilledCount = Object.values(requirements).filter(Boolean).length
+    
+    if (fulfilledCount <= 2) {
+      return { strength: 33, label: 'Weak', color: '#ef4444' }
+    } else if (fulfilledCount <= 4) {
+      return { strength: 66, label: 'Moderate', color: '#f59e0b' }
+    } else {
+      return { strength: 100, label: 'Strong', color: '#10b981' }
+    }
+  }
+
+  // Validate password meets all requirements
+  const isPasswordValid = (password) => {
+    const requirements = getPasswordRequirements(password)
+    return Object.values(requirements).every(Boolean)
+  }
+
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value })
+    const { name, value } = e.target
+    setFormData({ ...formData, [name]: value })
+    
+    // Update password strength when typing password
+    if (name === 'password') {
+      setPasswordStrength(calculatePasswordStrength(value))
+      setShowPasswordRequirements(value.length > 0)
+    }
   }
 
   const submit = async (e) => {
     e.preventDefault()
+    
+    // Validate password requirements
+    if (!isPasswordValid(formData.password)) {
+      showToast('Password does not meet security requirements', 'error')
+      return
+    }
     
     if (formData.password !== formData.confirmPassword) {
       showToast('Passwords do not match', 'error')
@@ -110,25 +160,31 @@ export default function Register(){
               <div className="form-row">
                 <div className="form-group">
                   <label className="form-label">First Name</label>
-                  <input
-                    className="form-input"
-                    name="firstName"
-                    placeholder="John"
-                    value={formData.firstName}
-                    onChange={handleChange}
-                    required
-                  />
+                  <div className="input-wrapper">
+                    <i className="bi bi-person input-icon"></i>
+                    <input
+                      className="form-input"
+                      name="firstName"
+                      placeholder="John"
+                      value={formData.firstName}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
                 </div>
                 <div className="form-group">
                   <label className="form-label">Last Name</label>
-                  <input
-                    className="form-input"
-                    name="lastName"
-                    placeholder="Doe"
-                    value={formData.lastName}
-                    onChange={handleChange}
-                    required
-                  />
+                  <div className="input-wrapper">
+                    <i className="bi bi-person-fill input-icon"></i>
+                    <input
+                      className="form-input"
+                      name="lastName"
+                      placeholder="Doe"
+                      value={formData.lastName}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
                 </div>
               </div>
 
@@ -165,34 +221,103 @@ export default function Register(){
 
               <div className="form-row">
                 <div className="form-group">
-                  <label className="form-label">Password</label>
-                  <div className="input-wrapper">
+                  <label className="form-label">Password *</label>
+                  <div className="input-wrapper password-wrapper">
                     <i className="bi bi-lock input-icon"></i>
                     <input
                       className="form-input"
-                      type="password"
+                      type={showPassword ? "text" : "password"}
                       name="password"
-                      placeholder="••••••••"
+                      placeholder="Password"
                       value={formData.password}
                       onChange={handleChange}
+                      onFocus={() => setShowPasswordRequirements(true)}
                       required
                     />
+                    <button
+                      type="button"
+                      className="password-toggle"
+                      onClick={() => setShowPassword(!showPassword)}
+                      tabIndex="-1"
+                    >
+                      <i className={`bi ${showPassword ? 'bi-eye-slash' : 'bi-eye'}`}></i>
+                    </button>
                   </div>
+                  
+                  {/* Compact Password Requirements */}
+                  {showPasswordRequirements && formData.password && (
+                    <div className="password-requirements-compact">
+                      {(() => {
+                        const requirements = getPasswordRequirements(formData.password)
+                        const allMet = Object.values(requirements).every(Boolean)
+                        
+                        return (
+                          <>
+                            {/* Strength Indicator */}
+                            <div className={`requirement-item ${allMet ? 'success' : 'error'}`}>
+                              <span className="req-icon">{allMet ? '✓' : '✗'}</span>
+                              <span>Password strength: <strong>{passwordStrength.label || 'weak'}</strong></span>
+                            </div>
+                            
+                            {/* Individual Requirements */}
+                            <div className={`requirement-item ${requirements.minLength ? 'success' : 'pending'}`}>
+                              <span className="req-icon">✓</span>
+                              <span>At least 8 characters</span>
+                            </div>
+                            
+                            <div className={`requirement-item ${requirements.hasUpperCase ? 'success' : 'pending'}`}>
+                              <span className="req-icon">✓</span>
+                              <span>One uppercase letter (A-Z)</span>
+                            </div>
+                            
+                            <div className={`requirement-item ${requirements.hasLowerCase ? 'success' : 'pending'}`}>
+                              <span className="req-icon">✓</span>
+                              <span>One lowercase letter (a-z)</span>
+                            </div>
+                            
+                            <div className={`requirement-item ${requirements.hasNumber ? 'success' : 'pending'}`}>
+                              <span className="req-icon">✓</span>
+                              <span>One number (0-9)</span>
+                            </div>
+                            
+                            <div className={`requirement-item ${requirements.hasSpecialChar ? 'success' : 'pending'}`}>
+                              <span className="req-icon">✓</span>
+                              <span>Contains special character (!@#$%^&*)</span>
+                            </div>
+                          </>
+                        )
+                      })()}
+                    </div>
+                  )}
                 </div>
                 <div className="form-group">
-                  <label className="form-label">Confirm Password</label>
-                  <div className="input-wrapper">
+                  <label className="form-label">Confirm Password *</label>
+                  <div className="input-wrapper password-wrapper">
                     <i className="bi bi-lock-fill input-icon"></i>
                     <input
                       className="form-input"
-                      type="password"
+                      type={showConfirmPassword ? "text" : "password"}
                       name="confirmPassword"
-                      placeholder="••••••••"
+                      placeholder="Re-enter password"
                       value={formData.confirmPassword}
                       onChange={handleChange}
                       required
                     />
+                    <button
+                      type="button"
+                      className="password-toggle"
+                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      tabIndex="-1"
+                    >
+                      <i className={`bi ${showConfirmPassword ? 'bi-eye-slash' : 'bi-eye'}`}></i>
+                    </button>
                   </div>
+                  {formData.confirmPassword && formData.password !== formData.confirmPassword && (
+                    <div className="password-mismatch">
+                      <i className="bi bi-exclamation-circle"></i>
+                      Passwords do not match
+                    </div>
+                  )}
                 </div>
               </div>
 

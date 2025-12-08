@@ -7,6 +7,7 @@ import '../../styles/order-detail-modal.css'
 function OrdersView({orders}) {
   const [selectedOrder, setSelectedOrder] = useState(null)
   const [reviewingProduct, setReviewingProduct] = useState(null)
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false)
 
   const formatDate = (dateStr) => {
     if (!dateStr) return 'Date unavailable'
@@ -31,7 +32,8 @@ function OrdersView({orders}) {
 
   const handleReviewSubmitted = () => {
     setReviewingProduct(null)
-    alert('Thank you! Your review has been submitted and will appear after admin approval.')
+    setShowSuccessMessage(true)
+    setTimeout(() => setShowSuccessMessage(false), 5000) // Hide after 5 seconds
   }
 
   return (
@@ -159,7 +161,7 @@ function OrdersView({orders}) {
                         />
                       )}
                       <div className="item-detail-info">
-                        <h6>{item.productVariant?.product?.name || 'Product'}</h6>
+                        <h6>{item.productVariant?.productName || 'Product'}</h6>
                         <p className="text-muted small mb-1">
                           {item.productVariant?.size && `Size: ${item.productVariant.size}`}
                           {item.productVariant?.color && ` | Color: ${item.productVariant.color}`}
@@ -168,16 +170,30 @@ function OrdersView({orders}) {
                       </div>
                     </div>
                     
-                    {/* Review Button for Delivered Orders */}
-                    {selectedOrder.deliveryStatus === 'DELIVERED' && item.productVariant?.product?.id && (
-                      <button 
-                        className="btn btn-sm btn-outline-success mt-2"
-                        onClick={() => setReviewingProduct(item.productVariant.product)}
-                      >
-                        <i className="bi bi-star me-1"></i>
-                        Write a Review
-                      </button>
-                    )}
+                    {/* Review Button - Show for every product */}
+                    <button 
+                      className="review-btn-order"
+                      onClick={() => {
+                        const productId = item.productVariant?.productId;
+                        const productName = item.productVariant?.productName || 'Product';
+                        
+                        if (!productId) {
+                          console.error('No product ID found in productVariant:', item.productVariant);
+                          alert('Unable to find product information. Please make sure backend is restarted.');
+                          return;
+                        }
+                        
+                        const product = {
+                          id: productId,
+                          name: productName
+                        };
+                        
+                        setReviewingProduct(product);
+                      }}
+                    >
+                      <i className="bi bi-star-fill me-2"></i>
+                      Write a Review
+                    </button>
                   </div>
                 ))}
               </div>
@@ -203,6 +219,22 @@ function OrdersView({orders}) {
               />
             </div>
           </div>
+        </div>
+      )}
+
+      {/* Success Message Notification */}
+      {showSuccessMessage && (
+        <div className="review-success-notification">
+          <div className="success-icon">
+            <i className="bi bi-check-circle-fill"></i>
+          </div>
+          <div className="success-content">
+            <h4>Review Submitted!</h4>
+            <p>Thank you! Your review has been submitted and will appear after admin approval.</p>
+          </div>
+          <button className="close-success-btn" onClick={() => setShowSuccessMessage(false)}>
+            <i className="bi bi-x"></i>
+          </button>
         </div>
       )}
     </div>

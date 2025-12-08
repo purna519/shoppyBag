@@ -21,6 +21,10 @@ public interface ProductReviewRepository extends JpaRepository<ProductReview, Lo
     // Count approved reviews for a product
     Long countByProductIdAndIsApprovedTrue(Long productId);
     
+    // Count approved reviews with comments (text reviews only)
+    @Query("SELECT COUNT(r) FROM ProductReview r WHERE r.product.id = :productId AND r.isApproved = true AND r.comment IS NOT NULL AND r.comment != ''")
+    Long countReviewsWithCommentByProductId(@Param("productId") Long productId);
+    
     // Calculate average rating for a product
     @Query("SELECT AVG(r.rating) FROM ProductReview r WHERE r.product.id = :productId AND r.isApproved = true")
     Double findAverageRatingByProductId(@Param("productId") Long productId);

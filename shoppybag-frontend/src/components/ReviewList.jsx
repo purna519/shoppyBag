@@ -1,12 +1,13 @@
 import React from 'react'
 import StarRating from './StarRating'
+import '../styles/review-list.css'
 
 export default function ReviewList({ reviews }) {
   if (!reviews || reviews.length === 0) {
     return (
-      <div className="text-center text-muted py-4">
-        <i className="bi bi-chat-quote" style={{ fontSize: '3rem', opacity: 0.3 }}></i>
-        <p className="mt-2">No reviews yet. Be the first to review this product!</p>
+      <div className="reviews-list-empty">
+        <i className="bi bi-chat-quote"></i>
+        <p>No reviews yet. Be the first to review this product!</p>
       </div>
     )
   }

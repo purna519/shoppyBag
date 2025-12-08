@@ -1,0 +1,55 @@
+/* Product Rating Display - Enhanced UI */
+.product-rating-display {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 1rem 0;
+  padding: 0.75rem 1rem;
+  background: linear-gradient(135deg, #fff9f0 0%, #fff 100%);
+  border-radius: 8px;
+  border: 1px solid #f0e6d6;
+  width: fit-content;
+}
+
+.rating-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #2c5f2d;
+  letter-spacing: -0.5px;
+}
+
+.rating-star {
+  font-size: 1.5rem;
+  color: #f59e0b;
+  text-shadow: 0 1px 2px rgba(245, 158, 11, 0.3);
+  animation: shimmer 2s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.8; }
+}
+
+.rating-count,
+.review-count {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #6b7280;
+  padding: 0.25rem 0.625rem;
+  background: #f3f4f6;
+  border-radius: 12px;
+  transition: all 0.2s ease;
+  cursor: default;
+}
+
+.rating-count:hover,
+.review-count:hover {
+  background: #e5e7eb;
+  transform: translateY(-1px);
+}
+
+.rating-separator {
+  font-size: 0.875rem;
+  color: #9ca3af;
+  font-weight: 500;
+}

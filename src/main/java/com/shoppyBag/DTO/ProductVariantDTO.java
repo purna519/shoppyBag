@@ -10,5 +10,9 @@ public class ProductVariantDTO {
     private String sku;
     private double price;
     private int stockQuantity;
+    
+    // Product information for reviews
+    private Long productId;
+    private String productName;
 }
 

@@ -1,0 +1,24 @@
+/* Star Rating Component Styles */
+.star-rating-container {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.star-rating-container i {
+  transition: all 0.2s ease;
+}
+
+.star-rating-container i:hover {
+  transform: scale(1.1);
+}
+
+/* Star colors */
+.bi-star-fill,
+.bi-star-half {
+  color: #fbbf24 !important;
+}
+
+.bi-star {
+  color: #e2e8f0 !important;
+}

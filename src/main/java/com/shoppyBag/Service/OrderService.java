@@ -45,6 +45,12 @@ public class OrderService {
         dto.setPrice(variant.getPrice());
         dto.setStockQuantity(variant.getStockQuantity());
         
+        // Include product information for reviews
+        if (variant.getProduct() != null) {
+            dto.setProductId(variant.getProduct().getId());
+            dto.setProductName(variant.getProduct().getName());
+        }
+        
         return dto;
     }
 
@@ -73,7 +79,7 @@ public class OrderService {
         dto.setId(order.getId());
         dto.setTotalAmount(order.getTotalAmount());
         dto.setStatus(order.getStatus());
-        dto.setDeliveryStatus(order.getDeliveryStatus()); // ✅ Added delivery status mapping
+        dto.setDeliveryStatus(order.getDeliveryStatus());
         dto.setUserId(order.getUsers().getId());
         dto.setOrderDate(order.getOrderdate());
 

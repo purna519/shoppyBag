@@ -87,9 +87,11 @@ public class ProductReviewServiceImpl implements ProductReviewService {
         Map<String, Object> stats = new HashMap<>();
         
         Double avgRating = reviewRepository.findAverageRatingByProductId(productId);
-        Long reviewCount = reviewRepository.countByProductIdAndIsApprovedTrue(productId);
+        Long ratingCount = reviewRepository.countByProductIdAndIsApprovedTrue(productId); // All ratings
+        Long reviewCount = reviewRepository.countReviewsWithCommentByProductId(productId); // Only reviews with text
         
         stats.put("averageRating", avgRating != null ? Math.round(avgRating * 10) / 10.0 : 0.0);
+        stats.put("ratingCount", ratingCount != null ? ratingCount : 0);
         stats.put("reviewCount", reviewCount != null ? reviewCount : 0);
         
         return stats;
