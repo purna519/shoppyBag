@@ -52,7 +52,7 @@ export default function ProductDetail() {
         quantity,
         price
       });
-      showToast('Added to cart!', 'success');
+      // Notification is shown by CartContext.addToCart
     } catch (e) {
       showToast('Failed to add to cart', 'error');
     }

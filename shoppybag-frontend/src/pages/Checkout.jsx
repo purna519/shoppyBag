@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
-import Navbar from '../components/Navbar'
-import Footer from '../components/Footer'
-import PaymentModal from '../components/PaymentModal'
-import { useCart } from '../Context/CartContext'
-import api from '../api/api'
-import '../styles/checkout.css'
+import React, { useState, useEffect, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
+import PaymentModal from '../components/PaymentModal';
+import { useCart } from '../Context/CartContext';
+import { ToastContext } from '../Context/ToastContext';
+import api from '../api/api';
+import '../styles/checkout.css';
 
 export default function Checkout() {
   const { cart } = useCart()
@@ -13,9 +14,10 @@ export default function Checkout() {
   const [addresses, setAddresses] = useState([])
   const [selectedAddress, setSelectedAddress] = useState(null)
   const [paymentMethod, setPaymentMethod] = useState('razorpay')
-  const [loading, setLoading] = useState(false)
-  const [showPaymentModal, setShowPaymentModal] = useState(false)
-  const [orderDetails, setOrderDetails] = useState(null)
+  const [loading, setLoading] = useState(false);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [orderDetails, setOrderDetails] = useState(null);
+  const { showToast } = useContext(ToastContext);
 
   useEffect(() => {
     loadAddresses()
@@ -44,12 +46,12 @@ export default function Checkout() {
 
   const handlePlaceOrder = async () => {
     if (!selectedAddress) {
-      alert('Please select a delivery address')
+      showToast('Please select a delivery address', 'warning');
       return
     }
 
     if (!cart?.items?.length) {
-      alert('Your cart is empty')
+      showToast('Your cart is empty', 'warning');
       return
     }
 
@@ -77,7 +79,7 @@ export default function Checkout() {
       }
     } catch (err) {
       console.error('Order error:', err)
-      alert(`Order failed: ${err.message}`)
+      showToast(`Order failed: ${err.message}`, 'error');
       setLoading(false)
     }
   }
@@ -109,7 +111,7 @@ export default function Checkout() {
       console.error('Error message:', err.message)
       console.error('Error stack:', err.stack)
       setLoading(false)
-      alert('COD order failed: ' + err.message)
+      showToast('COD order failed: ' + err.message, 'error');
     }
   }
 
@@ -125,7 +127,7 @@ export default function Checkout() {
     } catch (err) {
       console.error('Payment error:', err)
       setLoading(false)
-      alert('Payment failed: ' + err.message)
+      showToast('Payment failed: ' + err.message, 'error');
     }
   }
 

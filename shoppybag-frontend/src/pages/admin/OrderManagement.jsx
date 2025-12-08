@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
+import { ToastContext } from '../../Context/ToastContext';
 import '../../styles/admin/order-management.css';
 import '../../styles/admin/order-management-enhancements.css';
 
@@ -11,6 +12,7 @@ const OrderManagement = () => {
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [usersMap, setUsersMap] = useState({}); // Map userId to user
+  const { showToast } = useContext(ToastContext);
 
   useEffect(() => {
     fetchData();
@@ -63,11 +65,11 @@ const OrderManagement = () => {
         order.id === orderId ? { ...order, deliveryStatus: newStatus } : order
       ));
       
-      alert(`Delivery status updated to ${newStatus}`);
+      showToast(`Delivery status updated to ${newStatus}`, 'success');
     } catch (error) {
       console.error('Error updating delivery status:', error);
       console.error('Error response:', error.response?.data);
-      alert('Failed to update delivery status: ' + (error.response?.data?.message || error.message));
+      showToast('Failed to update delivery status: ' + (error.response?.data?.message || error.message), 'error');
     }
   };
 
@@ -88,11 +90,11 @@ const OrderManagement = () => {
         console.log('Modal should now be visible');
       } else {
         console.error('No order data received:', response.data);
-        alert(response.data?.message || 'Failed to load order details - No data received');
+        showToast(response.data?.message || 'Failed to load order details - No data received', 'error');
       }
     } catch (error) {
       console.error('Error fetching order details:', error);
-      alert('Failed to load order details: ' + (error.response?.data?.message || error.message));
+      showToast('Failed to load order details: ' + (error.response?.data?.message || error.message), 'error');
     }
   };
 

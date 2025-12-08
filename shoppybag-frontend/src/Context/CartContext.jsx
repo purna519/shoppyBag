@@ -47,10 +47,17 @@ export function CartProvider({ children }){
     catch(e){ console.error(e); showToast('Update failed', 'error'); throw e }
   }
 
-  const removeItem = async ({ productId, variantId = null })=>{
-    try{ await api.delete('/api/cart/remove', { params: { productId, variantId } }); await loadCart() }
-    catch(e){ console.error(e); showToast('Remove failed', 'error'); throw e }
-  }
+  const removeItem = async ({ productId, variantId = null }) => {
+    try {
+      await api.delete('/api/cart/remove', { params: { productId, variantId } });
+      await loadCart();
+      showToast('Item removed from cart', 'info');
+    } catch (e) {
+      console.error(e);
+      showToast('Remove failed', 'error');
+      throw e;
+    }
+  };
 
   // Helpers for components that work with cart-item id
   const updateItemById = async (itemId, quantity)=>{

@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
+import { ToastContext } from '../../Context/ToastContext';
 import ProductDetailsModal from '../../components/admin/ProductDetailsModal';
 import DeleteConfirmModal from '../../components/admin/DeleteConfirmModal';
 import '../../styles/admin/product-management.css';
@@ -19,6 +20,7 @@ const ProductManagement = () => {
     price: '',
     stockQuantity: ''
   });
+  const { showToast } = useContext(ToastContext);
 
   useEffect(() => {
     fetchProducts();
@@ -49,13 +51,13 @@ const ProductManagement = () => {
       }, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      alert('Product added successfully');
+      showToast('Product added successfully', 'success');
       setShowAddModal(false);
       setFormData({ name: '', brand: '', category: '', description: '', price: '', stockQuantity: '' });
       fetchProducts();
     } catch (error) {
       console.error('Error adding product:', error);
-      alert('Failed to add product');
+      showToast('Failed to add product', 'error');
     }
   };
 
@@ -67,12 +69,12 @@ const ProductManagement = () => {
       await axios.delete(`http://localhost:8080/api/product/delete/${productToDelete.id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      alert('Product deleted successfully');
+      showToast('Product deleted successfully', 'success');
       setProductToDelete(null);
       fetchProducts();
     } catch (error) {
       console.error('Error deleting product:', error);
-      alert('Failed to delete product');
+      showToast('Failed to delete product', 'error');
     }
   };
 

@@ -21,6 +21,7 @@ import com.shoppyBag.Entity.ProductVariant;
 import com.shoppyBag.Entity.Users;
 import com.shoppyBag.Repository.CartRepository;
 import com.shoppyBag.Repository.OrderRepository;
+import com.shoppyBag.Repository.ProductVariantRepository;
 
 @Service
 public class OrderService {
@@ -33,6 +34,9 @@ public class OrderService {
 
     @Autowired
     private OrderRepository orderRepository;
+    
+    @Autowired
+    private ProductVariantRepository productVariantRepository;
 
         private ProductVariantDTO convertToProductVariantDTO(ProductVariant variant) {
         if (variant == null) return null;
@@ -95,8 +99,6 @@ public class OrderService {
         return dto;
     }
     
-
-
     public ApiResponse<OrderDTO> placeOrder(String token) {
         Users users = regularFunctions.validateToken(token);
         if (users == null) {
@@ -106,6 +108,18 @@ public class OrderService {
         Cart cart = cartRepository.findByUser(users);
         if (cart.getItems().isEmpty()) {
             return new ApiResponse<>("Error", "Cart Items are Empty", null);
+        }
+
+        for (CartItem cartItem : cart.getItems()) {
+            ProductVariant variant = cartItem.getVariant();
+            if (variant != null) {
+                if (variant.getStockQuantity() < cartItem.getQuantity()) {
+                    return new ApiResponse<>("Error", 
+                        "Insufficient stock for " + variant.getColor() + " " + variant.getSize() + 
+                        ". Available: " + variant.getStockQuantity() + ", Requested: " + cartItem.getQuantity(), 
+                        null);
+                }
+            }
         }
 
         Order order = new Order(LocalDateTime.now(), 0, "Pending", users);
@@ -124,6 +138,13 @@ public class OrderService {
             orderItems.add(orderItem);
 
             total_amount += cartItem.getPrice() * cartItem.getQuantity();
+            
+            ProductVariant variant = cartItem.getVariant();
+            if (variant != null) {
+                int newStock = variant.getStockQuantity() - cartItem.getQuantity();
+                variant.setStockQuantity(newStock);
+                productVariantRepository.save(variant);
+            }
         }
 
         order.setOrderItems(orderItems);
@@ -133,7 +154,7 @@ public class OrderService {
 
         cartRepository.delete(cart);
 
-        return new ApiResponse<>("Success", "OrderItems Succesfully added", convertToOrderDTO(order));
+        return new ApiResponse<>("Success", "OrderItems Successfully added", convertToOrderDTO(order));
 
     }
 

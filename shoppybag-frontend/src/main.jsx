@@ -14,7 +14,7 @@ import './styles/theme.css'
 import { NotificationProvider } from './context/NotificationContext'
 import { ToastProvider } from './Context/ToastContext'
 import { CartProvider } from './Context/CartContext'
-import ToastContainer from './components/ToastContainer'
+import PremiumToastContainer from './components/PremiumToastContainer'
 import ErrorBoundary from './components/ErrorBoundary'
 
 createRoot(document.getElementById('root')).render(
@@ -26,7 +26,7 @@ createRoot(document.getElementById('root')).render(
             <ErrorBoundary>
               <App />
             </ErrorBoundary>
-            <ToastContainer />
+            <PremiumToastContainer />
           </CartProvider>
         </ToastProvider>
       </NotificationProvider>
