@@ -20,6 +20,8 @@ const ProductManagement = () => {
     price: '',
     stockQuantity: ''
   });
+  const [variants, setVariants] = useState([]);
+  const [images, setImages] = useState([]);
   const { showToast } = useContext(ToastContext);
 
   useEffect(() => {
@@ -44,21 +46,98 @@ const ProductManagement = () => {
     e.preventDefault();
     try {
       const token = localStorage.getItem('authToken');
-      await axios.post('http://localhost:8080/api/product/addProduct', {
+      
+      // Step 1: Create the product
+      const productResponse = await axios.post('http://localhost:8080/api/product/addProduct', {
         ...formData,
         price: parseFloat(formData.price),
         stockQuantity: parseInt(formData.stockQuantity)
       }, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      showToast('Product added successfully', 'success');
+      
+      const productId = productResponse.data.data?.id;
+      
+      if (!productId) {
+        showToast('Product created but ID not returned', 'warning');
+        return;
+      }
+      
+      // Step 2: Add variants if any
+      if (variants.length > 0) {
+        for (const variant of variants) {
+          try {
+            await axios.post(`http://localhost:8080/api/variants/add/${productId}`, {
+              color: variant.color,
+              size: variant.size,
+              sku: variant.sku,
+              price: parseFloat(variant.price),
+              stockQuantity: parseInt(variant.stockQuantity)
+            }, {
+              headers: { Authorization: `Bearer ${token}` }
+            });
+          } catch (variantError) {
+            console.error('Error adding variant:', variantError);
+            showToast(`Failed to add variant: ${variant.sku}`, 'error');
+          }
+        }
+      }
+      
+      // Step 3: Add images if any
+      if (images.length > 0) {
+        for (const image of images) {
+          try {
+            await axios.post(`http://localhost:8080/api/productImages/addProductImage/${productId}`, {
+              imageUrl: image.imageUrl,
+              altText: image.altText
+            }, {
+              headers: { Authorization: `Bearer ${token}` }
+            });
+          } catch (imageError) {
+            console.error('Error adding image:', imageError);
+            showToast(`Failed to add image`, 'error');
+          }
+        }
+      }
+      
+      showToast('Product added successfully with variants and images', 'success');
       setShowAddModal(false);
       setFormData({ name: '', brand: '', category: '', description: '', price: '', stockQuantity: '' });
+      setVariants([]);
+      setImages([]);
       fetchProducts();
     } catch (error) {
       console.error('Error adding product:', error);
       showToast('Failed to add product', 'error');
     }
+  };
+  
+  const addVariant = () => {
+    setVariants([...variants, { color: '', size: '', sku: '', price: '', stockQuantity: '' }]);
+  };
+  
+  const removeVariant = (index) => {
+    setVariants(variants.filter((_, i) => i !== index));
+  };
+  
+  const updateVariant = (index, field, value) => {
+    const updatedVariants = [...variants];
+    updatedVariants[index][field] = value;
+    setVariants(updatedVariants);
+  };
+  
+  const addImage = () => {
+    setImages([...images, { imageUrl: '', altText: '' }]);
+  };
+  
+  const removeImage = (index) => {
+    setImages(images.filter((_, i) => i !== index));
+  };
+  
+  const updateImage = (index, field, value) => {
+    const updatedImages = [...images];
+    updatedImages[index][field] = value;
+    setImages(updatedImages);
   };
 
   const handleDeleteProduct = async () => {
@@ -164,53 +243,164 @@ const ProductManagement = () => {
             
             <div className="modal-body">
               <form onSubmit={handleAddProduct} className="product-form">
-                <div className="form-row">
-                  <input
-                    type="text"
-                    placeholder="Product Name"
-                    value={formData.name}
-                    onChange={(e) => setFormData({...formData, name: e.target.value})}
+                <div className="form-section">
+                  <h3 className="section-title">Basic Information</h3>
+                  
+                  <div className="form-row form-row-3">
+                    <input
+                      type="text"
+                      placeholder="Product Name"
+                      value={formData.name}
+                      onChange={(e) => setFormData({...formData, name: e.target.value})}
+                      required
+                    />
+                    <input
+                      type="text"
+                      placeholder="Brand"
+                      value={formData.brand}
+                      onChange={(e) => setFormData({...formData, brand: e.target.value})}
+                      required
+                    />
+                    <input
+                      type="text"
+                      placeholder="Category"
+                      value={formData.category}
+                      onChange={(e) => setFormData({...formData, category: e.target.value})}
+                      required
+                    />
+                  </div>
+                  
+                  <textarea
+                    placeholder="Product Description"
+                    value={formData.description}
+                    onChange={(e) => setFormData({...formData, description: e.target.value})}
                     required
                   />
-                  <input
-                    type="text"
-                    placeholder="Brand"
-                    value={formData.brand}
-                    onChange={(e) => setFormData({...formData, brand: e.target.value})}
-                    required
-                  />
+                  
+                  <div className="form-row">
+                    <input
+                      type="number"
+                      placeholder="Price (₹)"
+                      value={formData.price}
+                      onChange={(e) => setFormData({...formData, price: e.target.value})}
+                      required
+                    />
+                    <input
+                      type="number"
+                      placeholder="Stock Quantity"
+                      value={formData.stockQuantity}
+                      onChange={(e) => setFormData({...formData, stockQuantity: e.target.value})}
+                      required
+                    />
+                  </div>
                 </div>
-                
-                <input
-                  type="text"
-                  placeholder="Category"
-                  value={formData.category}
-                  onChange={(e) => setFormData({...formData, category: e.target.value})}
-                  required
-                />
-                
-                <textarea
-                  placeholder="Product Description"
-                  value={formData.description}
-                  onChange={(e) => setFormData({...formData, description: e.target.value})}
-                  required
-                />
-                
-                <div className="form-row">
-                  <input
-                    type="number"
-                    placeholder="Price (₹)"
-                    value={formData.price}
-                    onChange={(e) => setFormData({...formData, price: e.target.value})}
-                    required
-                  />
-                  <input
-                    type="number"
-                    placeholder="Stock Quantity"
-                    value={formData.stockQuantity}
-                    onChange={(e) => setFormData({...formData, stockQuantity: e.target.value})}
-                    required
-                  />
+
+                <div className="form-section">
+                  <div className="section-header">
+                    <h3 className="section-title">Product Variants (Optional)</h3>
+                    <button type="button" className="btn-add-item" onClick={addVariant}>
+                      <i className="fas fa-plus"></i> Add Variant
+                    </button>
+                  </div>
+                  
+                  {variants.map((variant, index) => (
+                    <div key={index} className="variant-item">
+                      <div className="item-header">
+                        <span className="item-label">Variant {index + 1}</span>
+                        <button 
+                          type="button" 
+                          className="btn-remove-item" 
+                          onClick={() => removeVariant(index)}
+                        >
+                          <i className="fas fa-times"></i>
+                        </button>
+                      </div>
+                      <div className="form-row">
+                        <input
+                          type="text"
+                          placeholder="Color"
+                          value={variant.color}
+                          onChange={(e) => updateVariant(index, 'color', e.target.value)}
+                          required
+                        />
+                        <input
+                          type="text"
+                          placeholder="Size"
+                          value={variant.size}
+                          onChange={(e) => updateVariant(index, 'size', e.target.value)}
+                          required
+                        />
+                      </div>
+                      <input
+                        type="text"
+                        placeholder="SKU"
+                        value={variant.sku}
+                        onChange={(e) => updateVariant(index, 'sku', e.target.value)}
+                        required
+                      />
+                      <div className="form-row">
+                        <input
+                          type="number"
+                          placeholder="Variant Price (₹)"
+                          value={variant.price}
+                          onChange={(e) => updateVariant(index, 'price', e.target.value)}
+                          required
+                        />
+                        <input
+                          type="number"
+                          placeholder="Stock Quantity"
+                          value={variant.stockQuantity}
+                          onChange={(e) => updateVariant(index, 'stockQuantity', e.target.value)}
+                          required
+                        />
+                      </div>
+                    </div>
+                  ))}
+                  
+                  {variants.length === 0 && (
+                    <p className="empty-message">No variants added yet. Click "Add Variant" to add one.</p>
+                  )}
+                </div>
+
+                <div className="form-section">
+                  <div className="section-header">
+                    <h3 className="section-title">Product Images (Optional)</h3>
+                    <button type="button" className="btn-add-item" onClick={addImage}>
+                      <i className="fas fa-plus"></i> Add Image
+                    </button>
+                  </div>
+                  
+                  {images.map((image, index) => (
+                    <div key={index} className="image-item">
+                      <div className="item-header">
+                        <span className="item-label">Image {index + 1}</span>
+                        <button 
+                          type="button" 
+                          className="btn-remove-item" 
+                          onClick={() => removeImage(index)}
+                        >
+                          <i className="fas fa-times"></i>
+                        </button>
+                      </div>
+                      <input
+                        type="url"
+                        placeholder="Image URL"
+                        value={image.imageUrl}
+                        onChange={(e) => updateImage(index, 'imageUrl', e.target.value)}
+                        required
+                      />
+                      <input
+                        type="text"
+                        placeholder="Alt Text (description)"
+                        value={image.altText}
+                        onChange={(e) => updateImage(index, 'altText', e.target.value)}
+                      />
+                    </div>
+                  ))}
+                  
+                  {images.length === 0 && (
+                    <p className="empty-message">No images added yet. Click "Add Image" to add one.</p>
+                  )}
                 </div>
                 
                 <div className="modal-actions">

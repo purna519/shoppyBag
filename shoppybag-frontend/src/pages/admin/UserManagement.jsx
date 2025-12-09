@@ -13,6 +13,13 @@ const UserManagement = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedUser, setSelectedUser] = useState(null);
   const [userToDelete, setUserToDelete] = useState(null);
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [formData, setFormData] = useState({
+    fullname: '',
+    email: '',
+    passwordHash: '',
+    role: 'USER'
+  });
   const { showSuccess, showError } = useNotification();
 
   useEffect(() => {
@@ -78,6 +85,25 @@ const UserManagement = () => {
     }
   };
 
+  const handleAddUser = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post('http://localhost:8080/api/users/register', formData);
+      
+      if (response.data && response.data.status === 'success') {
+        showSuccess('User added successfully');
+        setShowAddModal(false);
+        setFormData({ fullname: '', email: '', passwordHash: '', role: 'USER' });
+        fetchUsers();
+      } else {
+        showError('Failed to add user', response.data?.message || 'Unknown error');
+      }
+    } catch (error) {
+      console.error('Error adding user:', error);
+      showError('Failed to add user', error.response?.data?.message || error.message);
+    }
+  };
+
   const filteredUsers = users.filter(user =>
     user.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
     user.fullname?.toLowerCase().includes(searchTerm.toLowerCase())
@@ -91,14 +117,19 @@ const UserManagement = () => {
     <div className="admin-page">
       <div className="page-header">
         <h1>User Management</h1>
-        <div className="search-bar">
-          <i className="fas fa-search"></i>
-          <input
-            type="text"
-            placeholder="Search users..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
+        <div className="header-actions">
+          <div className="search-bar">
+            <i className="fas fa-search"></i>
+            <input
+              type="text"
+              placeholder="Search users..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+          <button className="add-btn" onClick={() => setShowAddModal(true)}>
+            <i className="fas fa-plus"></i> Add User
+          </button>
         </div>
       </div>
 
@@ -126,6 +157,64 @@ const UserManagement = () => {
           </tbody>
         </table>
       </div>
+
+      {showAddModal && (
+        <div className="modal-overlay" onClick={() => setShowAddModal(false)}>
+          <div className="modal-content add-user-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h2>Add New User</h2>
+              <button className="close-btn" onClick={() => setShowAddModal(false)}>×</button>
+            </div>
+            
+            <div className="modal-body">
+              <form onSubmit={handleAddUser} className="user-form">
+                <input
+                  type="text"
+                  placeholder="Full Name"
+                  value={formData.fullname}
+                  onChange={(e) => setFormData({...formData, fullname: e.target.value})}
+                  required
+                />
+                
+                <input
+                  type="email"
+                  placeholder="Email"
+                  value={formData.email}
+                  onChange={(e) => setFormData({...formData, email: e.target.value})}
+                  required
+                />
+                
+                <input
+                  type="password"
+                  placeholder="Password"
+                  value={formData.passwordHash}
+                  onChange={(e) => setFormData({...formData, passwordHash: e.target.value})}
+                  required
+                />
+                
+                <select
+                  value={formData.role}
+                  onChange={(e) => setFormData({...formData, role: e.target.value})}
+                  required
+                >
+                  <option value="USER">USER</option>
+                  <option value="ADMIN">ADMIN</option>
+                </select>
+                
+                <div className="modal-actions">
+                  <button type="submit" className="btn-primary">
+                    <i className="fas fa-plus"></i>
+                    Add User
+                  </button>
+                  <button type="button" className="btn-secondary" onClick={() => setShowAddModal(false)}>
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
 
       {selectedUser && (
         <UserDetailsModal
