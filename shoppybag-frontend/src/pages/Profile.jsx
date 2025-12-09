@@ -100,6 +100,59 @@ export default function Profile(){
 
   const handleChangePassword = () => setShowChange(true)
 
+  const handleUpdateProfile = async (fullname, profileImage) => {
+    console.log('handleUpdateProfile called with:', { fullname, profileImage })
+    try {
+      let changesMade = false
+
+      // Update fullname if changed
+      if (fullname !== profile.fullname) {
+        console.log('Name changed, calling API...')
+        const res = await api.put('/api/users/update', { 
+          email: profile.email, 
+          fullname: fullname 
+        })
+        console.log('Name update response:', res?.data)
+        if (res?.data?.status === 'success') {
+          setProfile({...profile, fullname: fullname})
+          showToast('Name updated successfully!', 'success')
+          changesMade = true
+        }
+      }
+      
+      // Upload profile image if selected
+      if (profileImage) {
+        console.log('Image exists, uploading...', profileImage.name)
+        const formData = new FormData()
+        formData.append('file', profileImage)
+        formData.append('email', profile.email)
+        
+        console.log('Calling upload API...')
+        const res = await api.post('/api/profile-image/upload', formData, {
+          headers: { 'Content-Type': 'multipart/form-data' }
+        })
+        
+        console.log('Upload response:', res?.data)
+        if (res?.data?.status === 'success') {
+          showToast('Profile image updated successfully!', 'success')
+          loadProfile()
+          changesMade = true
+        }
+      } else {
+        console.log('No profileImage provided')
+      }
+
+      console.log('changesMade:', changesMade)
+      if (!changesMade) {
+        showToast('No changes to save', 'info')
+      }
+    } catch (err) {
+      console.error('Failed to update profile', err)
+      showToast(err.response?.data?.message || 'Failed to update profile', 'error')
+    }
+  }
+
+
   const submitPassword = (e) => {
     e.preventDefault()
     if(passwordData.new !== passwordData.confirm) {
@@ -182,7 +235,7 @@ export default function Profile(){
             <div className="col-lg-9">
               {active === 'account' ? (
                 <div>
-                  <AccountView profile={profile} onChangePassword={handleChangePassword} />
+                  <AccountView profile={profile} onChangePassword={handleChangePassword} onUpdateProfile={handleUpdateProfile} />
 
                   {showChange && (
                     <div className="password-change-card-fashion mt-4">

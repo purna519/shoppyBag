@@ -60,7 +60,7 @@ public class SecurityConfig {
           .csrf(csrf -> csrf.disable())
           .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
           .authorizeHttpRequests(auth -> auth
-            .requestMatchers("/api/auth/**", "/api/users/register", "/api/users/signin", "/payment/verify", "/payment/webhook", "/swagger-ui/**").permitAll()
+            .requestMatchers("/api/auth/**", "/api/users/register", "/api/users/signin", "/payment/verify", "/payment/webhook", "/api/profile-image/**", "/swagger-ui/**").permitAll()
             .requestMatchers("/api/admin/**").hasRole("ADMIN")
             .anyRequest().authenticated()
           )

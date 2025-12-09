@@ -34,6 +34,9 @@ public class Users {
     @Column(nullable = false)
     private String role;
 
+    @Column(name = "profile_image_url")
+    private String profileImageUrl;
+
     @OneToMany(mappedBy = "users", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
     private List<Address> addresses;

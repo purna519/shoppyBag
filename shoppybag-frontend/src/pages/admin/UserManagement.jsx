@@ -1,4 +1,3 @@
-// Refactored User Management with extracted components
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNotification } from '../../hooks/useNotification';
@@ -20,6 +19,8 @@ const UserManagement = () => {
     passwordHash: '',
     role: 'USER'
   });
+  const [profileImage, setProfileImage] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
   const { showSuccess, showError } = useNotification();
 
   useEffect(() => {
@@ -87,13 +88,35 @@ const UserManagement = () => {
 
   const handleAddUser = async (e) => {
     e.preventDefault();
+    const token = localStorage.getItem('token');
+    
     try {
       const response = await axios.post('http://localhost:8080/api/users/register', formData);
       
       if (response.data && response.data.status === 'success') {
+        if (profileImage) {
+          const imageFormData = new FormData();
+          imageFormData.append('file', profileImage);
+          imageFormData.append('email', formData.email);
+          
+          try {
+            await axios.post('http://localhost:8080/api/profile-image/upload', imageFormData, {
+              headers: {
+                'Content-Type': 'multipart/form-data',
+                'Authorization': `Bearer ${token}`
+              }
+            });
+          } catch (imgError) {
+            console.error('Error uploading profile image:', imgError);
+            showError('User created but failed to upload profile image');
+          }
+        }
+        
         showSuccess('User added successfully');
         setShowAddModal(false);
         setFormData({ fullname: '', email: '', passwordHash: '', role: 'USER' });
+        setProfileImage(null);
+        setImagePreview(null);
         fetchUsers();
       } else {
         showError('Failed to add user', response.data?.message || 'Unknown error');
@@ -101,6 +124,18 @@ const UserManagement = () => {
     } catch (error) {
       console.error('Error adding user:', error);
       showError('Failed to add user', error.response?.data?.message || error.message);
+    }
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setProfileImage(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
     }
   };
 
@@ -191,6 +226,32 @@ const UserManagement = () => {
                   onChange={(e) => setFormData({...formData, passwordHash: e.target.value})}
                   required
                 />
+                
+                <div className="form-group">
+                  <label style={{color: '#ffffff', fontSize: '0.9rem', marginBottom: '0.5rem', display: 'block'}}>
+                    Profile Image (Optional)
+                  </label>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    style={{marginBottom: '0.5rem'}}
+                  />
+                  {imagePreview && (
+                    <div style={{marginTop: '0.5rem'}}>
+                      <img 
+                        src={imagePreview} 
+                        alt="Preview" 
+                        style={{
+                          maxWidth: '150px', 
+                          maxHeight: '150px', 
+                          borderRadius: '8px',
+                          border: '2px solid #ffffff'
+                        }} 
+                      />
+                    </div>
+                  )}
+                </div>
                 
                 <select
                   value={formData.role}
