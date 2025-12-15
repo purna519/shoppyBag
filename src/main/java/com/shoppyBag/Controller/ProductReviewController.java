@@ -92,12 +92,36 @@ public class ProductReviewController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteReview(@PathVariable Long id) {
+    public ResponseEntity<?> deleteReview(@PathVariable Long id, @org.springframework.web.bind.annotation.RequestHeader(value = "Authorization", required = false) String authHeader) {
         try {
-            reviewService.deleteReview(id);
+            // Extract token from Bearer header
+            if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("error", "Please login to delete a review"));
+            }
+            
+            String token = authHeader.substring(7);
+            String userEmail = jwtUtil.extractEmail(token);
+            
+            if (userEmail == null) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("error", "Invalid token. Please login again"));
+            }
+            
+            reviewService.deleteReview(id, userEmail);
             return ResponseEntity.noContent().build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(Map.of("error", e.getMessage()));
         } catch (Exception e) {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    // Admin: Get all reviews
+    @GetMapping("/all")
+    public ResponseEntity<List<ReviewResponse>> getAllReviews() {
+        List<ReviewResponse> reviews = reviewService.getAllReviews();
+        return ResponseEntity.ok(reviews);
     }
 }

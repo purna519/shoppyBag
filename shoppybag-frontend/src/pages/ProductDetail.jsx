@@ -12,6 +12,7 @@ import ProductInfo from '../components/product/ProductInfo';
 import { useProductData } from '../hooks/useProductData';
 import CartContext from '../Context/CartContext';
 import { ToastContext } from '../Context/ToastContext';
+import api from '../api/api';
 import '../styles/product-detail.css';
 import '../styles/product-detail-enhancements.css';
 import '../styles/product-detail-dark-mode.css';
@@ -25,6 +26,7 @@ export default function ProductDetail() {
   const [quantity, setQuantity] = useState(1);
   const [mainIndex, setMainIndex] = useState(0);
   const [userToken, setUserToken] = useState(null);
+  const [currentUserId, setCurrentUserId] = useState(null);
   
   const { cart, addToCart } = useContext(CartContext);
   const { showToast } = useContext(ToastContext);
@@ -41,6 +43,17 @@ export default function ProductDetail() {
   useEffect(() => {
     const token = localStorage.getItem('token');
     setUserToken(token);
+    
+    // Extract current user ID from JWT token
+    if (token) {
+      try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        setCurrentUserId(payload.userId || payload.id);
+        console.log('Current user ID:', payload.userId || payload.id);
+      } catch (e) {
+        console.error('Failed to decode JWT token', e);
+      }
+    }
   }, []);
 
   const handleAdd = async () => {
@@ -55,6 +68,19 @@ export default function ProductDetail() {
       // Notification is shown by CartContext.addToCart
     } catch (e) {
       showToast('Failed to add to cart', 'error');
+    }
+  };
+
+  const handleDeleteReview = async (reviewId) => {
+    try {
+      await api.delete(`/api/reviews/${reviewId}`);
+      // Wait for reviews and stats to refresh before showing success
+      await refreshReviews();
+      await refreshRatingStats();
+      showToast('Review deleted successfully', 'success');
+    } catch (err) {
+      console.error('Failed to delete review:', err);
+      showToast(err.response?.data?.error || 'Failed to delete review', 'error');
     }
   };
 
@@ -184,7 +210,11 @@ export default function ProductDetail() {
 
             <div className="row">
               <div className="col-md-8">
-                <ReviewList reviews={reviews} />
+                <ReviewList 
+                  reviews={reviews} 
+                  currentUserId={currentUserId}
+                  onDeleteReview={handleDeleteReview}
+                />
               </div>
               <div className="col-md-4">
                 {userToken ? (
@@ -194,6 +224,7 @@ export default function ProductDetail() {
                       onReviewSubmitted={() => {
                         refreshReviews();
                         refreshRatingStats();
+                        showToast('Thank you! Your review has been submitted and is pending admin approval. It will be displayed once approved.', 'success');
                       }}
                     />
                   </div>

@@ -118,13 +118,39 @@ public class ProductReviewServiceImpl implements ProductReviewService {
     }
 
     @Override
-    public void deleteReview(Long reviewId) {
+    public void deleteReview(Long reviewId, String userEmail) {
+        // Find the review
+        ProductReview review = reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new RuntimeException("Review not found"));
+        
+        // Find the requesting user
+        Users user = userRepository.findByEmail(userEmail);
+        if (user == null) {
+            throw new RuntimeException("User not found");
+        }
+        
+        // Check if user owns the review or is an admin
+        boolean isOwner = review.getUser().getId().equals(user.getId());
+        boolean isAdmin = "ADMIN".equalsIgnoreCase(user.getRole());
+        
+        if (!isOwner && !isAdmin) {
+            throw new RuntimeException("You don't have permission to delete this review");
+        }
+        
         reviewRepository.deleteById(reviewId);
     }
 
     @Override
     public List<ReviewResponse> getReviewsByUser(Long userId) {
         List<ProductReview> reviews = reviewRepository.findByUserId(userId);
+        return reviews.stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ReviewResponse> getAllReviews() {
+        List<ProductReview> reviews = reviewRepository.findAll();
         return reviews.stream()
                 .map(this::mapToResponse)
                 .collect(Collectors.toList());

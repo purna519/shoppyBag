@@ -153,15 +153,30 @@ export default function Profile(){
   }
 
 
-  const submitPassword = (e) => {
+  const submitPassword = async (e) => {
     e.preventDefault()
     if(passwordData.new !== passwordData.confirm) {
       showToast('Passwords do not match', 'error')
       return
     }
-    showToast('Password change functionality coming soon', 'info')
-    setShowChange(false)
-    setPasswordData({ current: '', new: '', confirm: '' })
+    
+    try {
+      const res = await api.post('/api/users/change-password', {
+        currentPassword: passwordData.current,
+        newPassword: passwordData.new
+      })
+      
+      if (res?.data?.status === 'success') {
+        showToast('Password changed successfully!', 'success')
+        setShowChange(false)
+        setPasswordData({ current: '', new: '', confirm: '' })
+      } else {
+        showToast(res?.data?.message || 'Failed to change password', 'error')
+      }
+    } catch (err) {
+      console.error('Failed to change password', err)
+      showToast(err.response?.data?.message || 'Failed to change password', 'error')
+    }
   }
 
   if (loading) return (

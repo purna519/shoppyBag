@@ -125,4 +125,22 @@ public class UsersService {
 
         return new ApiResponse<>("success", "Profile fetched successfully", user);
     }
+
+    // Change password
+    public ApiResponse<String> changePassword(ChangePasswordDTO request, String token) {
+        Users user = regularFunctions.validateToken(token);
+        if (user == null)
+            return new ApiResponse<>("error", "Invalid or missing token", null);
+
+        // Verify current password
+        if (!passwordEncoder.matches(request.getCurrentPassword(), user.getPasswordHash())) {
+            return new ApiResponse<>("error", "Current password is incorrect", null);
+        }
+
+        // Update to new password
+        user.setPasswordHash(passwordEncoder.encode(request.getNewPassword()));
+        userRepository.save(user);
+
+        return new ApiResponse<>("success", "Password changed successfully", null);
+    }
 }

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNotification } from '../../hooks/useNotification';
 import StarRating from '../../components/StarRating';
+import ConfirmDialog from '../../components/ConfirmDialog';
 import '../../styles/admin/product-management.css';
 import '../../styles/admin/review-management.css';
 
@@ -9,6 +10,8 @@ const ReviewManagement = () => {
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('pending'); // 'pending' or 'all'
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [reviewToDelete, setReviewToDelete] = useState(null);
   const { showSuccess, showError } = useNotification();
 
   useEffect(() => {
@@ -21,15 +24,13 @@ const ReviewManagement = () => {
       const token = localStorage.getItem('authToken');
       const endpoint = filter === 'pending' 
         ? 'http://localhost:8080/api/reviews/pending'
-        : 'http://localhost:8080/api/product/fetchallProducts'; // We'll get all and filter
+        : 'http://localhost:8080/api/reviews/all';
       
       const response = await axios.get(endpoint, {
         headers: { Authorization: `Bearer ${token}` }
       });
       
-      if (filter === 'pending') {
-        setReviews(response.data || []);
-      }
+      setReviews(response.data || []);
       setLoading(false);
     } catch (error) {
       console.error('Error fetching reviews:', error);
@@ -51,20 +52,31 @@ const ReviewManagement = () => {
     }
   };
 
-  const handleDelete = async (reviewId) => {
-    if (!window.confirm('Are you sure you want to delete this review?')) return;
+  const handleDeleteClick = (reviewId) => {
+    setReviewToDelete(reviewId);
+    setShowDeleteConfirm(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!reviewToDelete) return;
     
     try {
       const token = localStorage.getItem('authToken');
-      await axios.delete(`http://localhost:8080/api/reviews/${reviewId}`, {
+      await axios.delete(`http://localhost:8080/api/reviews/${reviewToDelete}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       showSuccess('Review deleted successfully!');
+      setReviewToDelete(null);
       fetchReviews();
     } catch (error) {
       console.error('Error deleting review:', error);
       showError('Failed to delete review', error.response?.data?.message || error.message);
     }
+  };
+
+  const handleCancelDelete = () => {
+    setShowDeleteConfirm(false);
+    setReviewToDelete(null);
   };
 
   const formatDate = (dateStr) => {
@@ -96,6 +108,13 @@ const ReviewManagement = () => {
               <i className="fas fa-clock"></i> Pending Reviews
               {filter === 'pending' && <span className="badge">{reviews.length}</span>}
             </button>
+            <button 
+              className={`filter-tab ${filter === 'all' ? 'active' : ''}`}
+              onClick={() => setFilter('all')}
+            >
+              <i className="fas fa-list"></i> All Reviews
+              {filter === 'all' && <span className="badge">{reviews.length}</span>}
+            </button>
           </div>
         </div>
       </div>
@@ -111,11 +130,14 @@ const ReviewManagement = () => {
           <table>
             <thead>
               <tr>
-                <th>ID</th>
-                <th>Product</th>
+                <th>Review ID</th>
+                <th>User ID</th>
+                <th>Product ID</th>
                 <th>User</th>
+                <th>Product</th>
                 <th>Rating</th>
                 <th>Comment</th>
+                <th>Verified</th>
                 <th>Date</th>
                 <th>Status</th>
                 <th>Actions</th>
@@ -124,21 +146,24 @@ const ReviewManagement = () => {
             <tbody>
               {reviews.map(review => (
                 <tr key={review.id}>
-                  <td>{review.id}</td>
-                  <td>
-                    <div className="product-cell">
-                      <strong>{review.productName}</strong>
-                      <small>ID: {review.productId}</small>
-                    </div>
-                  </td>
+                  <td><span className="id-badge">{review.id}</span></td>
+                  <td><span className="id-badge">{review.userId}</span></td>
+                  <td><span className="id-badge">{review.productId}</span></td>
                   <td>
                     <div className="user-cell">
                       <strong>{review.userName}</strong>
-                      <small>ID: {review.userId}</small>
                     </div>
                   </td>
                   <td>
-                    <StarRating rating={review.rating} size="0.9rem" />
+                    <div className="product-cell">
+                      <strong>{review.productName}</strong>
+                    </div>
+                  </td>
+                  <td>
+                    <div className="rating-cell">
+                      <StarRating rating={review.rating} size="0.9rem" />
+                      <span className="rating-number">({review.rating})</span>
+                    </div>
                   </td>
                   <td>
                     <div className="comment-cell" title={review.comment}>
@@ -146,6 +171,15 @@ const ReviewManagement = () => {
                         ? review.comment.substring(0, 50) + '...' 
                         : review.comment}
                     </div>
+                  </td>
+                  <td>
+                    {review.isVerifiedPurchase ? (
+                      <span className="verified-badge">
+                        <i className="fas fa-check-circle"></i> Yes
+                      </span>
+                    ) : (
+                      <span className="not-verified-badge">No</span>
+                    )}
                   </td>
                   <td>{formatDate(review.createdAt)}</td>
                   <td>
@@ -166,7 +200,7 @@ const ReviewManagement = () => {
                     )}
                     <button
                       className="btn-action btn-delete"
-                      onClick={() => handleDelete(review.id)}
+                      onClick={() => handleDeleteClick(review.id)}
                       title="Delete Review"
                     >
                       <i className="fas fa-trash"></i>
@@ -179,6 +213,17 @@ const ReviewManagement = () => {
           </table>
         </div>
       )}
+
+      <ConfirmDialog
+        isOpen={showDeleteConfirm}
+        onClose={handleCancelDelete}
+        onConfirm={handleConfirmDelete}
+        title="Delete Review?"
+        message="Are you sure you want to delete this review? This action cannot be undone."
+        confirmText="Delete"
+        cancelText="Cancel"
+        variant="danger"
+      />
     </div>
   );
 };

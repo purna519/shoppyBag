@@ -47,4 +47,10 @@ public class UsersController {
     public ApiResponse<?> getProfile(@RequestHeader("Authorization") String token) {
         return usersService.getProfile(token);
     }
+
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
+    @PostMapping("/change-password")
+    public ApiResponse<?> changePassword(@RequestBody com.shoppyBag.DTO.ChangePasswordDTO request, @RequestHeader("Authorization") String token) {
+        return usersService.changePassword(request, token);
+    }
 }

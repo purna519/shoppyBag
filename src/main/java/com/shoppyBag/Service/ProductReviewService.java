@@ -23,9 +23,12 @@ public interface ProductReviewService {
     // Admin: Approve a review
     ReviewResponse approveReview(Long reviewId);
     
-    // Admin: Reject/Delete a review
-    void deleteReview(Long reviewId);
+    // Delete a review (user can delete own reviews, admin can delete any)
+    void deleteReview(Long reviewId, String userEmail);
     
     // Get reviews by user
     List<ReviewResponse> getReviewsByUser(Long userId);
+    
+    // Admin: Get all reviews (both approved and pending)
+    List<ReviewResponse> getAllReviews();
 }

@@ -146,3 +146,61 @@ body.dark-mode .verified-badge {
     background: #065f46 !important;
     color: #10b981 !important;
 }
+
+
+/* Review Actions */
+.review-actions {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #f1f5f9;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn-delete-review {
+  background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+  color: #991b1b;
+  border: 1px solid #fca5a5;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn-delete-review:hover {
+  background: linear-gradient(135deg, #fecaca 0%, #fca5a5 100%);
+  color: #7f1d1d;
+  border-color: #f87171;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.2);
+}
+
+.btn-delete-review:active {
+  transform: translateY(0);
+}
+
+.btn-delete-review i {
+  font-size: 0.875rem;
+}
+
+/* Dark Mode for Review Actions */
+body.dark-mode .review-actions {
+  border-top-color: #334155;
+}
+
+body.dark-mode .btn-delete-review {
+  background: linear-gradient(135deg, #7f1d1d 0%, #991b1b 100%);
+  color: #fecaca;
+  border-color: #991b1b;
+}
+
+body.dark-mode .btn-delete-review:hover {
+  background: linear-gradient(135deg, #991b1b 0%, #b91c1c 100%);
+  color: #fee2e2;
+  border-color: #b91c1c;
+}
