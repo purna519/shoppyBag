@@ -1,0 +1,66 @@
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: shoppybag_db
+    environment:
+      POSTGRES_DB: shoppybag_db
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password123
+    ports:
+      - "5432:5432"
+    volumes:
+      - shoppybag_db_data:/var/lib/postgresql/data
+    networks:
+      - shoppybag-network
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d shoppybag_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build: 
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: shoppybag_backend
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/shoppybag_db
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: password123
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      JWT_SECRET: ShoppyBagSECRETKEYForJWTShoppyBagSECRETKEYForJWT_A_Very_Long_Secure_String_2024
+      JWT_EXPIRATION: 86400000
+      RAZORPAY_KEY: rzp_test_Rd8GzuxNiaMOs0
+      RAZORPAY_SECRET: s92SezbXevS9JHVa8LcvAV67
+      RATE_LIMIT_CAPACITY: 100
+      RATE_LIMIT_REFILL_TOKENS: 100
+      RATE_LIMIT_REFILL_DURATION: 60
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - shoppybag-network
+    restart: always
+
+  frontend:
+    build: 
+      context: ./shoppybag-frontend
+      dockerfile: Dockerfile
+    container_name: shoppybag_frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - shoppybag-network
+    restart: always
+
+volumes:
+  shoppybag_db_data:
+
+networks:
+  shoppybag-network:
+    driver: bridge
